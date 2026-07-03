@@ -93,7 +93,7 @@ export async function controllaEProponeAggiornamentoAvvio(): Promise<void> {
 
   const note = res.note ? `\n\n${res.note}` : "";
   const installa = window.confirm(
-    `È disponibile PreventivoAI ${res.versioneDisponibile}.${note}\n\nVuoi scaricare e installare ora?`,
+    `È disponibile PreviCloud ${res.versioneDisponibile}.${note}\n\nVuoi scaricare e installare ora?`,
   );
   if (!installa) return;
 

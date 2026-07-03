@@ -184,7 +184,7 @@ export default function AppSettings() {
   return (
     <PageContainer>
       <h1 className="text-2xl font-semibold text-brand-navy">App</h1>
-      <p className="mt-1 text-brand-navy/60">Impostazioni locali di PreventivoAI su questo PC.</p>
+      <p className="mt-1 text-brand-navy/60">Impostazioni locali di PreviCloud su questo PC.</p>
 
       <div className="mt-4 rounded-2xl bg-white p-6 shadow-sm">
         <p className="text-sm font-semibold text-brand-navy">Cartella PDF</p>
@@ -291,7 +291,7 @@ export default function AppSettings() {
         <div className="flex items-center justify-between gap-4">
           <div>
             <p className="text-sm font-semibold text-brand-navy">Avvio con Windows</p>
-            <p className="mt-1 text-sm text-brand-navy/60">Avvia PreventivoAI all'accensione del PC.</p>
+            <p className="mt-1 text-sm text-brand-navy/60">Avvia PreviCloud all'accensione del PC.</p>
           </div>
           <ToggleSwitch
             checked={autostart}

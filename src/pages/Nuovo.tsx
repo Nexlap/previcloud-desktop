@@ -19,7 +19,7 @@ import { calcolaTotaleVoci, calcolaTotaleTrasferte } from "../lib/builder";
 import type { TrasfertaBuilder, VoceBuilder } from "../lib/builder";
 import { caricaMetodiPagamentoBuilder } from "../lib/pagamenti";
 import type { MetodoPagamento } from "../lib/pagamenti";
-import { generaPDF, generaPDFFile, aggiornaLogoCacheInHtml, formatNomeFilePdf, salvaPDF, scaricaPdfLocale, creaLinkPagamento, creaLinkPagamentoRata } from "../lib/pdf";
+import { generaPDF, generaPDFFile, creaPreventivoBozza, aggiornaLogoCacheInHtml, formatNomeFilePdf, salvaPDF, scaricaPdfLocale, creaLinkPagamento, creaLinkPagamentoRata } from "../lib/pdf";
 import { calcolaAccontoSaldoPiano, generaLinkPaypalMe, importoDaTesto, meseCorrenteString, validaPianiPagamento, type RateAccontoTipo, type RateModalitaPiano } from "preventivoai-shared";
 import {
   creaPianoRateDaPreventivo,
@@ -775,48 +775,69 @@ export default function Nuovo({ mode }: Props) {
         }
       }
 
-      let testoFinale = await preparaTestoPerPdf(preventivo, "", accontoLinkPrecomputato);
-      let data = await generaPDFFile({
-        testo: testoFinale,
-        template,
-        token,
-        cliente_id: clienteSelezionatoId,
-        versione_padre_id: versionePadreId,
-        nascondi_prezzi: nascondiPrezzi,
-      });
+      const metodo = metodoPagamentoSelezionato;
+      const usaFlussoStripeBozza = metodo?.tipo === "stripe" && !accontoLinkPrecomputato;
 
+      let testoFinale = await preparaTestoPerPdf(preventivo, "", accontoLinkPrecomputato);
+      let data: Awaited<ReturnType<typeof generaPDFFile>>;
       let urlCaricato = "";
       let storagePathCaricato = "";
-      try {
-        const upload = await salvaPDF(data.pdf_base64, token);
-        urlCaricato = upload.pdfUrl;
-        storagePathCaricato = upload.storagePath || "";
-      } catch (err) {
-        console.warn("Upload PDF fallito:", err);
-      }
-
       const clienteNome = clienti.find((c) => c.id === clienteSelezionatoId)?.nome || "";
-      const titolo = data.numeroPreventivo.trim() || titoloPreventivo();
+      const titoloBase = titoloPreventivo();
       const clienteIdSalvato = clienteSelezionatoId;
+      let idPerPiani: string | null = null;
 
-      const { error, id } = await salvaPreventivoGenerato({
-        testo: testoFinale,
-        clienteId: clienteSelezionatoId,
-        clienteNome,
-        titolo,
-        template,
-        versione: data.versione,
-        pdfUrl: storagePathCaricato || urlCaricato || undefined,
-        preventivoPadreId: inModifica ? versionePadreId : undefined,
-      });
-      if (error) throw new Error(error.message);
-      const idPerPiani = id ?? null;
-      setSalvato(true);
+      if (usaFlussoStripeBozza) {
+        const importoTotale = importoDaTesto(testoFinale);
+        if (!importoTotale || importoTotale <= 0) {
+          throw new Error("Importo preventivo non valido per il pagamento online.");
+        }
 
-      const metodo = metodoPagamentoSelezionato;
-      if (idPerPiani && metodo?.tipo === "stripe" && !accontoLinkPrecomputato) {
-        const { payment_url } = await creaLinkPagamento(idPerPiani, "Preventivo", token);
+        const { preventivo_id: bozzaId } = await creaPreventivoBozza({
+          testo: testoFinale,
+          importo_totale: importoTotale,
+          token,
+          cliente_id: clienteSelezionatoId || undefined,
+          nome_cliente: clienteNome || undefined,
+          titolo: titoloBase,
+          template,
+          versione_padre_id: versionePadreId,
+        });
+
+        const { payment_url } = await creaLinkPagamento(bozzaId, "Preventivo", token);
         testoFinale = testoFinale.replace("[PAGAMENTO_ONLINE]", payment_url);
+
+        data = await generaPDFFile({
+          testo: testoFinale,
+          template,
+          token,
+          cliente_id: clienteSelezionatoId,
+          versione_padre_id: versionePadreId,
+          nascondi_prezzi: nascondiPrezzi,
+          preventivo_id: bozzaId,
+        });
+
+        idPerPiani = data.preventivo_id || bozzaId;
+
+        try {
+          const upload = await salvaPDF(data.pdf_base64, token);
+          urlCaricato = upload.pdfUrl;
+          storagePathCaricato = upload.storagePath || "";
+        } catch (err) {
+          console.warn("Upload PDF fallito:", err);
+        }
+
+        const { error: updateErr } = await supabase
+          .from("preventivi")
+          .update({
+            pdf_url: storagePathCaricato || urlCaricato || null,
+            titolo: data.numeroPreventivo.trim() || titoloBase,
+          })
+          .eq("id", idPerPiani);
+        if (updateErr) throw new Error(updateErr.message);
+
+        setSalvato(true);
+      } else {
         data = await generaPDFFile({
           testo: testoFinale,
           template,
@@ -825,21 +846,31 @@ export default function Nuovo({ mode }: Props) {
           versione_padre_id: versionePadreId,
           nascondi_prezzi: nascondiPrezzi,
         });
+
         try {
           const upload = await salvaPDF(data.pdf_base64, token);
           urlCaricato = upload.pdfUrl;
           storagePathCaricato = upload.storagePath || "";
         } catch (err) {
-          console.warn("Upload PDF finale fallito:", err);
+          console.warn("Upload PDF fallito:", err);
         }
-        await supabase
-          .from("preventivi")
-          .update({
-            testo_preventivo: testoFinale,
-            pdf_url: storagePathCaricato || urlCaricato || null,
-          })
-          .eq("id", idPerPiani);
+
+        const { error, id } = await salvaPreventivoGenerato({
+          testo: testoFinale,
+          clienteId: clienteSelezionatoId,
+          clienteNome,
+          titolo: data.numeroPreventivo.trim() || titoloBase,
+          template,
+          versione: data.versione,
+          pdfUrl: storagePathCaricato || urlCaricato || undefined,
+          preventivoPadreId: inModifica ? versionePadreId : undefined,
+        });
+        if (error) throw new Error(error.message);
+        idPerPiani = id ?? null;
+        setSalvato(true);
       }
+
+      const titolo = data.numeroPreventivo.trim() || titoloBase;
 
       if (idPerPiani) {
         if (accontoAbbonamentoId) {

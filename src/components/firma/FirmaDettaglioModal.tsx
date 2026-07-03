@@ -11,9 +11,9 @@ import {
   copiaLinkFirma,
   buildMessaggioFirmaInvio,
   buildOggettoFirmaInvio,
-  isFirmaManuale,
   isFirmaOnline,
   ottieniUrlFirma,
+  testoFirmaCompletata,
   ottieniUrlInvioFirma,
   registraFirmaManuale,
   statoFirmaInvio,
@@ -189,7 +189,6 @@ export default function FirmaDettaglioModal({
       : sf === "attesa" ? "Condividi link firma"
         : "Firma digitale";
 
-  const firmatoManuale = sf === "firmato" && isFirmaManuale(invio);
   const firmatoOnline = sf === "firmato" && isFirmaOnline(invio);
 
   return (
@@ -211,7 +210,7 @@ export default function FirmaDettaglioModal({
         {sf === "firmato" && invio ? (
           <div className="mt-4 space-y-3 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
             <p className="font-semibold">
-              {firmatoManuale ? "Firmato a mano" : "Firmato online"} il {formatData(invio.firmato_at!)}
+              {testoFirmaCompletata(invio)}
             </p>
             {urlDocumentiFirma.loading ? (
               <p className="text-emerald-800">Caricamento documenti…</p>

@@ -114,7 +114,7 @@ export default function Login() {
             <span>Storico, versioni alternative e tracciamento incassi</span>
           </li>
         </ul>
-        <p className="text-xs text-white/40">© PreventivoAI — fatto per artigiani e professionisti</p>
+        <p className="text-xs text-white/40">© PreviCloud — fatto per artigiani e professionisti</p>
       </aside>
 
       <div className="flex flex-1 items-center justify-center overflow-y-auto p-6">

@@ -19,7 +19,7 @@ export function AggiornamentoObbligatorioModal({
         Aggiornamento richiesto
       </h1>
       <p className="text-center text-gray-300 leading-relaxed max-w-md">
-        È disponibile un aggiornamento obbligatorio di PreventivoAI.<br /><br />
+        È disponibile un aggiornamento obbligatorio di PreviCloud.<br /><br />
         Versione installata: <strong>{versioneInstallata ?? '—'}</strong><br />
         Versione richiesta: <strong>{versioneMinima ?? '—'}</strong><br /><br />
         L'app si aggiornerà automaticamente al prossimo avvio.

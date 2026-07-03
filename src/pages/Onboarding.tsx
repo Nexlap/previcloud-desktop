@@ -135,7 +135,7 @@ export default function Onboarding() {
       <div className="flex h-screen flex-col items-center justify-center bg-brand-navy px-6 text-white">
         <div className="w-full max-w-lg text-center">
           <p className="text-5xl">🎉</p>
-          <h1 className="mt-6 text-3xl font-bold leading-tight">Benvenuto in PreventivoAI</h1>
+          <h1 className="mt-6 text-3xl font-bold leading-tight">Benvenuto in PreviCloud</h1>
           <p className="mt-4 text-base leading-relaxed text-white/70">
             In pochi minuti configuro il tuo profilo.
             <br />

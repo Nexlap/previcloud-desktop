@@ -1,3 +1,4 @@
+import { formatDataBreve, formatOraBreve } from "preventivoai-shared";
 import { supabase } from "./supabase";
 import { sessionToken } from "./settings";
 import { trackEvento } from "./track";
@@ -120,11 +121,16 @@ export async function registraFirmaManuale(
   };
 }
 
+export function testoFirmaCompletata(invio: PreventivoInvio | undefined): string | null {
+  if (!invio?.firmato_at) return null;
+  const tipo = isFirmaManuale(invio) ? "Firmato a mano" : "Firmato online";
+  return `${tipo} il ${formatDataBreve(invio.firmato_at)} alle ${formatOraBreve(invio.firmato_at)}`;
+}
+
 export function labelFirmaFirmata(invio: PreventivoInvio | undefined): string {
-  if (invio?.metodo_firma === "manuale" || invio?.canale === "manuale") {
-    return "✓ Firmato a mano";
-  }
-  return "✓ Firmato online";
+  const base = isFirmaManuale(invio) ? "✓ Firmato a mano" : "✓ Firmato online";
+  if (!invio?.firmato_at) return base;
+  return `${base} · ${formatDataBreve(invio.firmato_at)} ${formatOraBreve(invio.firmato_at)}`;
 }
 
 export function isFirmaManuale(invio: PreventivoInvio | undefined): boolean {

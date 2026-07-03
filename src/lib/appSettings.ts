@@ -4,7 +4,7 @@ import { basename, desktopDir, dirname, join } from "@tauri-apps/api/path";
 import { open, save } from "@tauri-apps/plugin-dialog";
 import { disable, enable, isEnabled } from "@tauri-apps/plugin-autostart";
 
-export const CARTELLA_PDF_ROOT_NAME = "Preventivo AI - Preventivi PDF";
+export const CARTELLA_PDF_ROOT_NAME = "PreviCloud - Preventivi PDF";
 
 const PDF_CARTELLE_CLIENTE_KEY = "preventivoai-pdf-cartelle-cliente";
 const PDF_CARTELLA_CUSTOM_KEY = "preventivoai-pdf-cartella-custom";

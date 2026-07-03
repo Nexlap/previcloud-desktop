@@ -20,6 +20,7 @@ export interface GeneraPDFResult {
 
 export interface GeneraPDFFileResult extends GeneraPDFResult {
   pdf_base64: string;
+  preventivo_id?: string;
 }
 
 interface GeneraPDFParams {
@@ -29,16 +30,32 @@ interface GeneraPDFParams {
   versione_padre_id?: string | null;
   cliente_id?: string;
   nascondi_prezzi?: boolean;
+  preventivo_id?: string;
+  pdf_url?: string;
+}
+
+export interface CreaPreventivoBozzaParams {
+  testo: string;
+  importo_totale: number;
+  token: string;
+  cliente_id?: string;
+  nome_cliente?: string;
+  titolo?: string;
+  template?: string;
+  versione_padre_id?: string | null;
 }
 
 function bodyGeneraPdf(params: GeneraPDFParams) {
-  return JSON.stringify({
+  const body: Record<string, unknown> = {
     testo: params.testo,
     template: params.template,
     versione_padre_id: params.versione_padre_id || null,
     cliente_id: params.cliente_id || "",
     nascondi_prezzi: params.nascondi_prezzi || false,
-  });
+  };
+  if (params.preventivo_id) body.preventivo_id = params.preventivo_id;
+  if (params.pdf_url) body.pdf_url = params.pdf_url;
+  return JSON.stringify(body);
 }
 
 export async function generaPDF(params: GeneraPDFParams): Promise<GeneraPDFResult> {
@@ -61,9 +78,37 @@ export async function generaPDFFile(params: GeneraPDFParams): Promise<GeneraPDFF
     body: bodyGeneraPdf(params),
   });
   const data = await res.json().catch(() => ({}));
+  if (res.status === 404 && params.preventivo_id) {
+    throw new Error("Bozza non trovata o già finalizzata. Riprova generando il preventivo da capo.");
+  }
   if (!res.ok) throw new Error(data.error || `Errore server (${res.status})`);
   if (data.error) throw new Error(data.error);
   return data;
+}
+
+export async function creaPreventivoBozza(
+  params: CreaPreventivoBozzaParams,
+): Promise<{ preventivo_id: string }> {
+  const res = await fetch(`${BACKEND_URL}/api/preventivi/bozza`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${params.token}` },
+    body: JSON.stringify({
+      testo: params.testo,
+      importo_totale: params.importo_totale,
+      cliente_id: params.cliente_id || undefined,
+      nome_cliente: params.nome_cliente || undefined,
+      titolo: params.titolo || undefined,
+      template: params.template || undefined,
+      versione_padre_id: params.versione_padre_id || null,
+    }),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(data.error || `Impossibile creare la bozza preventivo (${res.status})`);
+  }
+  if (data.error) throw new Error(data.error);
+  if (!data.preventivo_id) throw new Error("Bozza creata senza identificativo preventivo.");
+  return { preventivo_id: data.preventivo_id as string };
 }
 
 export async function creaLinkPagamento(

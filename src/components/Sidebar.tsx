@@ -156,7 +156,7 @@ export default function Sidebar() {
   return (
     <aside className="flex w-56 shrink-0 flex-col border-r border-white/5 bg-brand-navy text-white">
       <div className="border-b border-white/10 px-5 py-5">
-        <p className="text-base font-semibold tracking-tight">PreventivoAI</p>
+        <p className="text-base font-semibold tracking-tight">PreviCloud</p>
         <p className="mt-0.5 text-xs text-white/45">Desktop</p>
       </div>
 

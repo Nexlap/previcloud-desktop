@@ -55,7 +55,7 @@ Imponibile: €1.700,00
 IVA 22%: €374,00
 TOTALE: €2.074,00
 
-Note: Preventivo dimostrativo PreventivoAI
+Note: Preventivo dimostrativo PreviCloud
 PAGAMENTO: Bonifico bancario`;
 }
 

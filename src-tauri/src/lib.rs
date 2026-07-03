@@ -223,7 +223,7 @@ fn start_notification_poller(app: tauri::AppHandle, state: Arc<NotificationSessi
                             continue;
                         }
 
-                        let title = row.titolo.unwrap_or_else(|| "PreventivoAI".to_string());
+                        let title = row.titolo.unwrap_or_else(|| "PreviCloud".to_string());
                         let body = row.messaggio.unwrap_or_default();
                         if let Err(error) =
                             app.notification().builder().title(title).body(body).show()
@@ -335,7 +335,7 @@ pub fn run() {
             start_notification_poller(app.handle().clone(), poller_state.clone());
 
             let open_item =
-                MenuItem::with_id(app, MENU_OPEN, "Apri PreventivoAI", true, None::<&str>)?;
+                MenuItem::with_id(app, MENU_OPEN, "Apri PreviCloud", true, None::<&str>)?;
             let quit_item = MenuItem::with_id(app, MENU_QUIT, "Esci", true, None::<&str>)?;
             let menu = Menu::with_items(app, &[&open_item, &quit_item])?;
 
@@ -346,7 +346,7 @@ pub fn run() {
 
             TrayIconBuilder::new()
                 .icon(icon)
-                .tooltip("PreventivoAI")
+                .tooltip("PreviCloud")
                 .menu(&menu)
                 .show_menu_on_left_click(false)
                 .on_menu_event(|app, event| match event.id.as_ref() {

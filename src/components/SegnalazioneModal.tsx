@@ -149,7 +149,7 @@ export default function SegnalazioneModal({
           </div>
 
           <p className="rounded-xl border border-sky-100 bg-sky-50 px-3 py-2.5 text-xs leading-relaxed text-sky-900">
-            Le segnalazioni vengono analizzate entro 24–48 ore. Grazie per aiutarci a migliorare PreventivoAI!
+            Le segnalazioni vengono analizzate entro 24–48 ore. Grazie per aiutarci a migliorare PreviCloud!
           </p>
         </div>
 
