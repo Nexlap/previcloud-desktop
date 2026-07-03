@@ -21,6 +21,9 @@ export interface GeneraPDFResult {
 export interface GeneraPDFFileResult extends GeneraPDFResult {
   pdf_base64: string;
   preventivo_id?: string;
+  pdf_url?: string;
+  storage_path?: string;
+  expires_in?: number;
 }
 
 interface GeneraPDFParams {
@@ -109,6 +112,23 @@ export async function creaPreventivoBozza(
   if (data.error) throw new Error(data.error);
   if (!data.preventivo_id) throw new Error("Bozza creata senza identificativo preventivo.");
   return { preventivo_id: data.preventivo_id as string };
+}
+
+export async function risolviUploadPdfGenerato(
+  data: GeneraPDFFileResult,
+  token: string,
+): Promise<{ pdfUrl: string; storagePath: string }> {
+  if (data.storage_path) {
+    return {
+      pdfUrl: data.pdf_url || "",
+      storagePath: data.storage_path,
+    };
+  }
+  const upload = await salvaPDF(data.pdf_base64, token);
+  return {
+    pdfUrl: upload.pdfUrl,
+    storagePath: upload.storagePath || "",
+  };
 }
 
 export async function creaLinkPagamento(

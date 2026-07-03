@@ -19,7 +19,7 @@ import { calcolaTotaleVoci, calcolaTotaleTrasferte } from "../lib/builder";
 import type { TrasfertaBuilder, VoceBuilder } from "../lib/builder";
 import { caricaMetodiPagamentoBuilder } from "../lib/pagamenti";
 import type { MetodoPagamento } from "../lib/pagamenti";
-import { generaPDF, generaPDFFile, creaPreventivoBozza, aggiornaLogoCacheInHtml, formatNomeFilePdf, salvaPDF, scaricaPdfLocale, creaLinkPagamento, creaLinkPagamentoRata } from "../lib/pdf";
+import { generaPDF, generaPDFFile, creaPreventivoBozza, risolviUploadPdfGenerato, aggiornaLogoCacheInHtml, formatNomeFilePdf, scaricaPdfLocale, creaLinkPagamento, creaLinkPagamentoRata } from "../lib/pdf";
 import { calcolaAccontoSaldoPiano, generaLinkPaypalMe, importoDaTesto, meseCorrenteString, validaPianiPagamento, type RateAccontoTipo, type RateModalitaPiano } from "preventivoai-shared";
 import {
   creaPianoRateDaPreventivo,
@@ -820,19 +820,21 @@ export default function Nuovo({ mode }: Props) {
         idPerPiani = data.preventivo_id || bozzaId;
 
         try {
-          const upload = await salvaPDF(data.pdf_base64, token);
+          const upload = await risolviUploadPdfGenerato(data, token);
           urlCaricato = upload.pdfUrl;
-          storagePathCaricato = upload.storagePath || "";
+          storagePathCaricato = upload.storagePath;
         } catch (err) {
           console.warn("Upload PDF fallito:", err);
         }
 
+        const titoloFinale = data.numeroPreventivo.trim() || titoloBase;
+        const patchBozza: { titolo: string; pdf_url?: string | null } = { titolo: titoloFinale };
+        if (!data.storage_path) {
+          patchBozza.pdf_url = storagePathCaricato || urlCaricato || null;
+        }
         const { error: updateErr } = await supabase
           .from("preventivi")
-          .update({
-            pdf_url: storagePathCaricato || urlCaricato || null,
-            titolo: data.numeroPreventivo.trim() || titoloBase,
-          })
+          .update(patchBozza)
           .eq("id", idPerPiani);
         if (updateErr) throw new Error(updateErr.message);
 
@@ -848,9 +850,9 @@ export default function Nuovo({ mode }: Props) {
         });
 
         try {
-          const upload = await salvaPDF(data.pdf_base64, token);
+          const upload = await risolviUploadPdfGenerato(data, token);
           urlCaricato = upload.pdfUrl;
-          storagePathCaricato = upload.storagePath || "";
+          storagePathCaricato = upload.storagePath;
         } catch (err) {
           console.warn("Upload PDF fallito:", err);
         }
