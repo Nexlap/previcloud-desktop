@@ -81,12 +81,12 @@ export default function PreventivoStatoModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-brand-navy/40 p-4 backdrop-blur-[2px]"
       onMouseDown={handleBackdropMouseDown}
       onMouseUp={handleBackdropMouseUp}
     >
       <div
-        className="w-full max-w-sm rounded-2xl bg-white p-5 shadow-lg"
+        className="w-full max-w-sm rounded-2xl border border-edge-faint bg-surface p-5 shadow-xl shadow-brand-navy/10"
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="text-lg font-semibold text-brand-navy">Cambia stato</h2>
@@ -101,7 +101,7 @@ export default function PreventivoStatoModal({
                 const restaAperto = stato === "accettato";
                 if (!restaAperto) onClose();
               }}
-              className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm text-brand-navy hover:bg-brand-bg"
+              className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm text-brand-navy transition hover:bg-brand-bg"
             >
               <StatoPreventivoIcon stato={stato} />
               <span className="capitalize">{stato}</span>
@@ -110,7 +110,7 @@ export default function PreventivoStatoModal({
         </div>
 
         {preventivo.stato === "accettato" && mostraTogglePagato && (
-          <div className="mt-4 border-t border-black/5 pt-4">
+          <div className="mt-4 border-t border-edge-faint pt-4">
             <div className="flex items-center justify-between gap-4">
               <div>
                 <p className="text-sm font-medium text-brand-navy">Segna come pagato</p>
@@ -139,7 +139,7 @@ export default function PreventivoStatoModal({
                     setDataPagamento(e.target.value);
                     if (erroreDataPagamento) setErroreDataPagamento(null);
                   }}
-                  className="mt-1 w-full rounded-xl border border-black/10 bg-white px-3 py-2.5 text-sm text-brand-navy outline-none focus:border-brand-teal"
+                  className="mt-1 w-full rounded-xl border border-edge bg-surface px-3 py-2.5 text-sm text-brand-navy outline-none transition focus:border-brand-teal"
                 />
                 {erroreDataPagamento ? (
                   <p className="mt-1.5 text-xs text-red-600">{erroreDataPagamento}</p>
@@ -152,7 +152,7 @@ export default function PreventivoStatoModal({
                       setErroreDataPagamento(null);
                       setPagatoLocale(preventivo.pagato ?? false);
                     }}
-                    className="rounded-xl border border-black/10 px-3 py-2 text-sm font-medium text-brand-navy/60"
+                    className="rounded-xl border border-edge px-3 py-2 text-sm font-medium text-brand-navy/60 transition hover:bg-brand-bg"
                   >
                     Annulla
                   </button>
@@ -160,7 +160,7 @@ export default function PreventivoStatoModal({
                     type="button"
                     onClick={confermaPagato}
                     disabled={salvandoPagato}
-                    className="rounded-xl bg-brand-teal px-3 py-2 text-sm font-semibold text-white disabled:opacity-50"
+                    className="rounded-xl bg-brand-teal px-3 py-2 text-sm font-semibold text-white transition hover:bg-brand-teal/90 active:scale-[0.98] disabled:opacity-50"
                   >
                     Conferma
                   </button>
@@ -173,7 +173,7 @@ export default function PreventivoStatoModal({
         <button
           type="button"
           onClick={onClose}
-          className="mt-4 w-full rounded-xl border border-black/10 px-4 py-2.5 text-sm font-medium text-brand-navy/70 hover:bg-brand-bg"
+          className="mt-4 w-full rounded-xl border border-edge px-4 py-2.5 text-sm font-medium text-brand-navy/70 transition hover:bg-brand-bg"
         >
           Chiudi
         </button>

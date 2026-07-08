@@ -1,5 +1,5 @@
 {
-  "name": "preventivoai-desktop",
+  "name": "previcloud-desktop",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -12,6 +12,8 @@
     "updater:manifest": "node scripts/generate-latest-json.mjs"
   },
   "dependencies": {
+    "@fontsource/plus-jakarta-sans": "^5.2.8",
+    "@phosphor-icons/react": "^2.1.10",
     "@supabase/supabase-js": "^2.108.2",
     "@tailwindcss/vite": "^4.3.1",
     "@tauri-apps/api": "^2",
@@ -21,7 +23,7 @@
     "@tauri-apps/plugin-opener": "^2",
     "@tauri-apps/plugin-process": "^2.3.1",
     "@tauri-apps/plugin-updater": "^2.10.1",
-    "preventivoai-shared": "file:../../SHARED/preventivoai-shared",
+    "previcloud-shared": "file:../../SHARED/previcloud-shared",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router": "^8.0.0",

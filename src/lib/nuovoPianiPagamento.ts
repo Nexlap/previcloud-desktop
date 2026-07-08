@@ -1,4 +1,4 @@
-import { importoDaTesto, type RateAccontoTipo, type RateModalitaPiano } from "preventivoai-shared";
+import { importoDaTesto, type RateAccontoTipo, type RateModalitaPiano } from "previcloud-shared";
 import type { MetodoPagamento } from "./pagamenti";
 import {
   creaAbbonamentoDaPreventivo,

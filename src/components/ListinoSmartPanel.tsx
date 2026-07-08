@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Camera, Microphone, Record } from "@phosphor-icons/react";
 import { formatImporto } from "../lib/format";
 import {
   avviaRegistrazioneVocale,
@@ -165,7 +166,7 @@ export default function ListinoSmartPanel({
       : `rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${
           active
             ? "border-brand-teal bg-brand-teal/10 text-brand-teal"
-            : "border-black/10 text-brand-navy/70 hover:border-brand-teal/40"
+            : "border-edge text-brand-navy/70 hover:border-brand-teal/40"
         }`;
 
   return (
@@ -173,7 +174,7 @@ export default function ListinoSmartPanel({
       <div
         className={
           segmentedTabs
-            ? "flex shrink-0 rounded-xl border border-black/10 bg-brand-bg p-1"
+            ? "flex shrink-0 rounded-xl border border-edge bg-brand-bg p-1"
             : "flex shrink-0 flex-wrap gap-2"
         }
       >
@@ -200,7 +201,7 @@ export default function ListinoSmartPanel({
             onChange={(e) => setTestoServizi(e.target.value)}
             rows={fillHeight ? undefined : 8}
             placeholder={placeholder}
-            className={`w-full rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal ${
+            className={`w-full rounded-xl border border-edge px-3 py-2 text-sm outline-none transition focus:border-brand-teal ${
               fillHeight ? "min-h-[140px] flex-1 resize-none" : ""
             }`}
           />
@@ -209,7 +210,7 @@ export default function ListinoSmartPanel({
               type="button"
               disabled={!testoServizi.trim() || elaborando}
               onClick={() => void elaboraTestoAI()}
-              className="rounded-xl bg-brand-teal px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-teal/90 disabled:opacity-50"
+              className="rounded-xl bg-brand-teal px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-brand-teal/25 transition hover:bg-brand-teal/90 active:scale-[0.98] disabled:opacity-50"
             >
               {elaborando ? "Elaborazione..." : "Struttura con AI"}
             </button>
@@ -217,7 +218,7 @@ export default function ListinoSmartPanel({
               type="button"
               disabled={!testoServizi.trim() || elaborando}
               onClick={elaboraTestoLocale}
-              className="rounded-xl border border-black/10 px-4 py-2.5 text-sm font-semibold text-brand-navy/70 hover:bg-brand-bg disabled:opacity-50"
+              className="rounded-xl border border-edge px-4 py-2.5 text-sm font-semibold text-brand-navy/70 transition hover:bg-brand-bg disabled:opacity-50"
             >
               Importa senza AI
             </button>
@@ -234,18 +235,25 @@ export default function ListinoSmartPanel({
             type="button"
             disabled={elaborandoMedia}
             onClick={() => void elaboraFoto()}
-            className={`flex w-full flex-col items-center justify-center rounded-xl border border-dashed border-black/15 bg-brand-bg px-4 text-sm text-brand-navy/60 hover:border-brand-teal/40 ${
+            className={`flex w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-edge bg-brand-bg px-4 text-sm text-brand-navy/60 transition hover:border-brand-teal/40 ${
               fillHeight ? "min-h-[160px] flex-1 py-8" : "py-10"
             }`}
           >
-            {elaborandoMedia ? "Elaborazione foto..." : "📷 Scegli immagine dal computer"}
+            {elaborandoMedia ? (
+              "Elaborazione foto..."
+            ) : (
+              <>
+                <Camera size={22} weight="regular" />
+                Scegli immagine dal computer
+              </>
+            )}
           </button>
         </div>
       )}
 
       {tab === "vocale" && (
         <div
-          className={`space-y-4 rounded-xl border border-black/10 bg-brand-bg/40 p-5 ${
+          className={`space-y-4 rounded-xl border border-edge bg-brand-bg/40 p-5 ${
             fillHeight ? "flex h-full min-h-0 flex-col justify-center" : ""
           }`}
         >
@@ -256,11 +264,11 @@ export default function ListinoSmartPanel({
 
           <div className="flex items-center justify-center py-2">
             <div
-              className={`flex h-16 w-16 items-center justify-center rounded-full text-2xl ${
+              className={`flex h-16 w-16 items-center justify-center rounded-full ${
                 registrando ? "bg-red-500/15 text-red-600" : "bg-brand-navy/10 text-brand-navy"
               }`}
             >
-              {registrando ? "🔴" : "🎙"}
+              {registrando ? <Record size={28} weight="fill" /> : <Microphone size={28} weight="regular" />}
             </div>
           </div>
 
@@ -277,7 +285,7 @@ export default function ListinoSmartPanel({
               type="button"
               disabled={registrando || elaborandoMedia}
               onClick={() => void avviaRegistrazione()}
-              className="rounded-xl bg-brand-navy px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-navy/90 disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded-xl bg-brand-navy px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-navy/90 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
             >
               Avvia registrazione
             </button>
@@ -285,7 +293,7 @@ export default function ListinoSmartPanel({
               type="button"
               disabled={!registrando || elaborandoMedia}
               onClick={() => void fermaEdElaboraVocale()}
-              className="rounded-xl bg-red-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded-xl bg-red-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
             >
               Stop ed elabora
             </button>
@@ -300,7 +308,7 @@ export default function ListinoSmartPanel({
               <p className="mb-2 text-xs font-semibold tracking-wide text-brand-navy/50 uppercase">
                 Servizi aggiunti ({servizi.length})
               </p>
-              <ul className="divide-y divide-black/5 rounded-xl border border-black/10 bg-white">
+              <ul className="divide-y divide-edge-faint rounded-xl border border-edge-faint bg-surface">
                 {servizi.map((s, i) => (
                   <li key={`${s.nome}-${i}`} className="flex items-start justify-between gap-3 px-4 py-3">
                     <div className="min-w-0 flex-1">
@@ -309,7 +317,7 @@ export default function ListinoSmartPanel({
                         <p className="mt-0.5 text-sm text-brand-navy/60">{s.descrizione}</p>
                       )}
                       {s.costo && (
-                        <p className="mt-1 text-xs font-medium text-brand-teal">
+                        <p className="mt-1 text-xs font-medium text-brand-teal-ink">
                           {formatImporto(parseFloat(s.costo.replace(",", ".")) || 0)} / {s.unita}
                         </p>
                       )}
@@ -318,7 +326,7 @@ export default function ListinoSmartPanel({
                       <button
                         type="button"
                         onClick={() => rimuoviServizio(i)}
-                        className="shrink-0 rounded-lg px-2 py-1 text-sm text-brand-navy/40 hover:bg-red-50 hover:text-red-600"
+                        className="shrink-0 rounded-lg px-2 py-1 text-sm text-brand-navy/40 transition hover:bg-red-50 hover:text-red-600"
                         aria-label="Rimuovi servizio"
                       >
                         Rimuovi
@@ -330,7 +338,7 @@ export default function ListinoSmartPanel({
             </div>
           )}
 
-          <div className="rounded-xl border border-black/10 bg-white p-5 shadow-sm">
+          <div className="rounded-xl border border-edge-faint bg-surface p-5 shadow-sm shadow-brand-navy/[0.03]">
             <p className="text-sm font-semibold text-brand-navy">Aggiungi servizio</p>
             <p className="mt-1 text-xs text-brand-navy/50">
               Il nome è obbligatorio. La descrizione è opzionale e compare nel listino.
@@ -343,7 +351,7 @@ export default function ListinoSmartPanel({
                   value={nuovoServizio.nome}
                   onChange={(e) => setNuovoServizio((s) => ({ ...s, nome: e.target.value }))}
                   placeholder={PLACEHOLDER.nomeServizio}
-                  className="w-full rounded-lg border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+                  className="w-full rounded-lg border border-edge px-3 py-2 text-sm outline-none transition focus:border-brand-teal"
                 />
               </div>
 
@@ -354,7 +362,7 @@ export default function ListinoSmartPanel({
                   onChange={(e) => setNuovoServizio((s) => ({ ...s, descrizione: e.target.value }))}
                   rows={2}
                   placeholder={PLACEHOLDER.descrizioneServizio}
-                  className="w-full rounded-lg border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+                  className="w-full rounded-lg border border-edge px-3 py-2 text-sm outline-none transition focus:border-brand-teal"
                 />
               </div>
 
@@ -365,7 +373,7 @@ export default function ListinoSmartPanel({
                     value={nuovoServizio.costo}
                     onChange={(e) => setNuovoServizio((s) => ({ ...s, costo: e.target.value }))}
                     placeholder={PLACEHOLDER.costoServizio}
-                    className="w-full rounded-lg border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+                    className="w-full rounded-lg border border-edge px-3 py-2 text-sm outline-none transition focus:border-brand-teal"
                   />
                 </div>
                 <div className="space-y-1">
@@ -373,7 +381,7 @@ export default function ListinoSmartPanel({
                   <select
                     value={nuovoServizio.unita}
                     onChange={(e) => setNuovoServizio((s) => ({ ...s, unita: e.target.value }))}
-                    className="w-full rounded-lg border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+                    className="w-full rounded-lg border border-edge px-3 py-2 text-sm outline-none transition focus:border-brand-teal"
                   >
                     {UNITA_SERVIZIO.map((u) => (
                       <option key={u} value={u}>
@@ -388,7 +396,7 @@ export default function ListinoSmartPanel({
                 type="button"
                 disabled={!nuovoServizio.nome.trim()}
                 onClick={aggiungiManuale}
-                className="w-full rounded-xl bg-brand-teal py-2.5 text-sm font-semibold text-white hover:bg-brand-teal/90 disabled:cursor-not-allowed disabled:opacity-50"
+                className="w-full rounded-xl bg-brand-teal py-2.5 text-sm font-semibold text-white shadow-sm shadow-brand-teal/25 transition hover:bg-brand-teal/90 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 + Aggiungi servizio
               </button>

@@ -1,4 +1,4 @@
-import { formatImportoEuroVisuale } from "preventivoai-shared";
+import { formatImportoEuroVisuale } from "previcloud-shared";
 
 type Props = {
   totale: number;
@@ -13,13 +13,13 @@ export default function BuilderFooterBar({ totale, buttonLabel, disabled, onPres
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-2.5">
         <div className="flex items-center justify-between">
           <span className="text-[15px] font-semibold text-ink">Totale:</span>
-          <span className="text-lg font-bold text-brand-teal">€{formatImportoEuroVisuale(totale)}</span>
+          <span className="text-lg font-bold text-brand-teal-ink">€{formatImportoEuroVisuale(totale)}</span>
         </div>
         <button
           type="button"
           onClick={onPress}
           disabled={disabled}
-          className="w-full rounded-2xl bg-brand-navy px-4 py-3.5 text-base font-semibold text-white disabled:opacity-40"
+          className="w-full rounded-2xl bg-brand-navy px-4 py-3.5 text-base font-semibold text-white shadow-sm transition hover:bg-brand-navy/90 active:scale-[0.99] disabled:opacity-40"
         >
           {buttonLabel}
         </button>

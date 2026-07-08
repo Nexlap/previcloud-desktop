@@ -15,9 +15,9 @@ export default function PreventivoPdfPreview({ html, loading, className = "", fi
   return (
     <>
       <div
-        className={`flex min-h-0 flex-col overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm ${className}`}
+        className={`flex min-h-0 flex-col overflow-hidden rounded-2xl border border-edge-faint bg-surface shadow-sm shadow-brand-navy/[0.03] ${className}`}
       >
-        <div className="flex shrink-0 items-center justify-between border-b border-black/5 px-4 py-2">
+        <div className="flex shrink-0 items-center justify-between border-b border-edge-faint px-4 py-2">
           <p className="text-sm font-medium text-brand-navy">Anteprima PDF</p>
           {loading && <p className="text-xs text-brand-navy/50">Aggiornamento...</p>}
         </div>

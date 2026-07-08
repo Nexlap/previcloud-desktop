@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "react";
+import { CaretDown } from "@phosphor-icons/react";
 import {
   caricaSettingsData,
   salvaProfiloSettings,
@@ -12,7 +13,7 @@ import SettingsIdentitaSection from "../components/settings/SettingsIdentitaSect
 import LogoCropModal from "../components/settings/LogoCropModal";
 import BrandColorPicker from "../components/settings/BrandColorPicker";
 import { TONI } from "../lib/settingsConstants";
-import { MESSAGGI_CLIENTE_DEFAULT } from "preventivoai-shared";
+import { MESSAGGI_CLIENTE_DEFAULT } from "previcloud-shared";
 import { emitAggiornaProfilo } from "../lib/eventBus";
 
 const FORM_VUOTO: SettingsForm = {
@@ -51,6 +52,7 @@ export default function Impostazioni() {
   const [logoCacheKey, setLogoCacheKey] = useState(0);
   const [token, setToken] = useState("");
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
   const [salvando, setSalvando] = useState(false);
   const [uploadingLogo, setUploadingLogo] = useState(false);
   const [messaggio, setMessaggio] = useState("");
@@ -59,17 +61,33 @@ export default function Impostazioni() {
   const [noteExpanded, setNoteExpanded] = useState(false);
   const [cropPreview, setCropPreview] = useState<{ src: string; file: File } | null>(null);
 
-  useEffect(() => {
-    Promise.all([caricaSettingsData(), sessionToken()]).then(([data, accessToken]) => {
-      if (data) {
-        setForm(data.form);
-        setLogoUrl(data.logoUrl);
-        if (data.logoUrl) setLogoCacheKey(Date.now());
-      }
-      setToken(accessToken);
+  async function carica() {
+    const [data, accessToken] = await Promise.all([caricaSettingsData(), sessionToken()]);
+    setToken(accessToken);
+    if (data?.error) {
+      // Fetch fallita (rete/RLS/timeout): non sbloccare la UI con i default in
+      // `form`, altrimenti un salvataggio successivo li scriverebbe come se fossero reali.
+      setLoadError(true);
       setLoading(false);
-    });
+      return;
+    }
+    setLoadError(false);
+    if (data?.form) {
+      setForm(data.form);
+      setLogoUrl(data.logoUrl);
+      if (data.logoUrl) setLogoCacheKey(Date.now());
+    }
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    void carica();
   }, []);
+
+  function riprovaCarica() {
+    setLoading(true);
+    void carica();
+  }
 
   function aggiorna<K extends keyof SettingsForm>(campo: K, valore: SettingsForm[K]) {
     setForm((f) => ({ ...f, [campo]: valore }));
@@ -170,6 +188,23 @@ export default function Impostazioni() {
     );
   }
 
+  if (loadError) {
+    return (
+      <PageContainer>
+        <div className="mt-6 rounded-2xl border border-edge-faint bg-surface p-6 text-center shadow-sm shadow-brand-navy/[0.03]">
+          <p className="text-sm text-brand-navy/70">Impossibile caricare il profilo, riprova.</p>
+          <button
+            type="button"
+            onClick={riprovaCarica}
+            className="mt-4 rounded-xl bg-brand-teal px-5 py-2.5 text-sm font-semibold text-white shadow-sm shadow-brand-teal/25 transition hover:bg-brand-teal/90 active:scale-[0.98]"
+          >
+            Riprova
+          </button>
+        </div>
+      </PageContainer>
+    );
+  }
+
   return (
     <PageContainer>
       {cropPreview ? (
@@ -204,12 +239,12 @@ export default function Impostazioni() {
           onToggle={() => setColoreExpanded((v) => !v)}
         />
 
-        <div className="rounded-2xl border border-black/10 bg-white px-4 py-3.5 shadow-sm">
+        <div className="rounded-2xl border border-edge-faint bg-surface px-4 py-3.5 shadow-sm shadow-brand-navy/[0.03]">
           <label className="mb-2 block text-sm font-semibold text-brand-navy">Tono di comunicazione</label>
           <select
             value={form.tono}
             onChange={(e) => aggiorna("tono", e.target.value)}
-            className="w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm outline-none focus:border-brand-teal"
+            className="w-full rounded-lg border border-edge bg-surface px-3 py-2 text-sm outline-none transition focus:border-brand-teal"
           >
             {TONI.map((t) => (
               <option key={t} value={t}>
@@ -219,14 +254,18 @@ export default function Impostazioni() {
           </select>
         </div>
 
-        <div className="rounded-2xl border border-black/10 bg-white shadow-sm overflow-hidden">
+        <div className="overflow-hidden rounded-2xl border border-edge-faint bg-surface shadow-sm shadow-brand-navy/[0.03]">
           <button
             type="button"
             onClick={() => setNoteExpanded((v) => !v)}
-            className="flex w-full items-center justify-between px-4 py-3.5 text-left hover:bg-brand-bg/40"
+            className="flex w-full items-center justify-between px-4 py-3.5 text-left transition hover:bg-brand-bg/40"
           >
             <span className="text-sm font-semibold text-brand-navy">Note di pagamento</span>
-            <span className="text-brand-navy/40">{noteExpanded ? "▾" : "▸"}</span>
+            <CaretDown
+              size={16}
+              weight="bold"
+              className={`text-brand-navy/40 transition-transform ${noteExpanded ? "rotate-180" : ""}`}
+            />
           </button>
           {!noteExpanded && (
             <p className="px-4 pb-3.5 text-xs text-brand-navy/50 line-clamp-2">
@@ -234,13 +273,13 @@ export default function Impostazioni() {
             </p>
           )}
           {noteExpanded && (
-            <div className="space-y-2 border-t border-black/5 px-4 py-4">
+            <div className="space-y-2 border-t border-edge-faint px-4 py-4">
               <p className="text-xs text-brand-navy/50">Appare in fondo a tutti i preventivi PDF</p>
               <textarea
                 value={form.note_pagamento}
                 onChange={(e) => aggiorna("note_pagamento", e.target.value)}
                 rows={3}
-                className="w-full rounded-lg border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm outline-none transition focus:border-brand-teal"
               />
             </div>
           )}
@@ -277,7 +316,7 @@ export default function Impostazioni() {
         <button
           type="submit"
           disabled={salvando}
-          className="w-full rounded-xl bg-brand-teal py-3.5 text-sm font-semibold text-white disabled:opacity-60"
+          className="w-full rounded-xl bg-brand-teal py-3.5 text-sm font-semibold text-white shadow-sm shadow-brand-teal/25 transition hover:bg-brand-teal/90 active:scale-[0.99] disabled:opacity-60"
         >
           {salvando ? "Salvataggio..." : "Salva"}
         </button>

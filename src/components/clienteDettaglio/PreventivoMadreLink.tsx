@@ -1,4 +1,4 @@
-import { dataPreventivoMadre, titoloPreventivoMadre } from "preventivoai-shared";
+import { dataPreventivoMadre, titoloPreventivoMadre } from "previcloud-shared";
 
 export type PreventivoMadreInfo = {
   id: string;
@@ -20,7 +20,7 @@ export default function PreventivoMadreLink({ preventivo, onPress, embedded = fa
       {preventivo ? (
         <div className="mt-1 flex min-w-0 items-baseline justify-between gap-3">
           <div className="min-w-0">
-            <p className={`truncate text-sm font-medium text-brand-navy ${onPress ? "text-brand-teal" : ""}`}>
+            <p className={`truncate text-sm font-medium text-brand-navy ${onPress ? "text-brand-teal-ink" : ""}`}>
               {titoloPreventivoMadre(preventivo)}
             </p>
             {onPress ? (
@@ -43,16 +43,16 @@ export default function PreventivoMadreLink({ preventivo, onPress, embedded = fa
         <button
           type="button"
           onClick={() => onPress(preventivo.id)}
-          className="flex w-full items-center gap-3 border-t border-black/5 py-2.5 text-left hover:opacity-80"
+          className="flex w-full items-center gap-3 border-t border-edge-faint py-2.5 text-left transition hover:opacity-80"
         >
           {content}
-          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-sm font-bold text-brand-teal">→</span>
+          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-sm font-bold text-brand-teal-ink">→</span>
         </button>
       );
     }
 
     return (
-      <div className="flex items-center gap-3 border-t border-black/5 py-2.5">
+      <div className="flex items-center gap-3 border-t border-edge-faint py-2.5">
         {content}
       </div>
     );
@@ -63,16 +63,16 @@ export default function PreventivoMadreLink({ preventivo, onPress, embedded = fa
       <button
         type="button"
         onClick={() => onPress(preventivo.id)}
-        className="flex w-full items-center gap-3 rounded-xl border border-black/10 bg-brand-bg px-3.5 py-3 text-left hover:border-brand-teal/30"
+        className="flex w-full items-center gap-3 rounded-xl border border-edge bg-brand-bg px-3.5 py-3 text-left transition hover:border-brand-teal/30"
       >
         {content}
-        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-sm font-bold text-brand-teal">→</span>
+        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-sm font-bold text-brand-teal-ink">→</span>
       </button>
     );
   }
 
   return (
-    <div className="flex items-center gap-3 rounded-xl border border-black/10 bg-brand-bg px-3.5 py-3">
+    <div className="flex items-center gap-3 rounded-xl border border-edge bg-brand-bg px-3.5 py-3">
       {content}
     </div>
   );

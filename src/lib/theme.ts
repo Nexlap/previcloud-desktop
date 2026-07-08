@@ -1,6 +1,6 @@
 type ThemeMode = "light" | "dark";
 
-const STORAGE_KEY = "preventivoai-theme";
+const STORAGE_KEY = "previcloud-theme";
 
 export function getThemeMode(): ThemeMode {
   const raw = localStorage.getItem(STORAGE_KEY);

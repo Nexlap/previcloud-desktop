@@ -1,4 +1,4 @@
-import { formatImportoEuro, labelScadenzaRataDaPiano } from "preventivoai-shared";
+import { formatImportoEuro, labelScadenzaRataDaPiano } from "previcloud-shared";
 import type { RataAbbonamento } from "../../lib/types";
 import ModalShell from "../ModalShell";
 
@@ -10,7 +10,7 @@ function FieldInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <input
       {...props}
-      className="w-full rounded-xl border border-black/10 bg-brand-bg px-3 py-2.5 text-sm text-brand-navy outline-none focus:border-brand-teal"
+      className="w-full rounded-xl border border-edge bg-brand-bg px-3 py-2.5 text-sm text-brand-navy outline-none transition focus:border-brand-teal"
     />
   );
 }
@@ -88,11 +88,11 @@ export default function PianoRateModals({
             type="button"
             onClick={onSalvaModificaImporto}
             disabled={salvaImportoLoading}
-            className="w-full rounded-xl bg-brand-navy py-3 text-sm font-semibold text-white disabled:opacity-40"
+            className="w-full rounded-xl bg-brand-navy py-3 text-sm font-semibold text-white transition hover:bg-brand-navy/90 active:scale-[0.99] disabled:opacity-40"
           >
             {salvaImportoLoading ? "Salvataggio..." : "Salva"}
           </button>
-          <button type="button" onClick={onCloseModificaImporto} className="w-full py-2 text-sm text-brand-navy/50">
+          <button type="button" onClick={onCloseModificaImporto} className="w-full py-2 text-sm text-brand-navy/50 transition hover:text-brand-navy">
             Annulla
           </button>
         </ModalShell>
@@ -131,16 +131,16 @@ export default function PianoRateModals({
                       <input
                         value={bozzaImporti[rata.id] ?? ""}
                         onChange={(e) => onChangeBozzaImporto(rata.id, e.target.value)}
-                        className={`w-24 rounded-lg border px-2 py-1.5 text-right text-sm font-semibold ${
-                          pinnata ? "border-brand-teal bg-emerald-50" : "border-black/10 bg-brand-bg"
+                        className={`w-24 rounded-lg border px-2 py-1.5 text-right text-sm font-semibold transition ${
+                          pinnata ? "border-brand-teal bg-emerald-50" : "border-edge bg-brand-bg"
                         }`}
                       />
                       <button
                         type="button"
                         disabled={bloccataAcconto}
                         onClick={() => onToggleRataPin(rata.id, bloccataAcconto)}
-                        className={`min-w-[52px] rounded-lg border px-2 py-1.5 text-[11px] font-semibold ${
-                          pinnata ? "border-brand-teal bg-emerald-50 text-brand-teal" : "border-black/10 text-brand-navy/40"
+                        className={`min-w-[52px] rounded-lg border px-2 py-1.5 text-[11px] font-semibold transition ${
+                          pinnata ? "border-brand-teal bg-emerald-50 text-brand-teal-ink" : "border-edge text-brand-navy/40"
                         }`}
                       >
                         {bloccataAcconto ? "Acconto" : pinnata ? "Fissa" : "Libera"}
@@ -151,14 +151,14 @@ export default function PianoRateModals({
               );
             })}
           </div>
-          <p className={`text-center text-sm font-semibold ${bozzaSommaValida && bozzaImportiValidi ? "text-brand-teal" : "text-red-500"}`}>
+          <p className={`text-center text-sm font-semibold ${bozzaSommaValida && bozzaImportiValidi ? "text-brand-teal-ink" : "text-red-500"}`}>
             Somma: €{formatImportoEuro(sommaBozzaTotale, 2)} / €{formatImportoEuro(targetImportoPiano, 2)}
           </p>
           <button
             type="button"
             onClick={onRicalcolaRateLibere}
             disabled={rateLibereCount === 0}
-            className="w-full rounded-xl border border-brand-teal bg-emerald-50 py-2.5 text-sm font-semibold text-brand-teal disabled:opacity-40"
+            className="w-full rounded-xl border border-brand-teal bg-emerald-50 py-2.5 text-sm font-semibold text-brand-teal-ink transition hover:bg-emerald-100 active:scale-[0.99] disabled:opacity-40"
           >
             Ricalcola rate libere
           </button>
@@ -166,11 +166,11 @@ export default function PianoRateModals({
             type="button"
             onClick={onSalvaPersonalizzaRate}
             disabled={salvaPersonalizzaLoading || !bozzaSommaValida || !bozzaImportiValidi}
-            className="w-full rounded-xl bg-brand-navy py-3 text-sm font-semibold text-white disabled:opacity-40"
+            className="w-full rounded-xl bg-brand-navy py-3 text-sm font-semibold text-white transition hover:bg-brand-navy/90 active:scale-[0.99] disabled:opacity-40"
           >
             {salvaPersonalizzaLoading ? "Salvataggio..." : "Salva rate"}
           </button>
-          <button type="button" onClick={onClosePersonalizzaRate} className="w-full py-2 text-sm text-brand-navy/50">
+          <button type="button" onClick={onClosePersonalizzaRate} className="w-full py-2 text-sm text-brand-navy/50 transition hover:text-brand-navy">
             Annulla
           </button>
         </ModalShell>

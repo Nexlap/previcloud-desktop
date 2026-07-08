@@ -1,9 +1,14 @@
+import type { PostgrestError } from "@supabase/supabase-js";
 import { supabase } from "./supabase";
-import { mergeMessaggiCliente, type MessaggiClienteTemplates } from "preventivoai-shared";
+import { mergeMessaggiCliente, type MessaggiClienteTemplates } from "previcloud-shared";
 import type { Json } from "./database.types";
 import { invalidaCacheMessaggiCliente } from "./messaggiCliente";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
+// Codice Postgrest per "nessuna riga trovata" (.single() su 0 risultati) — è l'unico
+// errore che rappresenta legittimamente un profilo non ancora creato, non un fetch fallito.
+const NESSUNA_RIGA_TROVATA = "PGRST116";
 
 export interface SettingsForm {
   nome_azienda: string;
@@ -51,15 +56,21 @@ function normalizzaFormProfilo(data: SettingsProfile): SettingsForm {
   };
 }
 
-export async function caricaSettingsData(): Promise<{ form: SettingsForm; logoUrl: string } | null> {
+export async function caricaSettingsData(): Promise<{ form: SettingsForm | null; logoUrl: string; error: PostgrestError | null } | null> {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
 
-  const { data: profile } = await supabase.from("profiles").select("*").eq("id", user.id).single();
+  const { data: profile, error } = await supabase.from("profiles").select("*").eq("id", user.id).single();
+
+  // Un profilo mancante (PGRST116) è legittimo per un utente nuovo; qualsiasi altro
+  // errore (rete, RLS, timeout) va segnalato invece di restituire i default in silenzio,
+  // altrimenti i chiamanti rischiano di trattare i default come dati reali e salvarli.
+  const fetchError = error && error.code !== NESSUNA_RIGA_TROVATA ? error : null;
 
   return {
-    form: normalizzaFormProfilo(profile ?? {}),
+    form: fetchError ? null : normalizzaFormProfilo(profile ?? {}),
     logoUrl: profile?.logo_url || "",
+    error: fetchError,
   };
 }
 

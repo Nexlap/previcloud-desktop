@@ -26,7 +26,7 @@ export function AggiornamentoObbligatorioModal({
       </p>
       <button
         type="button"
-        onClick={() => void openUrl('https://preventivoai-web.vercel.app/scarica')}
+        onClick={() => void openUrl('https://previcloud.it/scarica')}
         style={{ marginTop: 16, color: '#0E9F8E', textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer', fontSize: '15px' }}
       >
         Scarica l'ultima versione

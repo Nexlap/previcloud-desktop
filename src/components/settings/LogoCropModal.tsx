@@ -136,10 +136,10 @@ export default function LogoCropModal({ imageSrc, mimeType, onClose, onUseFull, 
     <ModalShell
       title={step === "preview" ? "Anteprima logo" : "Ritaglia logo"}
       onClose={onClose}
-      panelClassName="w-full max-w-2xl rounded-2xl bg-white p-6 shadow-lg"
+      panelClassName="w-full max-w-2xl rounded-2xl border border-edge-faint bg-surface p-6 shadow-xl shadow-brand-navy/10"
       contentClassName="mt-4 space-y-4"
     >
-      <div className="flex justify-center rounded-xl border border-black/10 bg-brand-bg p-2">
+      <div className="flex justify-center rounded-xl border border-edge bg-brand-bg p-2">
         <div className="relative" style={{ width: displaySize.width || undefined, height: displaySize.height || undefined }}>
           <img
             ref={imageRef}
@@ -192,7 +192,7 @@ export default function LogoCropModal({ imageSrc, mimeType, onClose, onUseFull, 
         <button
           type="button"
           onClick={onClose}
-          className="flex-1 rounded-xl border border-black/10 py-2.5 text-sm font-medium text-brand-navy hover:bg-brand-bg"
+          className="flex-1 rounded-xl border border-edge py-2.5 text-sm font-medium text-brand-navy transition hover:bg-brand-bg"
         >
           Annulla
         </button>
@@ -201,14 +201,14 @@ export default function LogoCropModal({ imageSrc, mimeType, onClose, onUseFull, 
             <button
               type="button"
               onClick={onUseFull}
-              className="flex-1 rounded-xl border border-black/10 py-2.5 text-sm font-medium text-brand-navy hover:bg-brand-bg"
+              className="flex-1 rounded-xl border border-edge py-2.5 text-sm font-medium text-brand-navy transition hover:bg-brand-bg"
             >
               Usa intera
             </button>
             <button
               type="button"
               onClick={avviaRitaglio}
-              className="flex-1 rounded-xl bg-brand-navy py-2.5 text-sm font-semibold text-white hover:bg-brand-navy/90"
+              className="flex-1 rounded-xl bg-brand-navy py-2.5 text-sm font-semibold text-white transition hover:bg-brand-navy/90 active:scale-[0.98]"
             >
               Ritaglia
             </button>
@@ -218,7 +218,7 @@ export default function LogoCropModal({ imageSrc, mimeType, onClose, onUseFull, 
             type="button"
             onClick={() => void applicaRitaglio()}
             disabled={applicando}
-            className="flex-1 rounded-xl bg-brand-teal py-2.5 text-sm font-semibold text-white disabled:opacity-60"
+            className="flex-1 rounded-xl bg-brand-teal py-2.5 text-sm font-semibold text-white shadow-sm shadow-brand-teal/25 transition hover:bg-brand-teal/90 active:scale-[0.98] disabled:opacity-60"
           >
             {applicando ? "Applicazione..." : "Applica ritaglio"}
           </button>

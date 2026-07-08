@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import { CheckCircle } from "@phosphor-icons/react";
 import { apriPdfDaBase64, apriPdfLocale, apriPdfOnline, condividiPdf, isDesktopApp, mostraPdfInCartella, ottieniUrlPdfPreventivo } from "../lib/pdf";
 import { caricaContattiCliente } from "../lib/firma";
 import { caricaHeaderProfilo } from "../lib/greeting";
-import { buildMessaggioCondividiPdf } from "preventivoai-shared";
+import { buildMessaggioCondividiPdf } from "previcloud-shared";
 import { caricaMessaggiCliente } from "../lib/messaggiCliente";
 import { aggiornaTitoloPreventivo } from "../lib/preventivo";
 import InviaFirmaModal from "./firma/InviaFirmaModal";
@@ -177,23 +178,14 @@ export default function PreventivoSuccessModal({ open, dettaglio, azioni, invio,
         onMouseUp={handleBackdropMouseUp}
       >
         <div
-          className="w-full max-w-md rounded-2xl bg-white p-8 shadow-2xl"
+          className="w-full max-w-md rounded-2xl border border-edge-faint bg-surface p-8 shadow-2xl shadow-brand-navy/15"
           onClick={(e) => e.stopPropagation()}
           role="dialog"
           aria-modal="true"
           aria-labelledby="preventivo-success-title"
         >
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-teal/15">
-            <svg
-              className="h-8 w-8 text-brand-teal"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2.5}
-              aria-hidden
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-            </svg>
+            <CheckCircle size={32} weight="fill" className="text-brand-teal-ink" />
           </div>
 
           <h2 id="preventivo-success-title" className="mt-5 text-center text-xl font-bold text-brand-navy">
@@ -223,7 +215,7 @@ export default function PreventivoSuccessModal({ open, dettaglio, azioni, invio,
                   }, "")
                 }
                 placeholder="es. PRV-2026-0153"
-                className="mt-2 w-full rounded-xl border border-black/10 px-3 py-2.5 font-mono text-sm outline-none focus:border-brand-teal"
+                className="mt-2 w-full rounded-xl border border-edge px-3 py-2.5 font-mono text-sm outline-none transition focus:border-brand-teal"
               />
             </div>
           )}
@@ -247,7 +239,7 @@ export default function PreventivoSuccessModal({ open, dettaglio, azioni, invio,
             <button
               type="button"
               onClick={handlePressFirma}
-              className={`w-full rounded-xl px-4 py-3 text-left ${puoInviareFirma ? "bg-brand-teal" : "cursor-pointer bg-brand-teal/55"}`}
+              className={`w-full rounded-xl px-4 py-3 text-left shadow-sm transition active:scale-[0.99] ${puoInviareFirma ? "bg-brand-teal shadow-brand-teal/25 hover:bg-brand-teal/90" : "cursor-pointer bg-brand-teal/55"}`}
             >
               <span className="block text-sm font-semibold text-white">Invia link firma</span>
               <span className="mt-0.5 block text-xs text-white/85">
@@ -292,7 +284,7 @@ export default function PreventivoSuccessModal({ open, dettaglio, azioni, invio,
                     return "Messaggio copiato negli appunti. Allega il PDF dalla condivisione.";
                   }, "")
                 }
-                className="w-full rounded-xl border border-black/10 px-4 py-3 text-left hover:bg-brand-bg"
+                className="w-full rounded-xl border border-edge px-4 py-3 text-left transition hover:bg-brand-bg"
               >
                 <span className="block text-sm font-semibold text-brand-navy">Condividi solo PDF</span>
                 <span className="mt-0.5 block text-xs text-brand-navy/55">
@@ -303,9 +295,9 @@ export default function PreventivoSuccessModal({ open, dettaglio, azioni, invio,
             )}
           </div>
 
-          {feedback && <p className="mt-3 text-center text-sm font-medium text-brand-teal">{feedback}</p>}
+          {feedback && <p className="mt-3 text-center text-sm font-medium text-brand-teal-ink">{feedback}</p>}
 
-          <div className="mt-5 grid gap-2 border-t border-black/5 pt-4">
+          <div className="mt-5 grid gap-2 border-t border-edge-faint pt-4">
             {haLocale && desktop && (
               <button
                 type="button"
@@ -315,7 +307,7 @@ export default function PreventivoSuccessModal({ open, dettaglio, azioni, invio,
                     "Cartella aperta in Esplora file.",
                   )
                 }
-                className="w-full rounded-xl border border-black/10 py-2.5 text-sm font-semibold text-brand-navy hover:bg-brand-bg"
+                className="w-full rounded-xl border border-edge py-2.5 text-sm font-semibold text-brand-navy transition hover:bg-brand-bg"
               >
                 Mostra nella cartella
               </button>
@@ -329,7 +321,7 @@ export default function PreventivoSuccessModal({ open, dettaglio, azioni, invio,
                     await apriPdfGenerato();
                   }, "PDF aperto.")
                 }
-                className="w-full rounded-xl border border-black/10 py-2.5 text-sm font-semibold text-brand-navy hover:bg-brand-bg"
+                className="w-full rounded-xl border border-edge py-2.5 text-sm font-semibold text-brand-navy transition hover:bg-brand-bg"
               >
                 Apri PDF
               </button>
@@ -338,7 +330,7 @@ export default function PreventivoSuccessModal({ open, dettaglio, azioni, invio,
             <button
               type="button"
               onClick={() => void chiudiModal()}
-              className="w-full rounded-xl py-2.5 text-sm font-semibold text-brand-navy/60 hover:text-brand-navy"
+              className="w-full rounded-xl py-2.5 text-sm font-semibold text-brand-navy/60 transition hover:text-brand-navy"
             >
               Chiudi
             </button>

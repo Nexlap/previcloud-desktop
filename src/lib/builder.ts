@@ -1,7 +1,7 @@
-import { formatImportoEuroVisuale } from "preventivoai-shared";
+import { formatImportoEuroVisuale } from "previcloud-shared";
 
-export { calcolaTotaleTrasferte, calcolaTotaleVoci } from "preventivoai-shared";
-export { generaTestoPreventivoBuilder } from "preventivoai-shared";
+export { calcolaTotaleTrasferte, calcolaTotaleVoci } from "previcloud-shared";
+export { generaTestoPreventivoBuilder } from "previcloud-shared";
 
 export interface VoceBuilder {
   id: string;

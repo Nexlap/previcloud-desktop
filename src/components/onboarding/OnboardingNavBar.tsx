@@ -42,7 +42,7 @@ export default function OnboardingNavBar({
 
   return (
 
-    <div className="fixed bottom-0 left-0 right-0 z-30 border-t border-black/10 bg-white shadow-[0_-4px_12px_rgba(0,0,0,0.06)]">
+    <div className="fixed bottom-0 left-0 right-0 z-30 border-t border-edge bg-surface shadow-[0_-4px_12px_rgba(13,27,42,0.06)]">
 
       <div className="mx-auto flex max-w-6xl items-center gap-3 px-6 py-4">
 
@@ -54,7 +54,7 @@ export default function OnboardingNavBar({
 
             onClick={onBack}
 
-            className="shrink-0 rounded-xl border border-black/10 px-6 py-3 text-sm font-semibold text-brand-navy/70 hover:bg-brand-bg"
+            className="shrink-0 rounded-xl border border-edge px-6 py-3 text-sm font-semibold text-brand-navy/70 transition hover:bg-brand-bg"
 
           >
 
@@ -74,7 +74,7 @@ export default function OnboardingNavBar({
 
             disabled={loading}
 
-            className="shrink-0 rounded-xl border border-brand-navy/20 px-6 py-3 text-sm font-semibold text-brand-navy hover:bg-brand-bg disabled:opacity-50"
+            className="shrink-0 rounded-xl border border-brand-navy/20 px-6 py-3 text-sm font-semibold text-brand-navy transition hover:bg-brand-bg disabled:opacity-50"
 
           >
 
@@ -92,7 +92,7 @@ export default function OnboardingNavBar({
 
           onClick={onNext}
 
-          className="flex-1 rounded-xl bg-brand-teal py-3 text-sm font-semibold text-white hover:bg-brand-teal/90 disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex-1 rounded-xl bg-brand-teal py-3 text-sm font-semibold text-white shadow-sm shadow-brand-teal/25 transition hover:bg-brand-teal/90 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50"
 
         >
 

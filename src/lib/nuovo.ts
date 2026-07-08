@@ -1,7 +1,7 @@
 import { supabase } from "./supabase";
 import type { TablesUpdate } from "./database.types";
-import { importoDaTesto } from "preventivoai-shared";
-import { erroreColonnaDeletedAt } from "preventivoai-shared";
+import { importoDaTesto } from "previcloud-shared";
+import { erroreColonnaDeletedAt } from "previcloud-shared";
 
 export async function caricaClientiPerSelezione() {
   const { data: { user } } = await supabase.auth.getUser();

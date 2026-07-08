@@ -2,7 +2,7 @@ import { supabase } from "./supabase";
 import { caricaCollegamentiPianoPreventivi, type CollegamentiPianoMap } from "./collegamentiPiano";
 import { calcolaIncassatoTotale } from "./incassi";
 import { getNomeBreve } from "./greeting";
-import { queryConFiltroCestino } from "preventivoai-shared";
+import { queryConFiltroCestino } from "previcloud-shared";
 import type { Preventivo } from "./types";
 
 type HomeInsightKind = "alert" | "success" | "info" | "action";
@@ -215,7 +215,10 @@ function generaHomeInsights(input: {
       id: "preventivi-seguire",
       kind: "action",
       icon: "📬",
-      title: `${input.preventiviDaSeguire} preventivi da ricontattare`,
+      title:
+        input.preventiviDaSeguire === 1
+          ? "1 preventivo da ricontattare"
+          : `${input.preventiviDaSeguire} preventivi da ricontattare`,
       description: "Inviati da più di 7 giorni senza risposta. Un messaggio ora può chiudere il lavoro.",
       link: "/storico",
       linkLabel: "Apri storico",

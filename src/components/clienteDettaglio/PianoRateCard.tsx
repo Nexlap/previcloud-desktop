@@ -2,10 +2,10 @@ import { useEffect, useMemo, useState } from "react";
 import { messaggioEliminaPiano, messaggioEliminaRata } from "../../lib/confermeElimina";
 import { useConfirmDialog } from "../../lib/hooks/useConfirmDialog";
 import { sessioneClienteDettaglio } from "../../lib/clienteDettaglio";
-import { formatImportoEuro, generaLinkPaypalMe, generaTestoReminderPagamento, giornoScadenzaEffettivo, labelScadenzaRataDaPiano, parseImportoEuro, ricalcolaImportiRateLibere } from "preventivoai-shared";
+import { formatImportoEuro, generaLinkPaypalMe, generaTestoReminderPagamento, giornoScadenzaEffettivo, labelScadenzaRataDaPiano, parseImportoEuro, ricalcolaImportiRateLibere } from "previcloud-shared";
 import { creaLinkPagamentoRata } from "../../lib/pdf";
 import type { MetodoPagamento } from "../../lib/pagamenti";
-import { titoloHeaderPiano, analizzaStatoPiano } from "preventivoai-shared";
+import { titoloHeaderPiano, analizzaStatoPiano } from "previcloud-shared";
 import type { Abbonamento, PreventivoMadre, RataAbbonamento } from "../../lib/types";
 import PianoStatoBadge from "./PianoStatoBadge";
 import PianoEspanso from "./PianoEspanso";
@@ -276,15 +276,15 @@ export default function PianoRateCard({
   return (
     <>
     <div
-      className={`rounded-2xl border ${
-        pianoSelezionato ? "border-brand-teal bg-emerald-50" : analisi.concluso ? "border-emerald-200 bg-emerald-50/50" : "border-black/10 bg-white"
+      className={`rounded-2xl border transition ${
+        pianoSelezionato ? "border-brand-teal bg-emerald-50" : analisi.concluso ? "border-emerald-200 bg-emerald-50/50" : "border-edge-faint bg-surface"
       }${cardEspansa ? " border-l-[3px] border-l-brand-teal" : ""}`}
     >
       <div className="flex w-full items-center gap-3 px-4 py-4">
         <button type="button" onClick={togglePianoEspanso} className="flex min-w-0 flex-1 items-center gap-3 text-left">
           {selezionePianoAttiva ? (
             <span className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 text-xs font-bold ${
-              pianoSelezionato ? "border-brand-teal bg-brand-teal text-white" : "border-black/20"
+              pianoSelezionato ? "border-brand-teal bg-brand-teal text-white" : "border-edge"
             }`}>
               {pianoSelezionato ? "✓" : ""}
             </span>
@@ -307,7 +307,7 @@ export default function PianoRateCard({
               </p>
             ) : null}
             {messaggioSuccesso ? (
-              <p className="mt-1 text-sm text-brand-teal">{messaggioSuccesso}</p>
+              <p className="mt-1 text-sm text-brand-teal-ink">{messaggioSuccesso}</p>
             ) : null}
           </div>
           {!selezionePianoAttiva ? (
@@ -329,7 +329,7 @@ export default function PianoRateCard({
       </div>
 
       {cardEspansa ? (
-        <div className="border-t border-black/5">
+        <div className="border-t border-edge-faint">
           <PianoEspanso
           abbonamento={abbonamento}
           rate={rate}

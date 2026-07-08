@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 import { calcolaTotaleVoci, type VoceBuilder } from "../lib/builder";
-import { formatImportoEuroVisuale, parseImportoEuro } from "preventivoai-shared";
+import { formatImportoEuroVisuale, parseImportoEuro } from "previcloud-shared";
 import type { ProfiloFiscale, RisultatoFiscale } from "../lib/types";
 import ToggleSwitch from "./ToggleSwitch";
 
@@ -44,14 +44,14 @@ export default function AnalisiFiscaleCard({
   const totaleAttuale = () => calcolaTotaleVoci(voci);
 
   return (
-    <div className="mt-8 rounded-2xl border border-black/10 bg-white p-5 shadow-sm">
+    <div className="mt-8 rounded-2xl border border-edge-faint bg-surface p-5 shadow-sm shadow-brand-navy/[0.03]">
       <div className="flex items-center justify-between gap-3">
         <div className="flex min-w-0 flex-1 items-start gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-teal/10 text-sm font-semibold text-brand-teal">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-teal/10 text-sm font-semibold text-brand-teal-ink">
             =
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-base font-bold text-brand-teal">Analisi fiscale</p>
+            <p className="text-base font-bold text-brand-teal-ink">Analisi fiscale</p>
             <p className="mt-0.5 text-xs text-brand-navy/50">Stima netto, imposte e lordo necessario</p>
           </div>
         </div>
@@ -110,7 +110,7 @@ export default function AnalisiFiscaleCard({
                 setLordoCalcolato(null);
               }}
               placeholder="es. 2000"
-              className="min-w-[120px] flex-1 rounded-lg border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+              className="min-w-[120px] flex-1 rounded-lg border border-edge px-3 py-2 text-sm outline-none transition focus:border-brand-teal"
             />
             <button
               type="button"
@@ -122,7 +122,7 @@ export default function AnalisiFiscaleCard({
                 }
                 setLordoCalcolato(calcolaLordoDaNetto(netto));
               }}
-              className="rounded-lg bg-brand-navy px-4 py-2 text-sm font-medium text-white"
+              className="rounded-lg bg-brand-navy px-4 py-2 text-sm font-medium text-white transition hover:bg-brand-navy/90 active:scale-[0.98]"
             >
               Calcola
             </button>
@@ -130,7 +130,7 @@ export default function AnalisiFiscaleCard({
 
           {lordoCalcolato !== null && voci.length > 0 && (
             <div className="mt-3 space-y-2 rounded-xl bg-brand-teal/5 p-3">
-              <p className="text-sm font-medium text-brand-teal">
+              <p className="text-sm font-medium text-brand-teal-ink">
                 Lordo da fatturare: €{fmt(lordoCalcolato)}
               </p>
               <button
@@ -152,7 +152,7 @@ export default function AnalisiFiscaleCard({
                   setLordoCalcolato(null);
                   setNettoDesiderato("");
                 }}
-                className="w-full rounded-lg bg-brand-teal px-4 py-2 text-sm font-medium text-white"
+                className="w-full rounded-lg bg-brand-teal px-4 py-2 text-sm font-medium text-white transition hover:bg-brand-teal/90 active:scale-[0.98]"
               >
                 Applica al preventivo
               </button>
@@ -172,14 +172,14 @@ export default function AnalisiFiscaleCard({
                 setLordoCalcolato(null);
                 setNettoDesiderato("");
               }}
-              className="mt-2 w-full text-center text-sm text-brand-navy/50 hover:text-brand-navy"
+              className="mt-2 w-full text-center text-sm text-brand-navy/50 transition hover:text-brand-navy"
             >
               {`Annulla ultimo calcolo (${storicoVoci.length} step)`}
             </button>
           )}
 
           {lordoCalcolato !== null && voci.length === 0 && (
-            <p className="mt-2 text-sm text-brand-teal">
+            <p className="mt-2 text-sm text-brand-teal-ink">
               {`Lordo da fatturare: €${fmt(lordoCalcolato)} — aggiungi servizi per applicare`}
             </p>
           )}
@@ -208,7 +208,7 @@ function Riga({
       <span
         className={
           netto
-            ? "text-base font-bold text-brand-teal"
+            ? "text-base font-bold text-brand-teal-ink"
             : negativo
               ? "text-red-500"
               : bold
@@ -223,5 +223,5 @@ function Riga({
 }
 
 function Separatore() {
-  return <div className="my-2 border-t border-black/5" />;
+  return <div className="my-2 border-t border-edge-faint" />;
 }

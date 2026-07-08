@@ -1,4 +1,4 @@
-import { formatDataBreve, formatOraBreve } from "preventivoai-shared";
+import { formatDataBreve, formatOraBreve } from "previcloud-shared";
 import { supabase } from "./supabase";
 import { sessionToken } from "./settings";
 import { trackEvento } from "./track";
@@ -24,7 +24,7 @@ export type PreventivoInvio = {
 }
 
 const FIRMA_WEB_BASE_URL = (
-  import.meta.env.VITE_FIRMA_WEB_BASE_URL || 'https://preventivoai-web.vercel.app'
+  import.meta.env.VITE_FIRMA_WEB_BASE_URL || 'https://previcloud.it'
 ).replace(/\/$/, '')
 
 type InvioFirmaUrlResponse = {
@@ -212,7 +212,7 @@ export {
   buildMessaggioFirmaReminder,
   buildOggettoFirmaInvio,
   buildOggettoFirmaReminder,
-} from "preventivoai-shared";
+} from "previcloud-shared";
 export { caricaMessaggiCliente } from "./messaggiCliente";
 
 export async function apriWhatsAppFirma(telefono: string | null | undefined, testo: string) {

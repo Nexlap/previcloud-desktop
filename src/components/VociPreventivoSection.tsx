@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { DotsSixVertical, X } from "@phosphor-icons/react";
 import type { VoceBuilder } from "../lib/builder";
 import { isVoceCustom } from "../lib/builder";
 import { PLACEHOLDER } from "../lib/placeholders";
@@ -27,11 +28,11 @@ function ManigliaTrascina({ onStart }: { onStart: () => void }) {
         e.preventDefault();
         onStart();
       }}
-      className="flex h-9 w-9 shrink-0 cursor-grab items-center justify-center rounded-full border border-black/10 bg-white text-brand-navy/35 active:cursor-grabbing"
+      className="flex h-9 w-9 shrink-0 cursor-grab items-center justify-center rounded-full border border-edge bg-surface text-brand-navy/35 transition active:cursor-grabbing active:scale-95"
       title="Trascina per riordinare"
       aria-label="Trascina per riordinare"
     >
-      ⋮⋮
+      <DotsSixVertical size={16} weight="bold" />
     </button>
   );
 }
@@ -104,9 +105,9 @@ export default function VociPreventivoSection({
   }, [trascinato]);
 
   return (
-    <div className="mt-8 space-y-3 rounded-2xl border border-black/10 bg-white p-4 shadow-sm">
+    <div className="mt-8 space-y-3 rounded-2xl border border-edge-faint bg-surface p-4 shadow-sm shadow-brand-navy/[0.03]">
       <div>
-        <p className="text-base font-bold text-brand-teal">Voci nel preventivo</p>
+        <p className="text-base font-bold text-brand-teal-ink">Voci nel preventivo</p>
         {voci.length > 1 && (
           <p className="mt-0.5 text-xs text-brand-navy/50">Tieni premuto il controllo a sinistra e trascina per riordinare</p>
         )}
@@ -123,7 +124,7 @@ export default function VociPreventivoSection({
             key={v.id}
             data-voce-index={index}
             className={`rounded-2xl border bg-brand-bg/40 p-4 transition ${
-              evidenziato ? "border-brand-teal ring-2 ring-brand-teal/20" : "border-black/10"
+              evidenziato ? "border-brand-teal ring-2 ring-brand-teal/20" : "border-edge"
             } ${inTrascinamento ? "opacity-40" : ""}`}
           >
             <div className="flex items-start gap-3">
@@ -136,16 +137,16 @@ export default function VociPreventivoSection({
                       value={v.nome}
                       onChange={(e) => aggiorna("nome", e.target.value)}
                       placeholder={PLACEHOLDER.nomeServizio}
-                      className="mt-1 w-full rounded-xl border border-black/10 bg-brand-bg px-3 py-2 text-sm font-semibold text-brand-navy outline-none focus:border-brand-teal"
+                      className="mt-1 w-full rounded-xl border border-edge bg-brand-bg px-3 py-2 text-sm font-semibold text-brand-navy outline-none transition focus:border-brand-teal"
                     />
                   </div>
                   <button
                     type="button"
                     onClick={() => onRimuoviVoce(v.id)}
-                    className="mt-5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-black/10 text-brand-navy/40 hover:border-red-200 hover:bg-red-50 hover:text-red-600"
+                    className="mt-5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-edge text-brand-navy/40 transition hover:border-red-200 hover:bg-red-50 hover:text-red-600"
                     aria-label="Rimuovi voce"
                   >
-                    ×
+                    <X size={16} weight="bold" />
                   </button>
                 </div>
 
@@ -155,7 +156,7 @@ export default function VociPreventivoSection({
                     value={v.descrizione}
                     onChange={(e) => aggiorna("descrizione", e.target.value)}
                     placeholder={PLACEHOLDER.descrizioneServizio}
-                    className="mt-1 w-full rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+                    className="mt-1 w-full rounded-xl border border-edge px-3 py-2 text-sm outline-none transition focus:border-brand-teal"
                   />
                 </div>
 
@@ -166,7 +167,7 @@ export default function VociPreventivoSection({
                       value={v.quantita}
                       onChange={(e) => aggiorna("quantita", e.target.value)}
                       placeholder={PLACEHOLDER.quantita}
-                      className="mt-1 w-full rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+                      className="mt-1 w-full rounded-xl border border-edge px-3 py-2 text-sm outline-none transition focus:border-brand-teal"
                     />
                   </label>
                   <label>
@@ -174,7 +175,7 @@ export default function VociPreventivoSection({
                     <select
                       value={v.unita}
                       onChange={(e) => aggiorna("unita", e.target.value)}
-                      className="mt-1 w-full rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+                      className="mt-1 w-full rounded-xl border border-edge px-3 py-2 text-sm outline-none transition focus:border-brand-teal"
                     >
                       {UNITA.map((u) => (
                         <option key={u} value={u}>
@@ -189,13 +190,13 @@ export default function VociPreventivoSection({
                       value={v.costo}
                       onChange={(e) => aggiorna("costo", e.target.value)}
                       placeholder={PLACEHOLDER.costoServizio}
-                      className="mt-1 w-full rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+                      className="mt-1 w-full rounded-xl border border-edge px-3 py-2 text-sm outline-none transition focus:border-brand-teal"
                     />
                   </label>
                 </div>
 
                 {custom && (
-                  <div className="flex items-center gap-3 rounded-xl border border-black/5 bg-brand-bg px-3 py-2">
+                  <div className="flex items-center gap-3 rounded-xl border border-edge-faint bg-brand-bg px-3 py-2">
                     <ToggleSwitch
                       checked={v.salvaNelListino ?? false}
                       onChange={(salva) => onSalvaNelListinoChange(v.id, salva)}
@@ -218,7 +219,7 @@ export default function VociPreventivoSection({
       <button
         type="button"
         onClick={onAggiungiVoceCustom}
-        className="w-full rounded-xl border border-dashed border-brand-teal px-4 py-3 text-sm font-medium text-brand-teal hover:bg-brand-teal/5"
+        className="w-full rounded-xl border border-dashed border-brand-teal px-4 py-3 text-sm font-medium text-brand-teal-ink transition hover:bg-brand-teal/5"
       >
         + Aggiungi voce personalizzata
       </button>

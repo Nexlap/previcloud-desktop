@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
+import { ArrowLeft, Plus, PencilSimple, Copy, Trash, MagnifyingGlass } from "@phosphor-icons/react";
 import { caricaServizi, creaServizio, eliminaServizi, eliminaServizio, inserisciServizi } from "../lib/listino";
 import type { ServizioDraft } from "../lib/listinoSmart";
 import ListinoSmartPanel from "../components/ListinoSmartPanel";
@@ -12,32 +13,6 @@ import PageContainer from "../components/PageContainer";
 import CheckboxSelezione from "../components/CheckboxSelezione";
 import BarraSelezione from "../components/BarraSelezione";
 import { trackEvento } from "../lib/track";
-
-function IconEdit() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M4 20h4l10.5-10.5a2.1 2.1 0 0 0-3-3L5 17v3Z" />
-      <path strokeLinecap="round" d="m14 7 3 3" />
-    </svg>
-  );
-}
-
-function IconCopy() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4">
-      <rect x="9" y="9" width="11" height="11" rx="2" />
-      <path strokeLinecap="round" d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-    </svg>
-  );
-}
-
-function IconTrash() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M5 7h14M10 11v6M14 11v6M9 7l1-2h4l1 2M7 7l1 13h8l1-13" />
-    </svg>
-  );
-}
 
 export default function ListinoServizi() {
   const [servizi, setServizi] = useState<Servizio[]>([]);
@@ -160,8 +135,9 @@ export default function ListinoServizi() {
 
   return (
     <PageContainer>
-      <Link to="/impostazioni" className="text-sm text-brand-navy/60 hover:text-brand-navy">
-        ← Torna alle impostazioni
+      <Link to="/impostazioni" className="inline-flex items-center gap-1.5 text-sm text-brand-navy/60 transition hover:text-brand-navy">
+        <ArrowLeft size={14} weight="bold" />
+        Torna alle impostazioni
       </Link>
 
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
@@ -169,12 +145,16 @@ export default function ListinoServizi() {
           <h1 className="text-2xl font-semibold text-brand-navy">I miei servizi</h1>
           <p className="mt-1 text-brand-navy/60">Il tuo listino prezzi, da riusare velocemente nei preventivi.</p>
         </div>
-        <button onClick={apriNuovo} className="rounded-lg bg-brand-teal px-4 py-2 text-sm font-medium text-white">
-          + Nuovo servizio
+        <button
+          onClick={apriNuovo}
+          className="inline-flex items-center gap-1.5 rounded-lg bg-brand-teal px-4 py-2 text-sm font-medium text-white shadow-sm shadow-brand-teal/25 transition hover:bg-brand-teal/90 active:scale-[0.98]"
+        >
+          <Plus size={16} weight="bold" />
+          Nuovo servizio
         </button>
       </div>
 
-      <div className="mt-4 rounded-2xl bg-white p-6 shadow-sm">
+      <div className="mt-4 rounded-2xl border border-edge-faint bg-surface p-6 shadow-sm shadow-brand-navy/[0.03]">
         <h2 className="text-sm font-semibold text-brand-navy">Importa servizi</h2>
         <p className="mt-1 text-sm text-brand-navy/60">
           Incolla testo, carica una foto del listino o registra un vocale. L&apos;AI estrae i servizi automaticamente.
@@ -186,7 +166,7 @@ export default function ListinoServizi() {
             onImportServizi={importaServiziSmart}
           />
         </div>
-        {msgImport && <p className="mt-3 text-sm text-brand-teal">{msgImport}</p>}
+        {msgImport && <p className="mt-3 text-sm text-brand-teal-ink">{msgImport}</p>}
       </div>
 
       {loading && <p className="mt-4 text-brand-navy/60">Caricamento...</p>}
@@ -194,10 +174,10 @@ export default function ListinoServizi() {
 
       {!loading && servizi.length > 0 && (
         <div className="mt-6 pb-20">
-          <div className="rounded-2xl bg-white p-4 shadow-sm">
+          <div className="rounded-2xl border border-edge-faint bg-surface p-4 shadow-sm shadow-brand-navy/[0.03]">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <h2 className="text-base font-bold text-brand-teal">Servizi salvati</h2>
+                <h2 className="text-base font-bold text-brand-teal-ink">Servizi salvati</h2>
                 <p className="mt-0.5 text-sm text-brand-navy/55">
                   {servizi.length} {servizi.length === 1 ? "voce nel listino" : "voci nel listino"}
                 </p>
@@ -212,13 +192,20 @@ export default function ListinoServizi() {
                   />
                   Seleziona tutti
                 </label>
-                <input
-                  type="search"
-                  value={ricerca}
-                  onChange={(e) => setRicerca(e.target.value)}
-                  placeholder="Cerca per nome o descrizione"
-                  className="w-full rounded-xl border border-black/10 bg-brand-bg px-3 py-2 text-sm outline-none focus:border-brand-teal sm:w-72"
-                />
+                <div className="relative w-full sm:w-72">
+                  <MagnifyingGlass
+                    size={16}
+                    weight="regular"
+                    className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-brand-navy/35"
+                  />
+                  <input
+                    type="search"
+                    value={ricerca}
+                    onChange={(e) => setRicerca(e.target.value)}
+                    placeholder="Cerca per nome o descrizione"
+                    className="w-full rounded-xl border border-edge bg-brand-bg py-2 pr-3 pl-9 text-sm outline-none transition focus:border-brand-teal sm:w-72"
+                  />
+                </div>
               </div>
             </div>
 
@@ -231,7 +218,7 @@ export default function ListinoServizi() {
                     className={`flex items-center gap-3 rounded-2xl border p-4 transition ${
                       selezionato
                         ? "border-brand-teal bg-brand-teal/5"
-                        : "border-black/10 bg-white hover:border-brand-teal/30"
+                        : "border-edge-faint bg-surface hover:border-brand-teal/30 hover:shadow-sm"
                     }`}
                   >
                     <CheckboxSelezione
@@ -247,7 +234,7 @@ export default function ListinoServizi() {
                       </p>
                     </div>
 
-                    <span className="hidden shrink-0 rounded-full border border-black/10 bg-brand-bg px-2.5 py-1 text-xs font-semibold text-brand-navy/65 sm:inline-flex">
+                    <span className="hidden shrink-0 rounded-full border border-edge bg-brand-bg px-2.5 py-1 text-xs font-semibold text-brand-navy/65 sm:inline-flex">
                       {s.unita}
                     </span>
 
@@ -259,29 +246,29 @@ export default function ListinoServizi() {
                       <button
                         type="button"
                         onClick={() => apriModifica(s)}
-                        className="flex h-9 w-9 items-center justify-center rounded-full text-brand-navy/45 hover:bg-brand-teal/10 hover:text-brand-teal"
+                        className="flex h-9 w-9 items-center justify-center rounded-full text-brand-navy/45 transition hover:bg-brand-teal/10 hover:text-brand-teal-ink"
                         aria-label={`Modifica ${s.nome}`}
                         title="Modifica"
                       >
-                        <IconEdit />
+                        <PencilSimple size={16} weight="regular" />
                       </button>
                       <button
                         type="button"
                         onClick={() => void duplicaServizio(s)}
-                        className="flex h-9 w-9 items-center justify-center rounded-full text-brand-navy/45 hover:bg-brand-teal/10 hover:text-brand-teal"
+                        className="flex h-9 w-9 items-center justify-center rounded-full text-brand-navy/45 transition hover:bg-brand-teal/10 hover:text-brand-teal-ink"
                         aria-label={`Duplica ${s.nome}`}
                         title="Duplica"
                       >
-                        <IconCopy />
+                        <Copy size={16} weight="regular" />
                       </button>
                       <button
                         type="button"
                         onClick={() => eliminaSingolo(s.id)}
-                        className="flex h-9 w-9 items-center justify-center rounded-full text-brand-navy/35 hover:bg-red-50 hover:text-red-600"
+                        className="flex h-9 w-9 items-center justify-center rounded-full text-brand-navy/35 transition hover:bg-red-50 hover:text-red-600"
                         aria-label={`Elimina ${s.nome}`}
                         title="Elimina"
                       >
-                        <IconTrash />
+                        <Trash size={16} weight="regular" />
                       </button>
                     </div>
                   </div>
@@ -289,7 +276,7 @@ export default function ListinoServizi() {
               })}
 
               {serviziFiltrati.length === 0 && (
-                <p className="rounded-2xl border border-dashed border-black/10 bg-brand-bg p-6 text-center text-sm text-brand-navy/55">
+                <p className="rounded-2xl border border-dashed border-edge bg-brand-bg p-6 text-center text-sm text-brand-navy/55">
                   Nessun servizio trovato.
                 </p>
               )}

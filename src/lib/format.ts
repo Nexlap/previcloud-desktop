@@ -4,7 +4,7 @@ import {
   formatImportoEuroVisuale,
   inputDateToIso,
   oggiInputDate,
-} from "preventivoai-shared";
+} from "previcloud-shared";
 
 export { formatData, formatDataBreve, inputDateToIso, oggiInputDate };
 

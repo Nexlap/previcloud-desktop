@@ -1,4 +1,4 @@
-import { parseImportoEuro } from "preventivoai-shared";
+import { parseImportoEuro } from "previcloud-shared";
 import { supabase } from "./supabase";
 import { trackEvento } from "./track";
 import type { Servizio } from "./types";

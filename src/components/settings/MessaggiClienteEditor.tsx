@@ -5,7 +5,7 @@ import {
   anteprimaMessaggio,
   type MessaggiClienteTemplates,
   type ScenarioMessaggio,
-} from "preventivoai-shared";
+} from "previcloud-shared";
 import MessaggioTemplateEditor from "./MessaggioTemplateEditor";
 import FirmaReminderPanel from "./FirmaReminderPanel";
 
@@ -47,10 +47,10 @@ export default function MessaggiClienteEditor({
             key={s.id}
             type="button"
             onClick={() => setScenario(s.id)}
-            className={`rounded-full px-3 py-1.5 text-xs font-medium ${
+            className={`rounded-full px-3 py-1.5 text-xs font-medium transition ${
               scenario === s.id
                 ? "bg-brand-navy text-white"
-                : "border border-black/10 text-brand-navy/70 hover:bg-brand-bg"
+                : "border border-edge text-brand-navy/70 hover:bg-brand-bg"
             }`}
           >
             {s.label}
@@ -86,14 +86,14 @@ export default function MessaggiClienteEditor({
       <button
         type="button"
         onClick={ripristinaScenario}
-        className="text-xs font-medium text-brand-teal hover:underline"
+        className="text-xs font-medium text-brand-teal-ink hover:underline"
       >
         Ripristina predefinito
       </button>
 
       <div className="space-y-1.5">
         <p className="text-xs font-semibold uppercase tracking-wide text-brand-navy/45">Anteprima</p>
-        <div className="rounded-lg border border-black/10 bg-brand-bg px-3 py-3">
+        <div className="rounded-lg border border-edge bg-brand-bg px-3 py-3">
           <pre className="whitespace-pre-wrap font-sans text-sm leading-relaxed text-brand-navy/80">
             {anteprimaMessaggio(campoAnteprima, messaggi[campoAnteprima])}
           </pre>

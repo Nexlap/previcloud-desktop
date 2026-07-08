@@ -133,11 +133,11 @@ export default function InviaFirmaModal({
       {confirmDialog}
 
       <div
-        className="fixed inset-0 z-[70] flex items-center justify-center bg-black/40 p-4"
+        className="fixed inset-0 z-[70] flex items-center justify-center bg-brand-navy/40 p-4 backdrop-blur-[2px]"
         onClick={onClose}
       >
         <div
-          className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl"
+          className="w-full max-w-md rounded-2xl border border-edge-faint bg-surface p-6 shadow-xl shadow-brand-navy/10"
           onClick={(e) => e.stopPropagation()}
           role="dialog"
           aria-modal="true"
@@ -153,7 +153,7 @@ export default function InviaFirmaModal({
               type="button"
               disabled={!!loading}
               onClick={() => void esegui("whatsapp")}
-              className="w-full rounded-xl border border-black/10 py-3 text-sm font-semibold text-brand-navy hover:bg-brand-bg disabled:opacity-60"
+              className="w-full rounded-xl border border-edge py-3 text-sm font-semibold text-brand-navy transition hover:bg-brand-bg disabled:opacity-60"
             >
               {loading === "whatsapp" ? "Preparazione…" : "WhatsApp"}
             </button>
@@ -161,7 +161,7 @@ export default function InviaFirmaModal({
               type="button"
               disabled={!!loading}
               onClick={() => void esegui("email")}
-              className="w-full rounded-xl border border-black/10 py-3 text-sm font-semibold text-brand-navy hover:bg-brand-bg disabled:opacity-60"
+              className="w-full rounded-xl border border-edge py-3 text-sm font-semibold text-brand-navy transition hover:bg-brand-bg disabled:opacity-60"
             >
               {loading === "email" ? "Preparazione…" : "Email"}
             </button>
@@ -169,13 +169,13 @@ export default function InviaFirmaModal({
               type="button"
               disabled={!!loading}
               onClick={() => void esegui("link")}
-              className="w-full rounded-xl border border-black/10 py-3 text-sm font-semibold text-brand-navy hover:bg-brand-bg disabled:opacity-60"
+              className="w-full rounded-xl border border-edge py-3 text-sm font-semibold text-brand-navy transition hover:bg-brand-bg disabled:opacity-60"
             >
               {loading === "link" ? "Preparazione…" : "Copia link"}
             </button>
           </div>
 
-          {feedback ? <p className="mt-3 text-sm font-medium text-brand-teal">{feedback}</p> : null}
+          {feedback ? <p className="mt-3 text-sm font-medium text-brand-teal-ink">{feedback}</p> : null}
           {linkFallbackUrl ? (
             <input
               type="text"
@@ -188,12 +188,12 @@ export default function InviaFirmaModal({
           ) : null}
           {errore ? <p className="mt-3 text-sm text-red-600">{errore}</p> : null}
 
-          <div className="mt-5 border-t border-black/10 pt-4">
+          <div className="mt-5 border-t border-edge pt-4">
             <button
               type="button"
               disabled={!!loading}
               onClick={() => void chiediSegnaSuCarta()}
-              className="w-full rounded-xl border border-brand-teal/30 bg-brand-teal/5 py-3 text-sm font-semibold text-brand-teal hover:bg-brand-teal/10 disabled:opacity-60"
+              className="w-full rounded-xl border border-brand-teal/30 bg-brand-teal/5 py-3 text-sm font-semibold text-brand-teal-ink transition hover:bg-brand-teal/10 disabled:opacity-60"
             >
               {loading === "manuale" ? "Registrazione…" : "Il cliente ha già firmato su carta"}
             </button>
@@ -202,7 +202,7 @@ export default function InviaFirmaModal({
           <button
             type="button"
             onClick={onClose}
-            className="mt-4 w-full rounded-xl py-2.5 text-sm text-brand-navy/60 hover:text-brand-navy"
+            className="mt-4 w-full rounded-xl py-2.5 text-sm text-brand-navy/60 transition hover:text-brand-navy"
           >
             Annulla
           </button>

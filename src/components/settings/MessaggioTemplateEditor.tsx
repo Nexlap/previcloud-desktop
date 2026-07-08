@@ -6,7 +6,7 @@ import {
   serializzaMessaggioSegmenti,
   variabileBloccataInTemplate,
   type TipoMessaggioCliente,
-} from "preventivoai-shared";
+} from "previcloud-shared";
 import MessaggioMultilineChipEditor from "./MessaggioMultilineChipEditor";
 
 type Props = {
@@ -38,7 +38,7 @@ export default function MessaggioTemplateEditor({ tipo, value, onChange, multili
   if (!multiline) {
     return (
       <div className="space-y-2">
-        <div className="flex min-h-11 flex-wrap items-center gap-1 rounded-lg border border-black/10 bg-brand-bg px-3 py-2">
+        <div className="flex min-h-11 flex-wrap items-center gap-1 rounded-lg border border-edge bg-brand-bg px-3 py-2">
           {segments.map((seg, i) =>
             seg.type === "text" ? (
               <input
@@ -54,7 +54,7 @@ export default function MessaggioTemplateEditor({ tipo, value, onChange, multili
                 onClick={() => rimuoviVariabile(i)}
                 className={
                   variabileBloccataInTemplate(value, tipo, seg.name)
-                    ? "rounded-md border border-brand-teal/30 bg-brand-teal/10 px-2 py-0.5 text-xs font-semibold text-brand-teal"
+                    ? "rounded-md border border-brand-teal/30 bg-brand-teal/10 px-2 py-0.5 text-xs font-semibold text-brand-teal-ink"
                     : "rounded-md border border-sky-200 bg-sky-50 px-2 py-0.5 text-xs font-semibold text-sky-700"
                 }
                 title={
@@ -102,7 +102,7 @@ function VariabiliBar({
           key={v}
           type="button"
           onClick={() => onInsert(v)}
-          className="rounded-md border border-black/10 bg-white px-2 py-0.5 text-xs font-semibold text-brand-teal hover:bg-brand-bg"
+          className="rounded-md border border-edge bg-surface px-2 py-0.5 text-xs font-semibold text-brand-teal-ink transition hover:bg-brand-bg"
         >
           {v}
         </button>

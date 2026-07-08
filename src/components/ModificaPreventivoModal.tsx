@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { useNavigate } from "react-router";
+import { PencilSimpleLine, Microphone, ListBullets, CaretRight } from "@phosphor-icons/react";
 import type { ModificaPreventivoInput } from "../lib/modificaPreventivo/apriModificaPreventivo";
 import { paramsRouterModifica } from "../lib/modificaPreventivo/apriModificaPreventivo";
 import { MODIFICA_VERSIONE_MODAL_SUB } from "../lib/modificaPreventivo/constants";
@@ -12,40 +13,6 @@ type Props = {
   onClose: () => void;
 };
 
-function IconEdit3() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-6 w-6">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
-    </svg>
-  );
-}
-
-function IconMic() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-6 w-6">
-      <path strokeLinecap="round" d="M12 14a3 3 0 0 0 3-3V5a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Z" />
-      <path strokeLinecap="round" d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v3" />
-    </svg>
-  );
-}
-
-function IconList() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-6 w-6">
-      <path strokeLinecap="round" d="M8 6h13M8 12h13M8 18h13" />
-      <path strokeLinecap="round" d="M3 6h.01M3 12h.01M3 18h.01" />
-    </svg>
-  );
-}
-
-function IconChevronRight() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5">
-      <path strokeLinecap="round" d="m9 18 6-6-6-6" />
-    </svg>
-  );
-}
-
 const OPZIONI: {
   icon: ReactNode;
   title: string;
@@ -53,19 +20,19 @@ const OPZIONI: {
   path: string;
 }[] = [
   {
-    icon: <IconList />,
+    icon: <ListBullets size={22} weight="regular" />,
     title: "Builder manuale",
     sub: "Modifica servizi, rimborsi e pagamento dal form",
     path: "/nuovo/manuale",
   },
   {
-    icon: <IconEdit3 />,
+    icon: <PencilSimpleLine size={22} weight="regular" />,
     title: "Chat",
     sub: "Descrivi le modifiche all'AI a testo",
     path: "/nuovo/chat",
   },
   {
-    icon: <IconMic />,
+    icon: <Microphone size={22} weight="regular" />,
     title: "Registra voce",
     sub: "Parla delle modifiche da fare",
     path: "/nuovo/registra",
@@ -109,9 +76,9 @@ export default function ModificaPreventivoModal({ open, input, onClose }: Props)
               key={op.path}
               type="button"
               onClick={() => scegli(op.path)}
-              className="flex w-full items-center gap-4 rounded-2xl bg-white p-4 text-left shadow-sm transition-colors hover:bg-brand-bg/80"
+              className="flex w-full items-center gap-4 rounded-2xl border border-edge-faint bg-surface p-4 text-left shadow-sm shadow-brand-navy/[0.03] transition-colors hover:bg-brand-bg/80"
             >
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-teal/10 text-brand-teal">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-teal/10 text-brand-teal-ink">
                 {op.icon}
               </span>
               <span className="min-w-0 flex-1">
@@ -119,7 +86,7 @@ export default function ModificaPreventivoModal({ open, input, onClose }: Props)
                 <span className="mt-0.5 block text-sm text-brand-navy/60">{op.sub}</span>
               </span>
               <span className="text-brand-navy/30">
-                <IconChevronRight />
+                <CaretRight size={18} weight="bold" />
               </span>
             </button>
           ))}
@@ -128,7 +95,7 @@ export default function ModificaPreventivoModal({ open, input, onClose }: Props)
         <button
           type="button"
           onClick={onClose}
-          className="mt-4 w-full py-2 text-center text-sm font-semibold text-brand-navy/60 hover:text-brand-navy"
+          className="mt-4 w-full py-2 text-center text-sm font-semibold text-brand-navy/60 transition hover:text-brand-navy"
         >
           Annulla
         </button>

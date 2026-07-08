@@ -1,5 +1,17 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router";
+import {
+  Plus as IconPlus,
+  FileText as IconFile,
+  Wallet as IconWallet,
+  Sparkle as IconSpark,
+  ChatCircle as IconChat,
+  Microphone as IconMic,
+  ListBullets as IconList,
+  Users as IconUsers,
+  Archive as IconArchive,
+  ArrowRight as IconArrow,
+} from "@phosphor-icons/react";
 import { useNavigaNuovoPreventivo } from "../components/NuovoPreventivoNavProvider";
 import { supabase } from "../lib/supabase";
 import { caricaHomeData, type HomeData, type HomeInsight } from "../lib/home";
@@ -114,8 +126,8 @@ export default function Home() {
           </>
         ) : (
           <>
-            <article className="relative rounded-2xl border border-edge-faint bg-surface p-5 shadow-sm sm:col-span-3">
-              <span className="absolute top-5 right-5 flex h-8 w-8 items-center justify-center rounded-xl bg-brand-teal/10 text-brand-teal">
+            <article className="relative rounded-2xl border border-edge-faint bg-surface p-5 shadow-sm shadow-brand-navy/[0.03] sm:col-span-3">
+              <span className="absolute top-5 right-5 flex h-8 w-8 items-center justify-center rounded-xl bg-brand-teal/10 text-brand-teal-ink">
                 <IconFile className="h-4 w-4" />
               </span>
               <div className="flex flex-col items-center text-center">
@@ -125,7 +137,7 @@ export default function Home() {
                 </p>
                 <p className="mt-1 text-xs text-brand-navy/45">preventivi creati</p>
                 {data && data.preventiviMeseScorso > 0 ? (
-                  <p className={`mt-3 text-xs font-medium ${trendPositivo ? "text-brand-teal" : "text-brand-navy/40"}`}>
+                  <p className={`mt-3 text-xs font-medium ${trendPositivo ? "text-brand-teal-ink" : "text-brand-navy/40"}`}>
                     {trendPositivo ? "↑" : "↓"} {data.preventiviMeseScorso} mese scorso
                   </p>
                 ) : null}
@@ -153,7 +165,7 @@ export default function Home() {
               ) : null}
             </article>
 
-            <article className="relative rounded-2xl border border-edge-faint bg-surface p-5 shadow-sm sm:col-span-3">
+            <article className="relative rounded-2xl border border-edge-faint bg-surface p-5 shadow-sm shadow-brand-navy/[0.03] sm:col-span-3">
               <span className="absolute top-5 right-5 flex h-8 w-8 items-center justify-center rounded-xl bg-brand-navy/5 text-brand-navy/60">
                 <IconSpark className="h-4 w-4" />
               </span>
@@ -181,7 +193,7 @@ export default function Home() {
               to={to}
               className="group flex items-center gap-3 rounded-xl border border-edge-faint bg-surface px-3 py-2.5 shadow-sm transition hover:border-brand-teal/25 hover:shadow-md hover:shadow-brand-teal/5"
             >
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-bg text-brand-navy/55 transition group-hover:bg-brand-teal/10 group-hover:text-brand-teal">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-bg text-brand-navy/55 transition group-hover:bg-brand-teal/10 group-hover:text-brand-teal-ink">
                 <Icon className="h-4 w-4" />
               </span>
               <span className="min-w-0">
@@ -198,7 +210,7 @@ export default function Home() {
         <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-edge-faint bg-surface shadow-sm">
           <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-edge-faint px-5 py-4">
             <div className="flex items-center gap-3">
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-teal/10 text-brand-teal">
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-teal/10 text-brand-teal-ink">
                 <IconFile className="h-4 w-4" />
               </span>
               <div>
@@ -217,7 +229,7 @@ export default function Home() {
             </div>
             <Link
               to="/storico"
-              className="inline-flex items-center gap-1.5 rounded-lg border border-edge-faint px-3 py-1.5 text-xs font-medium text-brand-navy/55 transition hover:border-brand-teal/30 hover:text-brand-teal"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-edge-faint px-3 py-1.5 text-xs font-medium text-brand-navy/55 transition hover:border-brand-teal/30 hover:text-brand-teal-ink"
             >
               Apri storico completo
               <IconArrow className="h-3 w-3" />
@@ -237,7 +249,7 @@ export default function Home() {
                       {insight.link ? (
                         <Link
                           to={insight.link}
-                          className="mt-0.5 inline-flex items-center gap-0.5 text-[11px] font-semibold text-brand-teal hover:underline"
+                          className="mt-0.5 inline-flex items-center gap-0.5 text-[11px] font-semibold text-brand-teal-ink hover:underline"
                         >
                           {insight.linkLabel || "Apri"}
                           <IconArrow className="h-2.5 w-2.5" />
@@ -301,15 +313,15 @@ export default function Home() {
                         className="group grid h-full grid-cols-1 items-start gap-2 px-5 py-3 transition hover:bg-brand-bg/70 sm:grid-cols-[minmax(0,2fr)_minmax(0,1.2fr)_minmax(0,0.8fr)_minmax(0,0.9fr)_minmax(0,0.8fr)] sm:items-start sm:gap-4 sm:py-3.5"
                       >
                         <span className="flex min-w-0 items-center gap-3 self-start">
-                          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-teal/15 to-brand-teal/5 text-sm font-semibold text-brand-teal ring-1 ring-brand-teal/10">
+                          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-teal/15 to-brand-teal/5 text-sm font-semibold text-brand-teal-ink ring-1 ring-brand-teal/10">
                             {iniziale}
                           </span>
                           <span className="min-w-0">
-                            <span className="block truncate text-sm font-medium text-brand-navy group-hover:text-brand-teal">
+                            <span className="block truncate text-sm font-medium text-brand-navy group-hover:text-brand-teal-ink">
                               {titolo}
                             </span>
                             {collegamento ? (
-                              <span className="mt-0.5 block truncate text-[11px] font-medium text-brand-teal/75">
+                              <span className="mt-0.5 block truncate text-[11px] font-medium text-brand-teal-ink">
                                 {etichettaPianoCollegato(collegamento)}
                               </span>
                             ) : (
@@ -348,85 +360,3 @@ export default function Home() {
   );
 }
 
-type IconProps = { className?: string };
-
-function IconPlus({ className }: IconProps) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path strokeLinecap="round" d="M12 5v14M5 12h14" />
-    </svg>
-  );
-}
-
-function IconFile({ className }: IconProps) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Z" />
-      <path strokeLinecap="round" d="M14 2v6h6M16 13H8M16 17H8M10 9H8" />
-    </svg>
-  );
-}
-
-function IconWallet({ className }: IconProps) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 0 0 3-3V8a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3Z" />
-    </svg>
-  );
-}
-
-function IconSpark({ className }: IconProps) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
-      <path strokeLinecap="round" strokeLinejoin="round" d="m12 3 1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3Zm7 11 1 3 3 1-3 1-1 3-1-3-3-1 3-1 1-3Z" />
-    </svg>
-  );
-}
-
-function IconChat({ className }: IconProps) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 0 1-4-.8L3 21l1.8-4.2A8.8 8.8 0 0 1 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8Z" />
-    </svg>
-  );
-}
-
-function IconMic({ className }: IconProps) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 14a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v5a3 3 0 0 0 3 3Zm0 0v3m-4 0h8M8 21h8" />
-    </svg>
-  );
-}
-
-function IconList({ className }: IconProps) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
-      <path strokeLinecap="round" d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
-    </svg>
-  );
-}
-
-function IconUsers({ className }: IconProps) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
-      <path strokeLinecap="round" d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm11 10v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
-    </svg>
-  );
-}
-
-function IconArchive({ className }: IconProps) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7M3 7h18M3 7l2-4h14l2 4M10 11h4" />
-    </svg>
-  );
-}
-
-function IconArrow({ className }: IconProps) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" />
-    </svg>
-  );
-}

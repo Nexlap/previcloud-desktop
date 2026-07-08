@@ -9,7 +9,7 @@
  */
 import { supabase } from "./supabase";
 import { caricaCronologiaPreventivo } from "./storico";
-import { erroreColonnaDeletedAt } from "preventivoai-shared";
+import { erroreColonnaDeletedAt } from "previcloud-shared";
 import type { Abbonamento, Preventivo } from "./types";
 
 export const CESTINO_GIORNI = 7;

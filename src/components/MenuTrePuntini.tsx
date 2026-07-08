@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { DotsThreeVertical } from "@phosphor-icons/react";
 
 export type VoceMenuAzione = {
   label: string;
@@ -101,7 +102,7 @@ export default function MenuTrePuntini({ voci, ariaLabel = "Altre azioni", trigg
       ref={menuRef}
       style={{ position: "fixed", top: coords.top, left: coords.left, zIndex: 9999 }}
       className={`min-w-[9.5rem] rounded-lg border py-1 shadow-lg ${
-        isDark ? "border-white/10 bg-[#1e2d3d] text-white" : "border-black/10 bg-white text-brand-navy"
+        isDark ? "border-white/10 bg-[#1e2d3d] text-white" : "border-edge-faint bg-surface text-brand-navy shadow-brand-navy/10"
       }`}
       data-no-expand
     >
@@ -114,7 +115,7 @@ export default function MenuTrePuntini({ voci, ariaLabel = "Altre azioni", trigg
             setAperto(false);
             v.onClick();
           }}
-          className={`block w-full px-3 py-2 text-left text-sm ${
+          className={`block w-full px-3 py-2 text-left text-sm transition ${
             v.danger
               ? isDark
                 ? "text-red-400 hover:bg-white/5"
@@ -144,7 +145,7 @@ export default function MenuTrePuntini({ voci, ariaLabel = "Altre azioni", trigg
         aria-expanded={aperto}
         data-no-expand
       >
-        ⋮
+        <DotsThreeVertical size={18} weight="bold" />
       </button>
       {typeof document !== "undefined" && menu ? createPortal(menu, document.body) : null}
     </>

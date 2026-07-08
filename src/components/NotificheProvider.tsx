@@ -34,6 +34,7 @@ import {
   caricaNotificheCampanella,
   mostraNotificaOsSePossibile,
   notificaContaBadge,
+  PAGE_SIZE,
   rimandaNotifica,
   segnalaNotificaConsegnata,
   segnaNotificaLetta,
@@ -90,6 +91,9 @@ type NotificheContextValue = {
   loading: boolean;
   erroreCaricamento: boolean;
   count: number;
+  hasMore: boolean;
+  caricandoAltre: boolean;
+  caricaAltre: () => Promise<void>;
   ricarica: () => Promise<void>;
   segnaLetta: (id: string) => Promise<void>;
   segnaTutteLette: () => Promise<void>;
@@ -132,6 +136,9 @@ export function NotificheProvider({ children }: { children: ReactNode }) {
   const [erroreCaricamento, setErroreCaricamento] = useState(false);
   const [toasts, setToasts] = useState<NotificaToast[]>([]);
   const [visteLocalmente, setVisteLocalmente] = useState<Set<string>>(() => new Set());
+  const [hasMore, setHasMore] = useState(false);
+  const [caricandoAltre, setCaricandoAltre] = useState(false);
+  const offsetRef = useRef(0);
 
   // Badge = non lette in DB − già viste in questa sessione (senza persistere su Supabase).
   const count = useMemo(
@@ -245,11 +252,29 @@ export function NotificheProvider({ children }: { children: ReactNode }) {
     if (result.ok) {
       setNotifiche(result.notifiche);
       setErroreCaricamento(false);
+      offsetRef.current = 0;
+      setHasMore(result.notifiche.length === PAGE_SIZE);
     } else {
       setErroreCaricamento(true);
     }
     setLoading(false);
   }, []);
+
+  const caricaAltre = useCallback(async () => {
+    if (caricandoAltre || !hasMore) return;
+    setCaricandoAltre(true);
+    const nextOffset = offsetRef.current + PAGE_SIZE;
+    const result = await caricaNotificheCampanella(nextOffset);
+    if (result.ok) {
+      setNotifiche((prev) => [...prev, ...result.notifiche]);
+      offsetRef.current = nextOffset;
+      setHasMore(result.notifiche.length === PAGE_SIZE);
+      setErroreCaricamento(false);
+    } else {
+      setErroreCaricamento(true);
+    }
+    setCaricandoAltre(false);
+  }, [caricandoAltre, hasMore]);
 
   const ricaricaRef = useRef(ricarica);
   ricaricaRef.current = ricarica;
@@ -340,6 +365,9 @@ export function NotificheProvider({ children }: { children: ReactNode }) {
     loading,
     erroreCaricamento,
     count,
+    hasMore,
+    caricandoAltre,
+    caricaAltre,
     ricarica,
     segnaLetta,
     segnaTutteLette: segnaTutteLetteHook,

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router";
+import { ArrowLeft, X } from "@phosphor-icons/react";
 import {
   CESTINO_GIORNI,
   caricaCestinoAbbonamenti,
@@ -105,8 +106,9 @@ export default function Cestino() {
 
   return (
     <PageContainer className={selezione.selezionati.length > 0 ? "pb-24" : ""}>
-      <Link to="/storico" className="text-sm font-medium text-brand-teal hover:underline">
-        ← Storico preventivi
+      <Link to="/storico" className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-teal-ink hover:underline">
+        <ArrowLeft size={14} weight="bold" />
+        Storico preventivi
       </Link>
       <h1 className="mt-2 text-2xl font-semibold text-brand-navy">Elementi eliminati</h1>
       <p className="mt-2 text-sm text-brand-navy/60">
@@ -118,7 +120,7 @@ export default function Cestino() {
           type="button"
           onClick={() => { setTab("preventivi"); selezione.annulla(); selAb.annulla(); }}
           className={`rounded-xl px-4 py-2 text-sm font-medium ${
-            tab === "preventivi" ? "bg-brand-teal text-white" : "bg-white text-brand-navy/70 shadow-sm"
+            tab === "preventivi" ? "bg-brand-teal text-white shadow-sm shadow-brand-teal/25" : "border border-edge-faint bg-surface text-brand-navy/70 shadow-sm"
           }`}
         >
           Preventivi ({preventivi.length})
@@ -127,7 +129,7 @@ export default function Cestino() {
           type="button"
           onClick={() => { setTab("piani"); selezione.annulla(); selPrev.annulla(); }}
           className={`rounded-xl px-4 py-2 text-sm font-medium ${
-            tab === "piani" ? "bg-brand-teal text-white" : "bg-white text-brand-navy/70 shadow-sm"
+            tab === "piani" ? "bg-brand-teal text-white shadow-sm shadow-brand-teal/25" : "border border-edge-faint bg-surface text-brand-navy/70 shadow-sm"
           }`}
         >
           Piani e abbonamenti ({abbonamenti.length})
@@ -162,7 +164,7 @@ export default function Cestino() {
               </thead>
               <tbody>
                 {preventivi.map((p) => (
-                  <tr key={p.id} className="border-t border-black/5 hover:bg-brand-bg/40">
+                  <tr key={p.id} className="border-t border-edge-faint transition hover:bg-brand-bg/40">
                     <td className="px-3 py-3">
                       <CheckboxSelezione
                         checked={selPrev.selezionati.includes(p.id)}
@@ -173,7 +175,7 @@ export default function Cestino() {
                     <td className="px-5 py-3 text-brand-navy">{p.titolo || "Senza titolo"}</td>
                     <td className="px-5 py-3">
                       {p.cliente_id ? (
-                        <Link to={`/clienti/${p.cliente_id}`} className="text-brand-navy hover:text-brand-teal">
+                        <Link to={`/clienti/${p.cliente_id}`} className="text-brand-navy transition hover:text-brand-teal-ink">
                           {p.nome_cliente}
                         </Link>
                       ) : (
@@ -216,7 +218,7 @@ export default function Cestino() {
                 {abbonamenti.map((a) => {
                   const tipo = normalizzaTipoPiano(a.tipo, a.nome);
                   return (
-                    <tr key={a.id} className="border-t border-black/5 hover:bg-brand-bg/40">
+                    <tr key={a.id} className="border-t border-edge-faint transition hover:bg-brand-bg/40">
                       <td className="px-3 py-3">
                         <CheckboxSelezione
                           checked={selAb.selezionati.includes(a.id)}
@@ -229,7 +231,7 @@ export default function Cestino() {
                         {tipo === "rate" ? "Piano a rate" : "Abbonamento"}
                       </td>
                       <td className="px-5 py-3">
-                        <Link to={`/clienti/${a.cliente_id}`} className="text-brand-navy hover:text-brand-teal">
+                        <Link to={`/clienti/${a.cliente_id}`} className="text-brand-navy transition hover:text-brand-teal-ink">
                           {a.clienti?.nome || "Cliente"}
                         </Link>
                       </td>
@@ -246,16 +248,16 @@ export default function Cestino() {
       )}
 
       {selezione.selezionati.length > 0 && (
-        <div className="fixed bottom-0 left-56 right-0 z-30 border-t border-black/10 bg-white px-6 py-3 shadow-[0_-4px_12px_rgba(0,0,0,0.06)]">
+        <div className="fixed bottom-0 left-56 right-0 z-30 border-t border-edge bg-surface px-6 py-3 shadow-[0_-4px_12px_rgba(0,0,0,0.06)]">
           <div className="mx-auto flex w-full max-w-5xl items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <button
                 type="button"
                 onClick={selezione.annulla}
-                className="flex h-8 w-8 items-center justify-center rounded-lg text-brand-navy/60 hover:bg-brand-bg"
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-brand-navy/60 transition hover:bg-brand-bg"
                 aria-label="Annulla selezione"
               >
-                ✕
+                <X size={16} weight="bold" />
               </button>
               <span className="text-sm font-medium text-brand-navy">
                 {selezione.selezionati.length} selezionati
@@ -265,7 +267,7 @@ export default function Cestino() {
               <button
                 type="button"
                 onClick={() => void handleRipristina()}
-                className="rounded-xl border border-brand-teal px-5 py-2.5 text-sm font-semibold text-brand-teal hover:bg-brand-teal/5"
+                className="rounded-xl border border-brand-teal px-5 py-2.5 text-sm font-semibold text-brand-teal-ink transition hover:bg-brand-teal/5"
               >
                 Ripristina
               </button>

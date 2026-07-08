@@ -1,8 +1,8 @@
-import { erroreColonnaDeletedAt } from "preventivoai-shared";
+import { erroreColonnaDeletedAt } from "previcloud-shared";
 import { supabase } from "../supabase";
 import type { Abbonamento, PreventivoMadre, RataAbbonamento } from "../types";
 import type { Tables } from "../database.types";
-import { nomePianoDaPreventivo } from "preventivoai-shared";
+import { nomePianoDaPreventivo } from "previcloud-shared";
 
 export const PREVENTIVO_MADRE_SELECT = "id, titolo, created_at, versione, importo_totale, stato";
 
@@ -139,5 +139,5 @@ export async function generaRateConImporti(
   return { data: data || [], error: error?.message || null };
 }
 
-/** @see nuovoStatoDopoImportoRata in preventivoai-shared */
-export { nuovoStatoDopoImportoRata } from "preventivoai-shared";
+/** @see nuovoStatoDopoImportoRata in previcloud-shared */
+export { nuovoStatoDopoImportoRata } from "previcloud-shared";

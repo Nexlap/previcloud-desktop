@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router";
+import { ArrowLeft, Microphone, Stop } from "@phosphor-icons/react";
 import PageContainer from "../components/PageContainer";
 import { getModificaSession } from "../lib/modificaPreventivo/modificaSession";
 import { percorsoNuovoPreventivoHub } from "../lib/nuovoNav";
@@ -68,8 +69,9 @@ export default function RegistraVoce() {
 
   return (
     <PageContainer>
-      <Link to={indietro} className="text-sm text-brand-navy/60 hover:text-brand-navy">
-        ← Indietro
+      <Link to={indietro} className="inline-flex items-center gap-1.5 text-sm text-brand-navy/60 transition hover:text-brand-navy">
+        <ArrowLeft size={14} weight="bold" />
+        Indietro
       </Link>
       <h1 className="mt-2 text-2xl font-semibold text-brand-navy">Registra voce</h1>
       <p className="mt-2 text-sm text-brand-navy/60">
@@ -89,12 +91,12 @@ export default function RegistraVoce() {
             <button
               type="button"
               onClick={() => void toggleRegistrazione()}
-              className={`flex h-28 w-28 items-center justify-center rounded-full text-4xl transition-colors ${
+              className={`flex h-28 w-28 items-center justify-center rounded-full transition-all active:scale-[0.97] ${
                 registrando ? "bg-red-500/15 text-red-600 ring-4 ring-red-500/30" : "bg-brand-navy/10 text-brand-navy hover:bg-brand-teal/15"
               }`}
               aria-label={registrando ? "Ferma registrazione" : "Avvia registrazione"}
             >
-              {registrando ? "⏹" : "🎙"}
+              {registrando ? <Stop size={40} weight="fill" /> : <Microphone size={40} weight="regular" />}
             </button>
             <p className="text-center text-sm text-brand-navy/60">
               {registrando ? "Registrazione in corso — premi per fermare" : "Premi per iniziare a parlare"}

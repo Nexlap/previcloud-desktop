@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router";
-import { formatImportoEuroVisuale } from "preventivoai-shared";
+import { Check, Plus } from "@phosphor-icons/react";
+import { formatImportoEuroVisuale } from "previcloud-shared";
 import type { Servizio } from "../lib/types";
 import type { VoceBuilder } from "../lib/builder";
 
@@ -21,9 +22,9 @@ export default function ServiziListinoCard({ servizi, voci, erroreCaricamento, o
   }, [ricerca, servizi]);
 
   return (
-    <div className="mt-8 rounded-2xl border border-black/10 bg-white p-4 shadow-sm">
+    <div className="mt-8 rounded-2xl border border-edge-faint bg-surface p-4 shadow-sm shadow-brand-navy/[0.03]">
       <div>
-        <p className="text-base font-bold text-brand-teal">I tuoi servizi</p>
+        <p className="text-base font-bold text-brand-teal-ink">I tuoi servizi</p>
         <p className="text-xs text-brand-navy/50">Cerca nel listino e aggiungi le voci al preventivo</p>
       </div>
 
@@ -34,7 +35,7 @@ export default function ServiziListinoCard({ servizi, voci, erroreCaricamento, o
       ) : servizi.length === 0 ? (
         <Link
           to="/impostazioni/servizi"
-          className="mt-3 block rounded-xl border border-dashed border-brand-teal/40 bg-brand-teal/5 p-4 text-center text-sm text-brand-teal hover:bg-brand-teal/10"
+          className="mt-3 block rounded-xl border border-dashed border-brand-teal/40 bg-brand-teal/5 p-4 text-center text-sm text-brand-teal-ink transition hover:bg-brand-teal/10"
         >
           Nessun servizio configurato - clicca qui per aggiungerli
         </Link>
@@ -44,14 +45,14 @@ export default function ServiziListinoCard({ servizi, voci, erroreCaricamento, o
             value={ricerca}
             onChange={(e) => setRicerca(e.target.value)}
             placeholder="Cerca servizio"
-            className="mt-3 w-full rounded-xl border border-black/10 bg-brand-bg px-3 py-2 text-sm outline-none focus:border-brand-teal"
+            className="mt-3 w-full rounded-xl border border-edge bg-brand-bg px-3 py-2 text-sm outline-none transition focus:border-brand-teal"
           />
 
           <div className="mt-3 max-h-[32rem] space-y-2 overflow-y-auto pr-1">
             {serviziFiltrati.map((s) => {
               const aggiunto = voci.some((v) => v.id === s.id);
               return (
-                <div key={s.id} className="flex items-center gap-3 rounded-xl border border-black/10 bg-brand-bg/40 p-3">
+                <div key={s.id} className="flex items-center gap-3 rounded-xl border border-edge-faint bg-brand-bg/40 p-3">
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-semibold text-brand-navy">{s.nome}</p>
                     {s.costo != null && (
@@ -63,19 +64,19 @@ export default function ServiziListinoCard({ servizi, voci, erroreCaricamento, o
                   <button
                     type="button"
                     onClick={() => (aggiunto ? onRimuoviVoce(s.id) : onAggiungiVoce(s))}
-                    className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-lg font-semibold ${
-                      aggiunto ? "bg-brand-teal text-white" : "border border-brand-teal/30 bg-white text-brand-teal"
+                    className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition active:scale-95 ${
+                      aggiunto ? "bg-brand-teal text-white" : "border border-brand-teal/30 bg-surface text-brand-teal-ink hover:bg-brand-teal/5"
                     }`}
                     aria-label={aggiunto ? "Rimuovi dal preventivo" : "Aggiungi al preventivo"}
                   >
-                    {aggiunto ? "✓" : "+"}
+                    {aggiunto ? <Check size={16} weight="bold" /> : <Plus size={16} weight="bold" />}
                   </button>
                 </div>
               );
             })}
 
             {serviziFiltrati.length === 0 && (
-              <p className="rounded-xl border border-dashed border-black/10 bg-brand-bg p-4 text-center text-sm text-brand-navy/50">
+              <p className="rounded-xl border border-dashed border-edge bg-brand-bg p-4 text-center text-sm text-brand-navy/50">
                 Nessun servizio trovato
               </p>
             )}

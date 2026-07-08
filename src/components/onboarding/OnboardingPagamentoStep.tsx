@@ -43,7 +43,7 @@ export default function OnboardingPagamentoStep({ form, onFormChange, errore }: 
   }
 
   return (
-    <div className="rounded-2xl bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-edge-faint bg-surface p-6 shadow-sm shadow-brand-navy/[0.03]">
       <h2 className="text-xl font-semibold text-brand-navy">Metodo di pagamento predefinito</h2>
       <p className="mt-1 text-sm text-brand-navy/60">
         Scegli come preferisci ricevere i pagamenti nei preventivi. Puoi saltare e configurarlo dopo.
@@ -57,10 +57,10 @@ export default function OnboardingPagamentoStep({ form, onFormChange, errore }: 
               key={t.key}
               type="button"
               onClick={() => selezionaTipo(t.key)}
-              className={`rounded-full px-3 py-1.5 text-sm ${
+              className={`rounded-full px-3 py-1.5 text-sm transition ${
                 tipoSelezionato === t.key
                   ? "bg-brand-navy text-white"
-                  : "border border-black/10 bg-brand-bg text-brand-navy"
+                  : "border border-edge bg-brand-bg text-brand-navy hover:border-brand-navy/30"
               }`}
             >
               {iconaMetodoPagamento(t.key)} {t.label}
@@ -77,7 +77,7 @@ export default function OnboardingPagamentoStep({ form, onFormChange, errore }: 
               value={form.nome}
               onChange={(e) => onFormChange({ ...form, nome: e.target.value })}
               placeholder="es. Conto principale"
-              className="w-full rounded-lg border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+              className="w-full rounded-lg border border-edge px-3 py-2 text-sm outline-none transition focus:border-brand-teal"
             />
           </div>
 
@@ -91,7 +91,7 @@ export default function OnboardingPagamentoStep({ form, onFormChange, errore }: 
                     onFormChange({ ...form, dati: { ...form.dati, iban: e.target.value.toUpperCase() } })
                   }
                   placeholder="IT60..."
-                  className="w-full rounded-lg border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+                  className="w-full rounded-lg border border-edge px-3 py-2 text-sm outline-none transition focus:border-brand-teal"
                 />
               </div>
               <div className="space-y-1">
@@ -102,7 +102,7 @@ export default function OnboardingPagamentoStep({ form, onFormChange, errore }: 
                     onFormChange({ ...form, dati: { ...form.dati, intestatario: e.target.value } })
                   }
                   placeholder="Mario Rossi"
-                  className="w-full rounded-lg border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+                  className="w-full rounded-lg border border-edge px-3 py-2 text-sm outline-none transition focus:border-brand-teal"
                 />
               </div>
             </>
@@ -112,7 +112,7 @@ export default function OnboardingPagamentoStep({ form, onFormChange, errore }: 
             <>
               <div className="space-y-1">
                 <label className="text-xs font-semibold tracking-wide text-brand-navy/40">USERNAME PAYPAL.ME</label>
-                <div className="flex overflow-hidden rounded-lg border border-black/10 focus-within:border-brand-teal">
+                <div className="flex overflow-hidden rounded-lg border border-edge transition focus-within:border-brand-teal">
                   <span className="flex shrink-0 items-center bg-brand-bg px-2.5 text-xs text-brand-navy/50">
                     paypal.me/
                   </span>
@@ -136,7 +136,7 @@ export default function OnboardingPagamentoStep({ form, onFormChange, errore }: 
                   value={form.dati?.email || ""}
                   onChange={(e) => onFormChange({ ...form, dati: { ...form.dati, email: e.target.value } })}
                   placeholder={PLACEHOLDER.email}
-                  className="w-full rounded-lg border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+                  className="w-full rounded-lg border border-edge px-3 py-2 text-sm outline-none transition focus:border-brand-teal"
                 />
               </div>
             </>

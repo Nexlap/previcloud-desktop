@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router";
+import { CaretRight } from "@phosphor-icons/react";
 import PageContainer from "../components/PageContainer";
 import ToggleSwitch from "../components/ToggleSwitch";
 import { useSegnalazioneFeedback } from "../components/SegnalazioneProvider";
@@ -171,12 +172,12 @@ export default function Profilo() {
     <PageContainer>
       {modalPasswordElimina && (
         <div
-          className="fixed inset-0 z-[70] flex items-center justify-center bg-black/40 p-4"
+          className="fixed inset-0 z-[70] flex items-center justify-center bg-brand-navy/40 p-4 backdrop-blur-[2px]"
           onMouseDown={handleBackdropMouseDown}
           onMouseUp={handleBackdropMouseUp}
         >
           <div
-            className="w-full max-w-md rounded-2xl bg-white p-5 shadow-lg"
+            className="w-full max-w-md rounded-2xl border border-edge-faint bg-surface p-5 shadow-xl shadow-brand-navy/10"
             onClick={(e) => e.stopPropagation()}
             role="dialog"
             aria-modal="true"
@@ -194,14 +195,14 @@ export default function Profilo() {
               type="password"
               autoComplete="current-password"
               placeholder="Password attuale"
-              className="mt-4 w-full rounded-lg border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+              className="mt-4 w-full rounded-lg border border-edge px-3 py-2 text-sm outline-none focus:border-brand-teal"
             />
             <div className="mt-4 flex justify-end gap-2">
               <button
                 type="button"
                 onClick={chiudiModalPasswordElimina}
                 disabled={verificandoPasswordElimina}
-                className="rounded-lg border border-black/10 px-4 py-2 text-sm font-medium text-brand-navy/70 hover:bg-brand-bg disabled:opacity-60"
+                className="rounded-lg border border-edge px-4 py-2 text-sm font-medium text-brand-navy/70 hover:bg-brand-bg disabled:opacity-60"
               >
                 Annulla
               </button>
@@ -220,7 +221,7 @@ export default function Profilo() {
 
       <h1 className="text-2xl font-semibold text-brand-navy">Profilo</h1>
 
-      <div className="mt-4 rounded-2xl bg-white p-5 shadow-sm">
+      <div className="mt-4 rounded-2xl border border-edge-faint bg-surface p-5 shadow-sm shadow-brand-navy/[0.03]">
         <div className="flex items-center gap-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-bg text-lg font-semibold text-brand-navy">
             {iniziale}
@@ -229,13 +230,13 @@ export default function Profilo() {
             <p className="truncate text-sm font-semibold text-brand-navy">{nomeAzienda || "Nome azienda"}</p>
             <p className="truncate text-sm text-brand-navy/60">{email}</p>
           </div>
-          <Link to="/impostazioni" className="rounded-xl border border-black/10 px-4 py-2 text-sm font-medium text-brand-navy hover:bg-brand-bg">
+          <Link to="/impostazioni" className="rounded-xl border border-edge px-4 py-2 text-sm font-medium text-brand-navy hover:bg-brand-bg">
             Modifica
           </Link>
         </div>
       </div>
 
-      <div className="mt-3 rounded-2xl bg-white p-5 shadow-sm">
+      <div className="mt-3 rounded-2xl border border-edge-faint bg-surface p-5 shadow-sm shadow-brand-navy/[0.03]">
         <p className="text-sm font-semibold text-brand-navy">Sicurezza</p>
         <p className="mt-1 text-sm text-brand-navy/60">Cambia la password del tuo account.</p>
         <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -246,7 +247,7 @@ export default function Profilo() {
               onChange={(e) => setPasswordAttuale(e.target.value)}
               type="password"
               autoComplete="current-password"
-              className="w-full rounded-lg border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+              className="w-full rounded-lg border border-edge px-3 py-2 text-sm outline-none focus:border-brand-teal"
             />
           </div>
           <div className="space-y-1">
@@ -256,7 +257,7 @@ export default function Profilo() {
               onChange={(e) => setPasswordNuova(e.target.value)}
               type="password"
               autoComplete="new-password"
-              className="w-full rounded-lg border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+              className="w-full rounded-lg border border-edge px-3 py-2 text-sm outline-none focus:border-brand-teal"
             />
           </div>
           <div className="space-y-1">
@@ -266,7 +267,7 @@ export default function Profilo() {
               onChange={(e) => setPasswordConferma(e.target.value)}
               type="password"
               autoComplete="new-password"
-              className="w-full rounded-lg border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+              className="w-full rounded-lg border border-edge px-3 py-2 text-sm outline-none focus:border-brand-teal"
             />
           </div>
         </div>
@@ -274,13 +275,13 @@ export default function Profilo() {
           type="button"
           onClick={cambiaPassword}
           disabled={salvandoPassword}
-          className="mt-3 rounded-lg bg-brand-teal px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
+          className="mt-3 rounded-lg bg-brand-teal px-4 py-2 text-sm font-medium text-white shadow-sm shadow-brand-teal/25 transition hover:bg-brand-teal/90 active:scale-[0.98] disabled:opacity-60"
         >
           {salvandoPassword ? "Salvataggio..." : "Cambia password"}
         </button>
       </div>
 
-      <div className="mt-3 rounded-2xl bg-white p-5 shadow-sm">
+      <div className="mt-3 rounded-2xl border border-edge-faint bg-surface p-5 shadow-sm shadow-brand-navy/[0.03]">
         <p className="text-sm font-semibold text-brand-navy">Aiuto e feedback</p>
         <p className="mt-1 text-sm text-brand-navy/60">
           Segnala un bug o suggerisci un miglioramento. La schermata attuale viene compilata automaticamente.
@@ -288,13 +289,13 @@ export default function Profilo() {
         <button
           type="button"
           onClick={apriSegnalazione}
-          className="mt-3 rounded-lg border border-black/10 px-4 py-2 text-sm font-medium text-brand-navy hover:bg-brand-bg"
+          className="mt-3 rounded-lg border border-edge px-4 py-2 text-sm font-medium text-brand-navy hover:bg-brand-bg"
         >
           Segnala un problema
         </button>
       </div>
 
-      <div className="mt-3 rounded-2xl bg-white p-5 shadow-sm">
+      <div className="mt-3 rounded-2xl border border-edge-faint bg-surface p-5 shadow-sm shadow-brand-navy/[0.03]">
         <div className="flex items-center justify-between gap-4">
           <div>
             <p className="text-sm font-semibold text-brand-navy">Notifiche</p>
@@ -312,24 +313,24 @@ export default function Profilo() {
         </div>
       </div>
 
-      <div className="mt-3 rounded-2xl bg-white p-5 shadow-sm">
+      <div className="mt-3 rounded-2xl border border-edge-faint bg-surface p-5 shadow-sm shadow-brand-navy/[0.03]">
         <p className="text-sm font-semibold text-brand-navy">App</p>
         <div className="mt-3 space-y-2">
-          <Link to="/app" className="flex items-center justify-between rounded-xl border border-black/10 px-4 py-3 text-sm text-brand-navy hover:bg-brand-bg">
+          <Link to="/app" className="flex items-center justify-between rounded-xl border border-edge px-4 py-3 text-sm text-brand-navy transition hover:bg-brand-bg">
             <span>Impostazioni app</span>
-            <span className="text-brand-navy/40">→</span>
+            <CaretRight size={16} weight="bold" className="text-brand-navy/40" />
           </Link>
         </div>
       </div>
 
       {errore && <p className="mt-3 text-sm text-red-600">{errore}</p>}
-      {messaggio && <p className="mt-3 text-sm text-brand-teal">{messaggio}</p>}
+      {messaggio && <p className="mt-3 text-sm text-brand-teal-ink">{messaggio}</p>}
 
       <div className="mt-6 flex flex-wrap gap-2">
         <button
           type="button"
           onClick={logout}
-          className="rounded-xl border border-black/10 px-5 py-2.5 text-sm font-semibold text-brand-navy/70 hover:bg-brand-bg"
+          className="rounded-xl border border-edge px-5 py-2.5 text-sm font-semibold text-brand-navy/70 hover:bg-brand-bg"
         >
           Esci dall&apos;account
         </button>

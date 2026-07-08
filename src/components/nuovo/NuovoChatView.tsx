@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent, type RefObject } from "react";
 
+import { PaperPlaneTilt, CircleNotch, User, X } from "@phosphor-icons/react";
+
 import type { Messaggio } from "../../lib/types";
 
 import BuilderClienteCard from "../BuilderClienteCard";
@@ -47,50 +49,6 @@ type Props = {
 const TEXTAREA_LINE_HEIGHT_PX = 22;
 
 const TEXTAREA_MAX_ROWS = 4;
-
-
-
-function IconSend({ className = "h-4 w-4" }: { className?: string }) {
-
-  return (
-
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
-
-      <path strokeLinecap="round" strokeLinejoin="round" d="m5 12 14-7-7 7 14 7-7-7Z" />
-
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 19V5" />
-
-    </svg>
-
-  );
-
-}
-
-
-
-function IconSpinner({ className = "h-4 w-4" }: { className?: string }) {
-
-  return (
-
-    <svg viewBox="0 0 24 24" fill="none" className={`animate-spin ${className}`}>
-
-      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" className="opacity-25" />
-
-      <path
-
-        fill="currentColor"
-
-        d="M12 3a9 9 0 0 1 9 9h-2a7 7 0 0 0-7-7V3z"
-
-        className="opacity-75"
-
-      />
-
-    </svg>
-
-  );
-
-}
 
 
 
@@ -214,11 +172,11 @@ export default function NuovoChatView({
 
             onClick={() => setClienteCardEspansa(true)}
 
-            className="inline-flex max-w-full items-center gap-2 rounded-full border border-edge bg-brand-bg px-3 py-1.5 text-sm text-brand-navy"
+            className="inline-flex max-w-full items-center gap-2 rounded-full border border-edge bg-brand-bg px-3 py-1.5 text-sm text-brand-navy transition hover:border-brand-navy/20"
 
           >
 
-            <span aria-hidden>👤</span>
+            <User size={14} weight="bold" className="shrink-0 text-brand-navy/50" />
 
             <span className="truncate font-medium">{clienteSelezionato.nome}</span>
 
@@ -250,13 +208,13 @@ export default function NuovoChatView({
 
               }}
 
-              className="ml-1 rounded-full px-1 text-brand-navy/50 hover:text-brand-navy"
+              className="ml-1 flex h-4 w-4 items-center justify-center rounded-full text-brand-navy/50 transition hover:text-brand-navy"
 
               aria-label="Rimuovi cliente"
 
             >
 
-              ×
+              <X size={12} weight="bold" />
 
             </span>
 
@@ -356,13 +314,13 @@ export default function NuovoChatView({
 
             disabled={loading || !input.trim()}
 
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-teal text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-teal text-white shadow-sm shadow-brand-teal/25 transition hover:bg-brand-teal/90 active:scale-[0.96] disabled:opacity-50"
 
             aria-label="Invia messaggio"
 
           >
 
-            {loading ? <IconSpinner /> : <IconSend />}
+            {loading ? <CircleNotch size={16} weight="bold" className="animate-spin" /> : <PaperPlaneTilt size={16} weight="fill" />}
 
           </button>
 

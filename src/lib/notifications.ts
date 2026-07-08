@@ -1,8 +1,8 @@
 import { isPermissionGranted, requestPermission } from "@tauri-apps/plugin-notification";
 import { isDesktopApp } from "./appSettings";
 
-const NOTIFICATION_PERMISSION_KEY = "preventivoai-notification-permission-requested";
-const NOTIFICHE_OS_KEY = "preventivoai-notifiche-os";
+const NOTIFICATION_PERMISSION_KEY = "previcloud-notification-permission-requested";
+const NOTIFICHE_OS_KEY = "previcloud-notifiche-os";
 
 export function sonoNotificheAbilitate(): boolean {
   const raw = localStorage.getItem(NOTIFICHE_OS_KEY);

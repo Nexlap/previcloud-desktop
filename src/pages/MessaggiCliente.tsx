@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { Link, useNavigate } from "react-router";
+import { ArrowLeft } from "@phosphor-icons/react";
 import PageContainer from "../components/PageContainer";
 import MessaggiClienteEditor from "../components/settings/MessaggiClienteEditor";
 import {
   MESSAGGI_CLIENTE_DEFAULT,
   type MessaggiClienteTemplates,
-} from "preventivoai-shared";
+} from "previcloud-shared";
 import { caricaMessaggiCliente } from "../lib/messaggiCliente";
 import { caricaSettingsData, salvaProfiloSettings } from "../lib/settings";
 import { useAppModalKeyboard } from "../components/ModalShell";
@@ -25,11 +26,11 @@ function ModificheNonSalvateDialog({
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 p-4"
+      className="fixed inset-0 z-[60] flex items-center justify-center bg-brand-navy/40 p-4 backdrop-blur-[2px]"
       onClick={onContinua}
     >
       <div
-        className="w-full max-w-md rounded-2xl bg-white p-6 shadow-lg"
+        className="w-full max-w-md rounded-2xl border border-edge-faint bg-surface p-6 shadow-xl shadow-brand-navy/10"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
@@ -42,14 +43,14 @@ function ModificheNonSalvateDialog({
           <button
             type="button"
             onClick={onAbbandona}
-            className="flex-1 rounded-xl border border-red-200 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50"
+            className="flex-1 rounded-xl border border-red-200 py-2.5 text-sm font-medium text-red-600 transition hover:bg-red-50"
           >
             Abbandona
           </button>
           <button
             type="button"
             onClick={onContinua}
-            className="flex-1 rounded-xl border border-black/10 py-2.5 text-sm font-medium text-brand-navy hover:bg-brand-bg"
+            className="flex-1 rounded-xl border border-edge py-2.5 text-sm font-medium text-brand-navy transition hover:bg-brand-bg"
           >
             Continua
           </button>
@@ -57,7 +58,7 @@ function ModificheNonSalvateDialog({
             type="button"
             onClick={onSalva}
             disabled={salvando}
-            className="flex-1 rounded-xl bg-brand-teal py-2.5 text-sm font-semibold text-white hover:bg-brand-teal/90 disabled:opacity-60"
+            className="flex-1 rounded-xl bg-brand-teal py-2.5 text-sm font-semibold text-white shadow-sm shadow-brand-teal/25 transition hover:bg-brand-teal/90 active:scale-[0.99] disabled:opacity-60"
           >
             {salvando ? "Salvataggio..." : "Salva"}
           </button>
@@ -108,9 +109,17 @@ export default function MessaggiClientePage() {
     setMessaggio("");
     setErrore("");
     const settings = await caricaSettingsData();
-    if (!settings?.form) {
+    if (!settings) {
+      // Nessun utente: sessione scaduta davvero.
       setSalvando(false);
       setErrore("Utente non autenticato");
+      return false;
+    }
+    if (!settings.form) {
+      // Utente presente ma fetch del profilo fallita (rete/RLS/timeout): non salvare
+      // con dati mancanti/default, si resta sulla schermata con un errore esplicito.
+      setSalvando(false);
+      setErrore("Impossibile salvare, riprova.");
       return false;
     }
     const { error } = await salvaProfiloSettings({
@@ -176,9 +185,10 @@ export default function MessaggiClientePage() {
       <Link
         to="/impostazioni"
         onClick={richiediUscita}
-        className="text-sm text-brand-navy/60 hover:text-brand-navy"
+        className="inline-flex items-center gap-1.5 text-sm text-brand-navy/60 transition hover:text-brand-navy"
       >
-        ← Torna alle impostazioni
+        <ArrowLeft size={14} weight="bold" />
+        Torna alle impostazioni
       </Link>
 
       <h1 className="mt-4 text-2xl font-semibold text-brand-navy">Comunicazione cliente</h1>
@@ -186,7 +196,7 @@ export default function MessaggiClientePage() {
         Personalizza messaggi WhatsApp ed email, template per la firma digitale e automazione dei reminder.
       </p>
 
-      <div className="mt-6 rounded-2xl bg-white p-6 shadow-sm">
+      <div className="mt-6 rounded-2xl border border-edge-faint bg-surface p-6 shadow-sm shadow-brand-navy/[0.03]">
         <MessaggiClienteEditor
           messaggi={messaggi}
           onChange={handleChange}
@@ -197,13 +207,13 @@ export default function MessaggiClientePage() {
         />
 
         {errore && <p className="mt-4 text-sm text-red-600">{errore}</p>}
-        {messaggio && <p className="mt-4 text-sm text-brand-teal">{messaggio}</p>}
+        {messaggio && <p className="mt-4 text-sm text-brand-teal-ink">{messaggio}</p>}
 
         <button
           type="button"
           onClick={() => void salva()}
           disabled={salvando}
-          className="mt-4 rounded-lg bg-brand-teal px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
+          className="mt-4 rounded-lg bg-brand-teal px-4 py-2 text-sm font-medium text-white shadow-sm shadow-brand-teal/25 transition hover:bg-brand-teal/90 active:scale-[0.98] disabled:opacity-60"
         >
           {salvando ? "Salvataggio..." : "Salva"}
         </button>

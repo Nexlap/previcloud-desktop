@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { CaretDown } from "@phosphor-icons/react";
 import { iconaMetodoPagamento, type MetodoPagamento } from "../lib/pagamenti";
 
 type Props = {
@@ -33,13 +34,13 @@ export default function PagamentoCard({
       : "font-medium text-brand-navy/50";
 
   return (
-    <div className="mt-8 rounded-2xl border border-black/10 bg-white p-4 shadow-sm">
+    <div className="mt-8 rounded-2xl border border-edge-faint bg-surface p-4 shadow-sm shadow-brand-navy/[0.03]">
       <div className="flex items-start gap-3">
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-bg text-sm font-semibold text-brand-navy">
           €
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-base font-bold text-brand-teal">Pagamento</p>
+          <p className="text-base font-bold text-brand-teal-ink">Pagamento</p>
           <p className="text-xs text-brand-navy/50">Come vuoi essere pagato</p>
         </div>
       </div>
@@ -52,20 +53,20 @@ export default function PagamentoCard({
       <button
         type="button"
         onClick={onOpen}
-        className="mt-4 flex w-full items-center justify-between rounded-xl border border-black/10 bg-brand-bg px-3 py-2.5 text-left text-sm"
+        className="mt-4 flex w-full items-center justify-between rounded-xl border border-edge bg-brand-bg px-3 py-2.5 text-left text-sm transition hover:border-brand-navy/20"
       >
         <span className={`flex items-center gap-2 ${testoClasse}`}>
           <span className={metodoPagamentoNessuno ? "text-brand-navy/40" : undefined}>{icona}</span>
           {etichetta}
         </span>
-        <span className="text-brand-navy/40">⌄</span>
+        <CaretDown size={14} weight="bold" className="text-brand-navy/40" />
       </button>
       )}
 
       {!erroreCaricamento && metodiPagamento.length <= 1 && (
         <Link
           to="/impostazioni/pagamenti"
-          className="mt-3 block text-center text-sm text-brand-teal hover:underline"
+          className="mt-3 block text-center text-sm text-brand-teal-ink hover:underline"
         >
           Configura altri metodi di pagamento →
         </Link>

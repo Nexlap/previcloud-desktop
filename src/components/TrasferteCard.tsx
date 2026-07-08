@@ -1,6 +1,7 @@
 import { useState, type Dispatch, type SetStateAction } from "react";
+import { X } from "@phosphor-icons/react";
 import { calcolaTotaleTrasferte, type TrasfertaBuilder } from "../lib/builder";
-import { formatImportoEuroVisuale, parseImportoEuro } from "preventivoai-shared";
+import { formatImportoEuroVisuale, parseImportoEuro } from "previcloud-shared";
 import ToggleSwitch from "./ToggleSwitch";
 import { PLACEHOLDER } from "../lib/placeholders";
 
@@ -55,14 +56,14 @@ export default function TrasferteCard({ trasferte, setTrasferte, mostraTrasferte
   }
 
   return (
-    <div className="mt-8 rounded-2xl border border-black/10 bg-white p-4 shadow-sm">
+    <div className="mt-8 rounded-2xl border border-edge-faint bg-surface p-4 shadow-sm shadow-brand-navy/[0.03]">
       <div className="flex items-center justify-between gap-3">
         <div className="flex min-w-0 flex-1 items-start gap-3">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-bg text-xs font-semibold text-brand-navy">
             km
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-base font-bold text-brand-teal">Trasferte e rimborsi</p>
+            <p className="text-base font-bold text-brand-teal-ink">Trasferte e rimborsi</p>
             <p className="text-xs text-brand-navy/50">Km e spese vive - esenti o imponibili</p>
           </div>
         </div>
@@ -72,7 +73,7 @@ export default function TrasferteCard({ trasferte, setTrasferte, mostraTrasferte
       {mostraTrasferte && (
         <div className="mt-4 space-y-3">
           {trasferte.map((t) => (
-            <div key={t.id} className="rounded-xl border border-black/5 bg-brand-bg p-3">
+            <div key={t.id} className="rounded-xl border border-edge-faint bg-brand-bg p-3">
               <div className="flex items-center justify-between gap-2">
                 <p className="text-sm font-medium text-brand-navy">
                   {t.tipo === "km" ? `${t.km} km` : t.nome}
@@ -80,10 +81,10 @@ export default function TrasferteCard({ trasferte, setTrasferte, mostraTrasferte
                 <button
                   type="button"
                   onClick={() => setTrasferte((ts) => ts.filter((x) => x.id !== t.id))}
-                  className="text-brand-navy/40 hover:text-brand-navy"
+                  className="flex h-6 w-6 items-center justify-center rounded-full text-brand-navy/40 transition hover:bg-brand-navy/5 hover:text-brand-navy"
                   aria-label="Rimuovi"
                 >
-                  ×
+                  <X size={14} weight="bold" />
                 </button>
               </div>
               <div className="mt-2 flex items-center justify-between">
@@ -95,9 +96,9 @@ export default function TrasferteCard({ trasferte, setTrasferte, mostraTrasferte
                   onClick={() =>
                     setTrasferte((ts) => ts.map((x) => (x.id === t.id ? { ...x, esente: !x.esente } : x)))
                   }
-                  className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                  className={`rounded-full px-2.5 py-0.5 text-xs font-semibold transition ${
                     t.esente
-                      ? "border border-brand-teal/30 bg-brand-teal/10 text-brand-teal"
+                      ? "border border-brand-teal/30 bg-brand-teal/10 text-brand-teal-ink"
                       : "border border-amber-300 bg-amber-50 text-amber-700"
                   }`}
                 >
@@ -107,20 +108,20 @@ export default function TrasferteCard({ trasferte, setTrasferte, mostraTrasferte
             </div>
           ))}
 
-          <div className="border-t border-black/5 pt-3">
+          <div className="border-t border-edge-faint pt-3">
             <p className="text-xs font-semibold tracking-wide text-brand-navy/40">RIMBORSO KM</p>
             <div className="mt-2 flex flex-wrap items-center gap-2">
               <input
                 value={nuoviKm}
                 onChange={(e) => setNuoviKm(e.target.value)}
                 placeholder={PLACEHOLDER.kmRimborso}
-                className="min-w-0 flex-1 rounded-lg border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+                className="min-w-0 flex-1 rounded-lg border border-edge px-3 py-2 text-sm outline-none transition focus:border-brand-teal"
               />
               <span className="text-xs text-brand-navy/40">x €0.25</span>
               <button
                 type="button"
                 onClick={aggiungiKm}
-                className="rounded-lg bg-brand-teal px-3 py-2 text-sm font-medium text-white"
+                className="rounded-lg bg-brand-teal px-3 py-2 text-sm font-medium text-white transition hover:bg-brand-teal/90 active:scale-[0.98]"
               >
                 + Aggiungi
               </button>
@@ -135,26 +136,26 @@ export default function TrasferteCard({ trasferte, setTrasferte, mostraTrasferte
                 value={nuovaSpesaNome}
                 onChange={(e) => setNuovaSpesaNome(e.target.value)}
                 placeholder={PLACEHOLDER.spesaVivaNome}
-                className="min-w-0 flex-[2] rounded-lg border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+                className="min-w-0 flex-[2] rounded-lg border border-edge px-3 py-2 text-sm outline-none transition focus:border-brand-teal"
               />
               <input
                 value={nuovaSpesaImporto}
                 onChange={(e) => setNuovaSpesaImporto(e.target.value)}
                 placeholder={PLACEHOLDER.importoEuro}
-                className="w-24 rounded-lg border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+                className="w-24 rounded-lg border border-edge px-3 py-2 text-sm outline-none transition focus:border-brand-teal"
               />
             </div>
             <button
               type="button"
               onClick={aggiungiSpesa}
-              className="mt-2 w-full rounded-lg border border-black/10 bg-brand-bg py-2 text-sm font-medium text-brand-teal"
+              className="mt-2 w-full rounded-lg border border-edge bg-brand-bg py-2 text-sm font-medium text-brand-teal-ink transition hover:bg-brand-teal/5"
             >
               + Aggiungi spesa
             </button>
           </div>
 
           {trasferte.length > 0 && (
-            <div className="flex items-center justify-between border-t border-black/5 pt-3">
+            <div className="flex items-center justify-between border-t border-edge-faint pt-3">
               <span className="text-sm text-brand-navy/60">Totale trasferte</span>
               <span className="text-sm font-bold text-brand-navy">
                 €{formatImportoEuroVisuale(calcolaTotaleTrasferte(trasferte))}

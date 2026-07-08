@@ -1,8 +1,13 @@
 @import "tailwindcss";
 
 @theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+
   --color-brand-navy: #0D1B2A;
   --color-brand-teal: #0E9F8E;
+  /* Variante più scura del teal per testo piccolo su sfondi chiari: #0E9F8E su bianco è ~3.3:1
+     (sotto la soglia WCAG AA di 4.5:1 per testo normale). #0B7A6D dà ~5.2:1. */
+  --color-brand-teal-ink: #0B7A6D;
   --color-brand-bg: #F7F8FA;
   --color-ink: #0D1B2A;
   --color-surface: #ffffff;
@@ -25,11 +30,14 @@
   --color-edge: rgb(255 255 255 / 0.12);
   --color-edge-faint: rgb(255 255 255 / 0.06);
   --color-placeholder: #8b95a8;
+  /* Il teal originale ha già contrasto sufficiente sulle superfici scure */
+  --color-brand-teal-ink: var(--color-brand-teal);
 }
 
 body {
   background-color: var(--color-brand-bg);
   color: var(--color-ink);
+  font-family: var(--font-sans);
 }
 
 input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
@@ -137,4 +145,15 @@ textarea::placeholder {
 
 .notifica-toast-leave {
   animation: notifica-toast-out 300ms ease-in forwards;
+}
+
+@keyframes login-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

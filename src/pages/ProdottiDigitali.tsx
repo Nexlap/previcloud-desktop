@@ -1,3 +1,4 @@
+import { Package, ArrowSquareOut } from "@phosphor-icons/react";
 import PageContainer from "../components/PageContainer";
 import { WEB_PRODOTTI_URL } from "../lib/webUrls";
 
@@ -15,7 +16,7 @@ export default function ProdottiDigitali() {
     <PageContainer>
       <div className="mx-auto max-w-lg py-6 text-center">
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-edge-faint bg-surface text-brand-teal shadow-sm">
-          <IconPackage className="h-8 w-8" />
+          <Package size={32} weight="regular" />
         </div>
 
         <div className="mt-5 flex items-center justify-center gap-2">
@@ -42,31 +43,13 @@ export default function ProdottiDigitali() {
           className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand-teal px-5 py-3 text-sm font-semibold text-white shadow-md shadow-brand-teal/25 transition hover:bg-brand-teal/90"
         >
           Vai a prodotti digitali sul web
-          <IconExternal className="h-4 w-4" />
+          <ArrowSquareOut size={16} weight="bold" />
         </button>
 
         <p className="mt-4 text-xs text-brand-navy/45">
-          Si apre preventivoai-web: accedi con le stesse credenziali dell&apos;app.
+          Si apre previcloud.it: accedi con le stesse credenziali dell&apos;app.
         </p>
       </div>
     </PageContainer>
-  );
-}
-
-function IconPackage({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className={className} aria-hidden>
-      <path d="M12 3 3 7.5 12 12l9-4.5L12 3Z" strokeLinejoin="round" />
-      <path d="M3 7.5V16.5L12 21l9-4.5V7.5" strokeLinejoin="round" />
-      <path d="M12 12v9" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function IconExternal({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className} aria-hidden>
-      <path d="M14 3h7v7M10 14 21 3M21 14v7h-7M10 10 3 3" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
   );
 }

@@ -10,7 +10,7 @@ export default function PreventivoPdfTemplatePicker({ template, onSelectTemplate
   const attivo = TEMPLATES.find((t) => t.id === template);
 
   return (
-    <div className={embedded ? "" : "rounded-2xl border border-black/10 bg-white p-3"}>
+    <div className={embedded ? "" : "rounded-2xl border border-edge-faint bg-surface p-3"}>
       <p className="text-sm font-medium text-brand-navy">Template</p>
       <div className="mt-2 flex flex-wrap gap-1.5">
         {TEMPLATES.map((t) => (
@@ -22,7 +22,7 @@ export default function PreventivoPdfTemplatePicker({ template, onSelectTemplate
             className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
               template === t.id
                 ? "border-brand-teal bg-brand-teal text-white"
-                : "border-black/10 bg-brand-bg text-brand-navy/70 hover:border-black/20"
+                : "border-edge bg-brand-bg text-brand-navy/70 hover:border-brand-navy/20"
             }`}
           >
             {t.nome}

@@ -1,4 +1,4 @@
 export {
   calcolaFiscalePreventivo,
   calcolaLordoDaNetto,
-} from 'preventivoai-shared'
+} from 'previcloud-shared'

@@ -1,11 +1,11 @@
 # Build release Windows con artefatti updater firmati.
 # Prerequisito:
-#   %USERPROFILE%\.tauri\preventivoai-desktop.key
-#   %USERPROFILE%\.tauri\preventivoai-desktop.password
+#   %USERPROFILE%\.tauri\previcloud-desktop.key
+#   %USERPROFILE%\.tauri\previcloud-desktop.password
 
 $ErrorActionPreference = "Stop"
-$KeyPath = Join-Path $env:USERPROFILE ".tauri\preventivoai-desktop.key"
-$PasswordPath = Join-Path $env:USERPROFILE ".tauri\preventivoai-desktop.password"
+$KeyPath = Join-Path $env:USERPROFILE ".tauri\previcloud-desktop.key"
+$PasswordPath = Join-Path $env:USERPROFILE ".tauri\previcloud-desktop.password"
 $ProjectRoot = Split-Path $PSScriptRoot -Parent
 
 if (-not (Test-Path $KeyPath)) {
@@ -26,4 +26,4 @@ npm run tauri:build
 Write-Host ""
 Write-Host "Artefatti in src-tauri\target\release\bundle\"
 Write-Host "Genera latest.json con:"
-Write-Host "  npm run updater:manifest -- <versione> `"Note release`" https://github.com/danielegalmax/preventivoai-desktop/releases/download/v<versione>"
+Write-Host "  npm run updater:manifest -- <versione> `"Note release`" https://github.com/danielegalmax/previcloud-desktop/releases/download/v<versione>"

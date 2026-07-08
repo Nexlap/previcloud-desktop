@@ -20,7 +20,7 @@ export default function BozzaInSospesoDialog({
       onClose={onDismiss}
       onBackdropClick={onDismiss}
       zClass="z-[60]"
-      panelClassName="w-full max-w-md rounded-2xl bg-white p-6 shadow-lg"
+      panelClassName="w-full max-w-md rounded-2xl border border-edge-faint bg-surface p-6 shadow-xl shadow-brand-navy/10"
       contentClassName="mt-4"
     >
       <p className="whitespace-pre-line text-sm leading-relaxed text-brand-navy/70">{message}</p>
@@ -28,14 +28,14 @@ export default function BozzaInSospesoDialog({
         <button
           type="button"
           onClick={onRiprendi}
-          className="flex-1 rounded-xl bg-brand-teal py-2.5 text-sm font-semibold text-white hover:bg-brand-teal/90"
+          className="flex-1 rounded-xl bg-brand-teal py-2.5 text-sm font-semibold text-white shadow-sm shadow-brand-teal/25 transition hover:bg-brand-teal/90 active:scale-[0.98]"
         >
           Riprendi bozza
         </button>
         <button
           type="button"
           onClick={onIniziaNuovo}
-          className="flex-1 rounded-xl border border-black/10 py-2.5 text-sm font-medium text-brand-navy hover:bg-brand-bg"
+          className="flex-1 rounded-xl border border-edge py-2.5 text-sm font-medium text-brand-navy transition hover:bg-brand-bg"
         >
           Inizia nuovo
         </button>

@@ -12,7 +12,7 @@ export function signUpWithEmail(email: string, password: string) {
 
 export function resetPassword(email: string) {
   return supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: "https://preventivoai-web.vercel.app/reset-password",
+    redirectTo: "https://previcloud.it/reset-password",
   });
 }
 

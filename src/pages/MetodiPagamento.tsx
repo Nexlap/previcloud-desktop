@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
+import { ArrowLeft, Plus, X } from "@phosphor-icons/react";
 import PageContainer from "../components/PageContainer";
 import StripeConnectCard from "../components/StripeConnectCard";
 import { useAppModalKeyboard } from "../components/ModalShell";
@@ -107,8 +108,9 @@ export default function MetodiPagamento() {
   if (loading) {
     return (
       <PageContainer>
-        <Link to="/impostazioni" className="text-sm text-brand-navy/60 hover:text-brand-navy">
-          ← Impostazioni
+        <Link to="/impostazioni" className="inline-flex items-center gap-1.5 text-sm text-brand-navy/60 transition hover:text-brand-navy">
+          <ArrowLeft size={14} weight="bold" />
+          Impostazioni
         </Link>
         <div className="mt-2">
           <h1 className="text-2xl font-semibold text-brand-navy">Metodi di pagamento</h1>
@@ -124,8 +126,9 @@ export default function MetodiPagamento() {
 
   return (
     <PageContainer>
-      <Link to="/impostazioni" className="text-sm text-brand-navy/60 hover:text-brand-navy">
-        ← Impostazioni
+      <Link to="/impostazioni" className="inline-flex items-center gap-1.5 text-sm text-brand-navy/60 transition hover:text-brand-navy">
+        <ArrowLeft size={14} weight="bold" />
+        Impostazioni
       </Link>
       <div className="mt-2 flex items-center justify-between gap-3">
         <div>
@@ -135,9 +138,10 @@ export default function MetodiPagamento() {
         <button
           type="button"
           onClick={apriNuovo}
-          className="rounded-lg bg-brand-teal px-4 py-2 text-sm font-medium text-white"
+          className="inline-flex items-center gap-1.5 rounded-lg bg-brand-teal px-4 py-2 text-sm font-medium text-white shadow-sm shadow-brand-teal/25 transition hover:bg-brand-teal/90 active:scale-[0.98]"
         >
-          + Nuovo
+          <Plus size={16} weight="bold" />
+          Nuovo
         </button>
       </div>
 
@@ -156,7 +160,7 @@ export default function MetodiPagamento() {
           <button
             type="button"
             onClick={apriNuovo}
-            className="w-full rounded-2xl border border-dashed border-black/10 bg-white p-8 text-center shadow-sm hover:bg-brand-bg/40"
+            className="w-full rounded-2xl border border-dashed border-edge bg-surface p-8 text-center shadow-sm transition hover:bg-brand-bg/40"
           >
             <p className="text-base font-semibold text-brand-navy">Nessun metodo configurato</p>
             <p className="mt-1 text-sm text-brand-navy/50">
@@ -167,7 +171,7 @@ export default function MetodiPagamento() {
           metodi.map((m) => (
             <div
               key={m.id}
-              className="flex items-center gap-3 rounded-2xl border border-black/10 bg-white p-4 shadow-sm"
+              className="flex items-center gap-3 rounded-2xl border border-edge-faint bg-surface p-4 shadow-sm shadow-brand-navy/[0.03]"
             >
               <span className="text-2xl">{iconaMetodoPagamento(m.tipo)}</span>
               <div className="min-w-0 flex-1">
@@ -183,7 +187,7 @@ export default function MetodiPagamento() {
                   </p>
                 )}
                 {m.predefinito && (
-                  <span className="mt-1 inline-block text-xs font-semibold text-brand-teal">predefinito</span>
+                  <span className="mt-1 inline-block text-xs font-semibold text-brand-teal-ink">predefinito</span>
                 )}
               </div>
               <button
@@ -206,14 +210,18 @@ export default function MetodiPagamento() {
       </div>
 
       {modalAperto && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-          <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-white p-6 shadow-xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-brand-navy/40 p-4 backdrop-blur-[2px]">
+          <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-edge-faint bg-surface p-6 shadow-xl shadow-brand-navy/10">
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-brand-navy">
                 {edit ? "Modifica metodo" : "Nuovo metodo"}
               </h2>
-              <button type="button" onClick={() => setModalAperto(false)} className="text-brand-navy/50">
-                ✕
+              <button
+                type="button"
+                onClick={() => setModalAperto(false)}
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-brand-navy/50 transition hover:bg-brand-bg"
+              >
+                <X size={16} weight="bold" />
               </button>
             </div>
 
@@ -229,7 +237,7 @@ export default function MetodiPagamento() {
                       className={`rounded-full px-3 py-1.5 text-sm ${
                         form.tipo === t.key
                           ? "bg-brand-navy text-white"
-                          : "border border-black/10 bg-brand-bg text-brand-navy"
+                          : "border border-edge bg-brand-bg text-brand-navy"
                       }`}
                     >
                       {iconaMetodoPagamento(t.key)} {t.label}
@@ -244,7 +252,7 @@ export default function MetodiPagamento() {
                   value={form.nome}
                   onChange={(e) => setForm((f) => ({ ...f, nome: e.target.value }))}
                   placeholder="es. Conto principale"
-                  className="w-full rounded-lg border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+                  className="w-full rounded-lg border border-edge px-3 py-2 text-sm outline-none focus:border-brand-teal"
                 />
               </div>
 
@@ -258,7 +266,7 @@ export default function MetodiPagamento() {
                         setForm((f) => ({ ...f, dati: { ...f.dati, iban: e.target.value.toUpperCase() } }))
                       }
                       placeholder="IT60..."
-                      className="w-full rounded-lg border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+                      className="w-full rounded-lg border border-edge px-3 py-2 text-sm outline-none focus:border-brand-teal"
                     />
                   </div>
                   <div className="space-y-1">
@@ -269,7 +277,7 @@ export default function MetodiPagamento() {
                         setForm((f) => ({ ...f, dati: { ...f.dati, intestatario: e.target.value } }))
                       }
                       placeholder="Mario Rossi"
-                      className="w-full rounded-lg border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+                      className="w-full rounded-lg border border-edge px-3 py-2 text-sm outline-none focus:border-brand-teal"
                     />
                   </div>
                 </>
@@ -282,7 +290,7 @@ export default function MetodiPagamento() {
                       <label className="text-xs font-semibold tracking-wide text-brand-navy/40">
                         USERNAME PAYPAL.ME
                       </label>
-                      <div className="flex overflow-hidden rounded-lg border border-black/10 focus-within:border-brand-teal">
+                      <div className="flex overflow-hidden rounded-lg border border-edge focus-within:border-brand-teal">
                         <span className="flex shrink-0 items-center bg-brand-bg px-2.5 text-xs text-brand-navy/50">
                           paypal.me/
                         </span>
@@ -316,7 +324,7 @@ export default function MetodiPagamento() {
                         value={form.dati?.email || ""}
                         onChange={(e) => setForm((f) => ({ ...f, dati: { ...f.dati, email: e.target.value } }))}
                         placeholder={PLACEHOLDER.email}
-                        className="w-full rounded-lg border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+                        className="w-full rounded-lg border border-edge px-3 py-2 text-sm outline-none focus:border-brand-teal"
                       />
                       <p className="text-xs leading-relaxed text-brand-navy/55">
                         Email del conto PayPal, utile come contatto per il cliente nel preventivo.
@@ -346,7 +354,7 @@ export default function MetodiPagamento() {
                   type="checkbox"
                   checked={form.predefinito}
                   onChange={(e) => setForm((f) => ({ ...f, predefinito: e.target.checked }))}
-                  className="rounded border-black/20"
+                  className="rounded border-edge"
                 />
                 <span className="text-sm text-brand-navy">Imposta come predefinito</span>
               </label>
@@ -357,7 +365,7 @@ export default function MetodiPagamento() {
                 type="button"
                 onClick={salva}
                 disabled={saving}
-                className="w-full rounded-lg bg-brand-teal py-2.5 text-sm font-medium text-white disabled:opacity-60"
+                className="w-full rounded-lg bg-brand-teal py-2.5 text-sm font-medium text-white shadow-sm shadow-brand-teal/25 transition hover:bg-brand-teal/90 active:scale-[0.99] disabled:opacity-60"
               >
                 {saving ? "Salvataggio..." : "Salva"}
               </button>

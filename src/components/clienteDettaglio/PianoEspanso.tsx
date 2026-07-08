@@ -2,9 +2,9 @@ import { useMemo, useState, type ReactNode } from "react";
 
 import { MESI_BREVI } from "../../lib/constants";
 
-import type { AnalisiPiano } from "preventivoai-shared";
+import type { AnalisiPiano } from "previcloud-shared";
 
-import { formatImportoEuro, giornoScadenzaEffettivo, labelScadenzaRataDaPiano } from "preventivoai-shared";
+import { formatImportoEuro, giornoScadenzaEffettivo, labelScadenzaRataDaPiano } from "previcloud-shared";
 
 import type { Abbonamento, PreventivoMadre, RataAbbonamento } from "../../lib/types";
 
@@ -174,7 +174,7 @@ function GruppoRateCollassabile({
 
   return (
 
-    <div className="border-t border-black/5">
+    <div className="border-t border-edge-faint">
 
       <button
 
@@ -355,7 +355,7 @@ export default function PianoEspanso({
 
     <div className={`space-y-2.5 px-4 pb-4 pt-3 ${className}`.trim()}>
 
-      <div className="h-2 overflow-hidden rounded-full bg-black/5">
+      <div className="h-2 overflow-hidden rounded-full bg-edge-faint">
 
         <div
 
@@ -383,7 +383,7 @@ export default function PianoEspanso({
 
           <p className="text-[10px] font-semibold tracking-wide text-brand-navy/50 uppercase">Incassato</p>
 
-          <p className="mt-0.5 text-sm font-bold text-brand-teal">€{formatImportoEuro(analisi.importoRaccolto, 2)}</p>
+          <p className="mt-0.5 text-sm font-bold text-brand-teal-ink">€{formatImportoEuro(analisi.importoRaccolto, 2)}</p>
 
         </div>
 
@@ -407,7 +407,7 @@ export default function PianoEspanso({
 
         <>
 
-          <div className="border-t border-black/5 pt-2.5">
+          <div className="border-t border-edge-faint pt-2.5">
 
           {partizioneCalendario.corrente ? (
 
@@ -431,7 +431,7 @@ export default function PianoEspanso({
 
               onClick={onAggiungiCanone}
 
-              className="w-full rounded-lg bg-brand-bg py-2.5 text-sm font-medium text-brand-teal"
+              className="w-full rounded-lg bg-brand-bg py-2.5 text-sm font-medium text-brand-teal-ink transition hover:bg-brand-teal/10"
 
             >
 
@@ -487,7 +487,7 @@ export default function PianoEspanso({
 
           {onAggiungiCanone ? (
 
-            <button type="button" onClick={onAggiungiCanone} className="w-full border-t border-black/5 py-2.5 text-sm font-medium text-brand-teal">
+            <button type="button" onClick={onAggiungiCanone} className="w-full border-t border-edge-faint py-2.5 text-sm font-medium text-brand-teal-ink transition hover:bg-brand-teal/5">
 
               + Aggiungi canone (mese/anno)
 

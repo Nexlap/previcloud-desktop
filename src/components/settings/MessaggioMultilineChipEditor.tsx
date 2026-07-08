@@ -8,7 +8,7 @@ import {
   tokenVariabileMessaggio,
   variabileBloccataInTemplate,
   type TipoMessaggioCliente,
-} from "preventivoai-shared";
+} from "previcloud-shared";
 
 type Props = {
   tipo: TipoMessaggioCliente;
@@ -381,7 +381,7 @@ export default function MessaggioMultilineChipEditor({ tipo, value, onChange, va
         onMouseUp={saveSelection}
         onKeyUp={saveSelection}
         onBlur={saveSelection}
-        className="min-h-[9rem] w-full whitespace-pre-wrap rounded-lg border border-black/10 px-3 py-2 text-sm leading-relaxed outline-none focus:border-brand-teal"
+        className="min-h-[9rem] w-full whitespace-pre-wrap rounded-lg border border-edge px-3 py-2 text-sm leading-relaxed outline-none transition focus:border-brand-teal"
       />
 
       {disponibili.length > 0 ? (
@@ -395,7 +395,7 @@ export default function MessaggioMultilineChipEditor({ tipo, value, onChange, va
               type="button"
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => inserisci(v)}
-              className="rounded-md border border-black/10 bg-white px-2 py-0.5 text-xs font-semibold text-brand-teal hover:bg-brand-bg"
+              className="rounded-md border border-edge bg-surface px-2 py-0.5 text-xs font-semibold text-brand-teal-ink transition hover:bg-brand-bg"
             >
               {v}
             </button>

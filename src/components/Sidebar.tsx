@@ -1,5 +1,16 @@
-import type { ReactNode } from "react";
+import type { ComponentType } from "react";
 import { useLocation, useNavigate } from "react-router";
+import {
+  House,
+  Plus,
+  FileText,
+  Users,
+  Package,
+  Gear,
+  User,
+  Monitor,
+  type IconProps,
+} from "@phosphor-icons/react";
 import {
   getSectionRoot,
   linkToSection,
@@ -10,7 +21,7 @@ import { useNavigaNuovoPreventivo } from "./NuovoPreventivoNavProvider";
 type NavItem = {
   to: string;
   label: string;
-  icon: ReactNode;
+  Icon: ComponentType<IconProps>;
   emphasis?: boolean;
 };
 
@@ -23,19 +34,19 @@ type NavGroup = {
 const mainGroups: NavGroup[] = [
   {
     title: "Panoramica",
-    items: [{ to: "/", label: "Home", icon: <IconHome /> }],
+    items: [{ to: "/", label: "Home", Icon: House }],
   },
   {
     title: "Lavoro",
     items: [
-      { to: "/nuovo", label: "Nuovo preventivo", icon: <IconPlus />, emphasis: true },
-      { to: "/storico", label: "Storico preventivi", icon: <IconFile /> },
-      { to: "/clienti", label: "Clienti", icon: <IconUsers /> },
+      { to: "/nuovo", label: "Nuovo preventivo", Icon: Plus, emphasis: true },
+      { to: "/storico", label: "Storico preventivi", Icon: FileText },
+      { to: "/clienti", label: "Clienti", Icon: Users },
     ],
   },
   {
     title: "Digitale",
-    items: [{ to: "/prodotti-digitali", label: "Prodotti digitali", icon: <IconPackage /> }],
+    items: [{ to: "/prodotti-digitali", label: "Prodotti digitali", Icon: Package }],
     separated: true,
   },
 ];
@@ -43,13 +54,13 @@ const mainGroups: NavGroup[] = [
 const bottomGroups: NavGroup[] = [
   {
     title: "Configurazione",
-    items: [{ to: "/impostazioni", label: "Impostazioni", icon: <IconSettings /> }],
+    items: [{ to: "/impostazioni", label: "Impostazioni", Icon: Gear }],
   },
   {
     title: "Account",
     items: [
-      { to: "/profilo", label: "Profilo", icon: <IconUser /> },
-      { to: "/app", label: "App", icon: <IconMonitor /> },
+      { to: "/profilo", label: "Profilo", Icon: User },
+      { to: "/app", label: "App", Icon: Monitor },
     ],
   },
 ];
@@ -63,7 +74,7 @@ function NavLink({
   isActive: boolean;
   onNavigate: (to: string) => void;
 }) {
-  const { to, label, icon, emphasis } = item;
+  const { to, label, Icon, emphasis } = item;
 
   if (emphasis) {
     return (
@@ -73,13 +84,15 @@ function NavLink({
           e.preventDefault();
           onNavigate(to);
         }}
-        className={`mt-1 mb-2 flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-colors ${
+        className={`mt-1 mb-2 flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all active:scale-[0.98] ${
           isActive
             ? "bg-brand-teal text-white shadow-sm shadow-brand-teal/30"
             : "bg-brand-teal/90 text-white hover:bg-brand-teal"
         }`}
       >
-        <span className="flex h-5 w-5 shrink-0 items-center justify-center">{icon}</span>
+        <span className="flex h-5 w-5 shrink-0 items-center justify-center">
+          <Icon size={18} weight="bold" />
+        </span>
         {label}
       </a>
     );
@@ -106,7 +119,7 @@ function NavLink({
           isActive ? "text-brand-teal" : "text-white/50"
         }`}
       >
-        {icon}
+        <Icon size={18} weight={isActive ? "fill" : "regular"} />
       </span>
       {label}
     </a>
@@ -155,9 +168,14 @@ export default function Sidebar() {
 
   return (
     <aside className="flex w-56 shrink-0 flex-col border-r border-white/5 bg-brand-navy text-white">
-      <div className="border-b border-white/10 px-5 py-5">
-        <p className="text-base font-semibold tracking-tight">PreviCloud</p>
-        <p className="mt-0.5 text-xs text-white/45">Desktop</p>
+      <div className="flex items-center gap-2.5 border-b border-white/10 px-5 py-5">
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-teal text-sm font-bold text-white">
+          P
+        </span>
+        <div className="min-w-0">
+          <p className="truncate text-base font-semibold tracking-tight">PreviCloud</p>
+          <p className="text-xs text-white/45">Desktop</p>
+        </div>
       </div>
 
       <nav className="flex flex-1 flex-col gap-5 overflow-y-auto px-3 py-4">
@@ -185,78 +203,3 @@ export default function Sidebar() {
   );
 }
 
-function IconHome() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-5 w-5">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z" />
-    </svg>
-  );
-}
-
-function IconPlus() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5">
-      <path strokeLinecap="round" d="M12 5v14M5 12h14" />
-    </svg>
-  );
-}
-
-function IconFile() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-5 w-5">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M8 3h6l4 4v14a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" />
-      <path strokeLinecap="round" d="M14 3v4h4" />
-    </svg>
-  );
-}
-
-function IconUsers() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-5 w-5">
-      <path strokeLinecap="round" d="M16 19v-1a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v1" />
-      <circle cx="10" cy="8" r="3" />
-      <path strokeLinecap="round" d="M20 19v-1a3 3 0 0 0-2-2.8" />
-      <path strokeLinecap="round" d="M15 4.2a3 3 0 0 1 0 5.6" />
-    </svg>
-  );
-}
-
-function IconPackage() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-5 w-5">
-      <path strokeLinejoin="round" d="M12 3 3 7.5 12 12l9-4.5L12 3Z" />
-      <path strokeLinejoin="round" d="M3 7.5V16.5L12 21l9-4.5V7.5" />
-      <path strokeLinecap="round" d="M12 12v9" />
-    </svg>
-  );
-}
-
-function IconSettings() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-5 w-5">
-      <circle cx="12" cy="12" r="3" />
-      <path
-        strokeLinecap="round"
-        d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
-      />
-    </svg>
-  );
-}
-
-function IconUser() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-5 w-5">
-      <circle cx="12" cy="8" r="3.5" />
-      <path strokeLinecap="round" d="M5 20v-1a7 7 0 0 1 14 0v1" />
-    </svg>
-  );
-}
-
-function IconMonitor() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-5 w-5">
-      <rect x="3" y="4" width="18" height="12" rx="2" />
-      <path strokeLinecap="round" d="M8 20h8M12 16v4" />
-    </svg>
-  );
-}

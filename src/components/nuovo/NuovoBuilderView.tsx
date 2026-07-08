@@ -112,7 +112,7 @@ export default function NuovoBuilderView({
   errore,
 }: Props) {
   return (
-    <div className="mt-4 rounded-2xl bg-white p-5 shadow-sm">
+    <div className="mt-4 rounded-2xl border border-edge-faint bg-surface p-5 shadow-sm shadow-brand-navy/[0.03]">
       <BuilderClienteCard
         clienti={clienti}
         clienteSelezionatoId={clienteSelezionatoId}
@@ -165,13 +165,13 @@ export default function NuovoBuilderView({
         totaleBase={totaleBase}
       />
 
-      <div className="mt-8 rounded-2xl border border-black/10 bg-white p-4 shadow-sm">
+      <div className="mt-8 rounded-2xl border border-edge-faint bg-surface p-4 shadow-sm shadow-brand-navy/[0.03]">
         <div className="flex items-start gap-3">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-bg text-sm font-semibold text-brand-navy">
             N
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-base font-bold text-brand-teal">Note</p>
+            <p className="text-base font-bold text-brand-teal-ink">Note</p>
             <p className="text-xs text-brand-navy/50">Dettagli aggiuntivi da inserire nel preventivo</p>
           </div>
         </div>
@@ -180,7 +180,7 @@ export default function NuovoBuilderView({
           onChange={(e) => onNoteExtraChange(e.target.value)}
           rows={2}
           placeholder={PLACEHOLDER.notePreventivo}
-          className="mt-4 w-full rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+          className="mt-4 w-full rounded-xl border border-edge px-3 py-2 text-sm outline-none transition focus:border-brand-teal"
         />
       </div>
 

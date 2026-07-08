@@ -2,5 +2,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-    preventivoai_desktop_lib::run()
+    previcloud_desktop_lib::run()
 }

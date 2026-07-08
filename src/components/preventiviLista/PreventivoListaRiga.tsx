@@ -89,7 +89,7 @@ export default function PreventivoListaRiga({
       <tr
         ref={setRowRef}
         onClick={(e) => onRowClick(e, p)}
-        className={`border-t border-black/5 cursor-pointer transition-colors ${
+        className={`border-t border-edge-faint cursor-pointer transition-colors ${
           evidenziato
             ? "preventivo-row-focus"
             : espanso
@@ -114,7 +114,7 @@ export default function PreventivoListaRiga({
         {variant === "storico" && (
           <td className="px-5 py-3">
             {p.cliente_id ? (
-              <Link to={`/clienti/${p.cliente_id}`} className="text-brand-navy hover:text-brand-teal">
+              <Link to={`/clienti/${p.cliente_id}`} className="text-brand-navy transition hover:text-brand-teal-ink">
                 {p.nome_cliente}
               </Link>
             ) : (
@@ -133,7 +133,7 @@ export default function PreventivoListaRiga({
                 <p className="mt-0.5 text-xs text-brand-navy/50">{p.nome_cliente}</p>
               ) : null}
               {collegamento ? (
-                <p className="mt-1 text-xs font-semibold text-brand-teal">
+                <p className="mt-1 text-xs font-semibold text-brand-teal-ink">
                   {normalizzaTipoPiano(collegamento.tipo, collegamento.nomePiano) === "rate" ? "📅 " : "💰 "}
                   {etichettaPianoCollegato(collegamento)}
                 </p>
@@ -173,11 +173,11 @@ export default function PreventivoListaRiga({
         </td>
       </tr>
       {espanso ? (
-        <tr className="border-t border-black/5 bg-brand-bg/50">
+        <tr className="border-t border-edge-faint bg-brand-bg/50">
           <td colSpan={colCount} className="px-5 py-4">
             <div className="space-y-4">
               {collegamento ? (
-                <p className="text-xs font-semibold text-brand-teal">
+                <p className="text-xs font-semibold text-brand-teal-ink">
                   {normalizzaTipoPiano(collegamento.tipo, collegamento.nomePiano) === "rate" ? "📅 " : "💰 "}
                   {etichettaPianoCollegato(collegamento)}
                 </p>
@@ -189,7 +189,7 @@ export default function PreventivoListaRiga({
               {caricandoDettaglioId === p.id ? (
                 <p className="text-sm text-brand-navy/50">Caricamento testo...</p>
               ) : p.testo_preventivo ? (
-                <pre className="max-h-64 overflow-auto whitespace-pre-wrap rounded-xl border border-black/5 bg-white p-4 font-mono text-xs leading-relaxed text-brand-navy/70">
+                <pre className="max-h-64 overflow-auto whitespace-pre-wrap rounded-xl border border-edge-faint bg-surface p-4 font-mono text-xs leading-relaxed text-brand-navy/70">
                   {p.testo_preventivo}
                 </pre>
               ) : (
@@ -201,7 +201,7 @@ export default function PreventivoListaRiga({
                   <button
                     type="button"
                     onClick={onToggleCronologia}
-                    className="text-sm font-medium text-brand-teal hover:underline"
+                    className="text-sm font-medium text-brand-teal-ink hover:underline"
                   >
                     {cronologiaApertaId === p.id
                       ? "▲ Nascondi cronologia"
@@ -213,7 +213,7 @@ export default function PreventivoListaRiga({
                       <button
                         type="button"
                         onClick={() => onToggleCronologiaVersione(v.id)}
-                        className="flex w-full items-center justify-between rounded-lg bg-white px-3 py-2 text-left text-sm hover:bg-brand-bg"
+                        className="flex w-full items-center justify-between rounded-lg bg-surface px-3 py-2 text-left text-sm transition hover:bg-brand-bg"
                       >
                         <span className="font-semibold text-brand-navy/50">v{v.versione || 1}</span>
                         <span className="text-brand-navy/50">
@@ -222,7 +222,7 @@ export default function PreventivoListaRiga({
                         <span className="text-brand-navy/70">{formatImporto(v.importo_totale)}</span>
                       </button>
                       {cronologiaVersioneApertaId === v.id ? (
-                        <div className="space-y-3 rounded-lg bg-white p-3">
+                        <div className="space-y-3 rounded-lg bg-surface p-3">
                           {v.testo_preventivo ? (
                             <pre className="max-h-48 overflow-auto whitespace-pre-wrap font-mono text-xs leading-relaxed text-brand-navy/70">
                               {v.testo_preventivo}
@@ -231,7 +231,7 @@ export default function PreventivoListaRiga({
                           <button
                             type="button"
                             onClick={() => onRipristinaVersione(v)}
-                            className="text-sm font-medium text-brand-teal hover:underline"
+                            className="text-sm font-medium text-brand-teal-ink hover:underline"
                           >
                             Ripristina questa versione
                           </button>

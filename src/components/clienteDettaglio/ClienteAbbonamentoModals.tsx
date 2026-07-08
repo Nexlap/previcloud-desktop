@@ -1,13 +1,13 @@
 import { useMemo } from "react";
 import type { Preventivo, RataAbbonamento } from "../../lib/types";
-import { formatImportoEuro, labelScadenzaRataDaPiano, parseImportoEuro } from "preventivoai-shared";
+import { formatImportoEuro, labelScadenzaRataDaPiano, parseImportoEuro } from "previcloud-shared";
 import { AnnoSelect, GiornoScadenzaSelect, MeseInizioSelect } from "../pickers/DatePartPickers";
 import PreventivoPicker from "./PreventivoPicker";
 import {
   calcolaAccontoSaldoPiano,
   type RateAccontoTipo,
   type RateModalitaPiano,
-} from "preventivoai-shared";
+} from "previcloud-shared";
 import ModalShell from "../ModalShell";
 
 function FieldLabel({ children }: { children: React.ReactNode }) {
@@ -18,7 +18,7 @@ function FieldInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <input
       {...props}
-      className="w-full rounded-xl border border-black/10 bg-brand-bg px-3 py-2.5 text-sm text-brand-navy outline-none focus:border-brand-teal"
+      className="w-full rounded-xl border border-edge bg-brand-bg px-3 py-2.5 text-sm text-brand-navy outline-none transition focus:border-brand-teal"
     />
   );
 }
@@ -39,10 +39,10 @@ function OptionToggle<T extends string>({
           key={opt.key}
           type="button"
           onClick={() => onChange(opt.key)}
-          className={`rounded-full px-3 py-1.5 text-sm ${
+          className={`rounded-full px-3 py-1.5 text-sm transition ${
             value === opt.key
               ? "bg-brand-navy text-white"
-              : "border border-black/10 bg-brand-bg text-brand-navy"
+              : "border border-edge bg-brand-bg text-brand-navy hover:border-brand-navy/30"
           }`}
         >
           {opt.label}
@@ -230,10 +230,10 @@ export default function ClienteAbbonamentoModals({
             <FieldLabel>N° MENSILITÀ (opzionale)</FieldLabel>
             <FieldInput value={abMensilita} onChange={(e) => onChangeAbMensilita(e.target.value)} placeholder="es. 12 - lascia vuoto per canone aperto" />
           </div>
-          <button type="button" onClick={onCreaAbbonamento} className="w-full rounded-xl bg-brand-navy py-3 text-sm font-semibold text-white">
+          <button type="button" onClick={onCreaAbbonamento} className="w-full rounded-xl bg-brand-navy py-3 text-sm font-semibold text-white transition hover:bg-brand-navy/90 active:scale-[0.99]">
             Crea abbonamento
           </button>
-          <button type="button" onClick={onCloseNuovo} className="w-full py-2 text-sm text-brand-navy/50">Annulla</button>
+          <button type="button" onClick={onCloseNuovo} className="w-full py-2 text-sm text-brand-navy/50 transition hover:text-brand-navy">Annulla</button>
         </ModalShell>
       ) : null}
 
@@ -316,10 +316,10 @@ export default function ClienteAbbonamentoModals({
               onGiornoCollegatoChange={onChangeRateGiorno}
             />
           </div>
-          <button type="button" onClick={onCreaPianoRate} className="w-full rounded-xl bg-brand-navy py-3 text-sm font-semibold text-white">
+          <button type="button" onClick={onCreaPianoRate} className="w-full rounded-xl bg-brand-navy py-3 text-sm font-semibold text-white transition hover:bg-brand-navy/90 active:scale-[0.99]">
             Crea piano a rate
           </button>
-          <button type="button" onClick={onCloseNuovoRate} className="w-full py-2 text-sm text-brand-navy/50">Annulla</button>
+          <button type="button" onClick={onCloseNuovoRate} className="w-full py-2 text-sm text-brand-navy/50 transition hover:text-brand-navy">Annulla</button>
         </ModalShell>
       ) : null}
 
@@ -333,10 +333,10 @@ export default function ClienteAbbonamentoModals({
             <FieldLabel>GIORNO SCADENZA</FieldLabel>
             <GiornoScadenzaSelect value={abGiorno} onChange={onChangeAbGiorno} />
           </div>
-          <button type="button" onClick={onAggiornaAbbonamento} className="w-full rounded-xl bg-brand-navy py-3 text-sm font-semibold text-white">
+          <button type="button" onClick={onAggiornaAbbonamento} className="w-full rounded-xl bg-brand-navy py-3 text-sm font-semibold text-white transition hover:bg-brand-navy/90 active:scale-[0.99]">
             Salva
           </button>
-          <button type="button" onClick={onCloseModifica} className="w-full py-2 text-sm text-brand-navy/50">Annulla</button>
+          <button type="button" onClick={onCloseModifica} className="w-full py-2 text-sm text-brand-navy/50 transition hover:text-brand-navy">Annulla</button>
         </ModalShell>
       ) : null}
 
@@ -349,18 +349,18 @@ export default function ClienteAbbonamentoModals({
           <button
             type="button"
             onClick={onApplicaSoloProssimiCanoni}
-            className="w-full rounded-xl border border-brand-teal py-3 text-sm font-semibold text-brand-teal"
+            className="w-full rounded-xl border border-brand-teal py-3 text-sm font-semibold text-brand-teal-ink transition hover:bg-brand-teal/5 active:scale-[0.99]"
           >
             Applica solo ai prossimi canoni
           </button>
           <button
             type="button"
             onClick={onApplicaAncheCanoniEsistenti}
-            className="w-full rounded-xl bg-brand-navy py-3 text-sm font-semibold text-white"
+            className="w-full rounded-xl bg-brand-navy py-3 text-sm font-semibold text-white transition hover:bg-brand-navy/90 active:scale-[0.99]"
           >
             Applica anche ai canoni già generati
           </button>
-          <button type="button" onClick={onCloseSceltaApplicaCanone} className="w-full py-2 text-sm text-brand-navy/50">
+          <button type="button" onClick={onCloseSceltaApplicaCanone} className="w-full py-2 text-sm text-brand-navy/50 transition hover:text-brand-navy">
             Annulla
           </button>
         </ModalShell>
@@ -384,7 +384,7 @@ export default function ClienteAbbonamentoModals({
             {(rataSelezionata.acconto || 0) > 0 ? (
               <div className="flex justify-between">
                 <span className="text-brand-navy/60">Già incassato</span>
-                <span className="font-bold text-brand-teal">€{formatImportoEuro(rataSelezionata.acconto || 0, 2)}</span>
+                <span className="font-bold text-brand-teal-ink">€{formatImportoEuro(rataSelezionata.acconto || 0, 2)}</span>
               </div>
             ) : null}
             <div className="flex justify-between">
@@ -416,10 +416,10 @@ export default function ClienteAbbonamentoModals({
             <FieldLabel>NOTA (opzionale)</FieldLabel>
             <FieldInput value={pagamentoNota} onChange={(e) => onChangePagamentoNota(e.target.value)} placeholder="es. Bonifico 10 giugno" />
           </div>
-          <button type="button" onClick={onConfermaPagamento} className="w-full rounded-xl bg-brand-teal py-3 text-sm font-semibold text-white">
+          <button type="button" onClick={onConfermaPagamento} className="w-full rounded-xl bg-brand-teal py-3 text-sm font-semibold text-white shadow-sm shadow-brand-teal/25 transition hover:bg-brand-teal/90 active:scale-[0.99]">
             ✓ Registra pagamento
           </button>
-          <button type="button" onClick={onCloseRata} className="w-full py-2 text-sm text-brand-navy/50">Annulla</button>
+          <button type="button" onClick={onCloseRata} className="w-full py-2 text-sm text-brand-navy/50 transition hover:text-brand-navy">Annulla</button>
         </ModalShell>
       ) : null}
 
@@ -437,20 +437,20 @@ export default function ClienteAbbonamentoModals({
             <FieldLabel>IMPORTO (€)</FieldLabel>
             <FieldInput value={nuovaRataImporto} onChange={(e) => onChangeNuovaRataImporto(e.target.value)} placeholder="es. 500" />
           </div>
-          <button type="button" onClick={onConfermaAggiungiRata} className="w-full rounded-xl bg-brand-navy py-3 text-sm font-semibold text-white">
+          <button type="button" onClick={onConfermaAggiungiRata} className="w-full rounded-xl bg-brand-navy py-3 text-sm font-semibold text-white transition hover:bg-brand-navy/90 active:scale-[0.99]">
             Aggiungi canone
           </button>
-          <button type="button" onClick={onCloseAggiungiRata} className="w-full py-2 text-sm text-brand-navy/50">Annulla</button>
+          <button type="button" onClick={onCloseAggiungiRata} className="w-full py-2 text-sm text-brand-navy/50 transition hover:text-brand-navy">Annulla</button>
         </ModalShell>
       ) : null}
 
       {mostraRinomina ? (
         <ModalShell title="Rinomina abbonamento" onClose={onCloseRinomina} onConfirm={onSalvaRinomina}>
           <FieldInput value={nomeAbTemp} onChange={(e) => onChangeNomeAbTemp(e.target.value)} placeholder="es. Sito web mensile" autoFocus />
-          <button type="button" onClick={onSalvaRinomina} className="w-full rounded-xl bg-brand-navy py-3 text-sm font-semibold text-white">
+          <button type="button" onClick={onSalvaRinomina} className="w-full rounded-xl bg-brand-navy py-3 text-sm font-semibold text-white transition hover:bg-brand-navy/90 active:scale-[0.99]">
             Salva
           </button>
-          <button type="button" onClick={onCloseRinomina} className="w-full py-2 text-sm text-brand-navy/50">Annulla</button>
+          <button type="button" onClick={onCloseRinomina} className="w-full py-2 text-sm text-brand-navy/50 transition hover:text-brand-navy">Annulla</button>
         </ModalShell>
       ) : null}
     </>

@@ -2,10 +2,10 @@ import { useMemo, useState, type Dispatch, type SetStateAction } from "react";
 import { messaggioEliminaPiano, messaggioEliminaRata } from "../../lib/confermeElimina";
 import { useConfirmDialog } from "../../lib/hooks/useConfirmDialog";
 import { sessioneClienteDettaglio } from "../../lib/clienteDettaglio";
-import { formatImportoEuro, generaLinkPaypalMe, generaTestoReminderPagamento, labelScadenzaRataDaPiano } from "preventivoai-shared";
+import { formatImportoEuro, generaLinkPaypalMe, generaTestoReminderPagamento, labelScadenzaRataDaPiano } from "previcloud-shared";
 import { creaLinkPagamentoRata } from "../../lib/pdf";
 import type { MetodoPagamento } from "../../lib/pagamenti";
-import { titoloHeaderPiano, analizzaStatoPiano, ordinaPianiPerStato } from "preventivoai-shared";
+import { titoloHeaderPiano, analizzaStatoPiano, ordinaPianiPerStato } from "previcloud-shared";
 import type { Abbonamento, PreventivoMadre, RataAbbonamento } from "../../lib/types";
 import PianoStatoBadge from "./PianoStatoBadge";
 import PianoVuotoState from "./PianoVuotoState";
@@ -106,8 +106,8 @@ function AbbonamentoPianoCard({
 
   return (
     <div
-      className={`rounded-2xl border ${
-        pianoSelezionato ? "border-brand-teal bg-emerald-50" : analisi.concluso ? "border-emerald-200 bg-emerald-50/50" : "border-black/10 bg-white"
+      className={`rounded-2xl border transition ${
+        pianoSelezionato ? "border-brand-teal bg-emerald-50" : analisi.concluso ? "border-emerald-200 bg-emerald-50/50" : "border-edge-faint bg-surface"
       }${cardEspansa ? " border-l-[3px] border-l-brand-teal" : ""}`}
     >
       <div className="flex w-full items-center gap-3 px-4 py-4">
@@ -124,7 +124,7 @@ function AbbonamentoPianoCard({
         >
           {selezionePianoAttiva ? (
             <span className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 text-xs font-bold ${
-              pianoSelezionato ? "border-brand-teal bg-brand-teal text-white" : "border-black/20"
+              pianoSelezionato ? "border-brand-teal bg-brand-teal text-white" : "border-edge"
             }`}>
               {pianoSelezionato ? "✓" : ""}
             </span>
@@ -142,11 +142,11 @@ function AbbonamentoPianoCard({
                 : `Canone mensile · €${formatImportoEuro(abbonamento.importo_default, 2)}/mese · giorno ${abbonamento.giorno_scadenza}`}
             </p>
             {analisi.sottotitolo ? (
-              <p className={`mt-1 text-xs ${analisi.concluso ? "font-medium text-emerald-700" : "text-brand-teal"}`}>
+              <p className={`mt-1 text-xs ${analisi.concluso ? "font-medium text-emerald-700" : "text-brand-teal-ink"}`}>
                 {analisi.sottotitolo}
               </p>
             ) : analisi.importoRaccolto > 0 && !analisi.concluso ? (
-              <p className="mt-1 text-xs font-medium text-brand-teal">€{formatImportoEuro(analisi.importoRaccolto, 2)} incassati</p>
+              <p className="mt-1 text-xs font-medium text-brand-teal-ink">€{formatImportoEuro(analisi.importoRaccolto, 2)} incassati</p>
             ) : null}
           </div>
           {!selezionePianoAttiva ? (
@@ -167,7 +167,7 @@ function AbbonamentoPianoCard({
       </div>
 
       {cardEspansa ? (
-        <div className="border-t border-black/5">
+        <div className="border-t border-edge-faint">
           <PianoEspanso
           abbonamento={abbonamento}
           rate={rate}

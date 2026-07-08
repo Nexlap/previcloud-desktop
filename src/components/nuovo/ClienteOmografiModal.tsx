@@ -25,7 +25,7 @@ export default function ClienteOmografiModal({ clienti, onClose, onSelect }: Pro
       onClose={onClose}
       onBackdropClick={onClose}
       zClass="z-[60]"
-      panelClassName="w-full max-w-md rounded-2xl bg-white p-6 shadow-lg"
+      panelClassName="w-full max-w-md rounded-2xl border border-edge-faint bg-surface p-6 shadow-xl shadow-brand-navy/10"
       contentClassName="mt-3 space-y-3"
     >
       <p className="text-sm text-brand-navy/60">Ho trovato più clienti con questo nome. Quale vuoi associare al preventivo?</p>
@@ -37,7 +37,7 @@ export default function ClienteOmografiModal({ clienti, onClose, onSelect }: Pro
               <button
                 type="button"
                 onClick={() => onSelect(cliente)}
-                className="w-full rounded-xl border border-black/10 px-4 py-3 text-left transition hover:border-brand-teal/40 hover:bg-brand-bg"
+                className="w-full rounded-xl border border-edge px-4 py-3 text-left transition hover:border-brand-teal/40 hover:bg-brand-bg"
               >
                 <span className="block text-sm font-semibold text-brand-navy">{cliente.nome}</span>
                 {info ? <span className="mt-0.5 block text-xs text-brand-navy/50">{info}</span> : null}
@@ -49,7 +49,7 @@ export default function ClienteOmografiModal({ clienti, onClose, onSelect }: Pro
       <button
         type="button"
         onClick={onClose}
-        className="w-full rounded-xl py-2.5 text-sm font-medium text-brand-navy/55 hover:bg-brand-bg"
+        className="w-full rounded-xl py-2.5 text-sm font-medium text-brand-navy/55 transition hover:bg-brand-bg"
       >
         Nessuno di questi
       </button>

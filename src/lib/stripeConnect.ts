@@ -3,7 +3,7 @@ import { isDesktopApp } from "./pdf";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-const STRIPE_ONBOARDING_WEB_CALLBACK = "https://preventivoai-web.vercel.app/stripe-connesso";
+const STRIPE_ONBOARDING_WEB_CALLBACK = "https://previcloud.it/stripe-connesso";
 
 export type StripeOnboardingStatus = "non_connesso" | "in_attesa" | "verificato";
 

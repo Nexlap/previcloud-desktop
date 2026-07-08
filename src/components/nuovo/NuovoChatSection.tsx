@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 
+import { ChatCircleDots, WarningCircle, ClipboardText } from "@phosphor-icons/react";
+
 import type { RefObject } from "react";
 
 import type { Messaggio } from "../../lib/types";
@@ -182,11 +184,11 @@ export default function NuovoChatSection({
 
         <div className="flex flex-col items-center justify-center py-10 text-center">
 
-          <span className="text-5xl" role="img" aria-label="Chat">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-teal/10 text-brand-teal-ink">
 
-            💬
+            <ChatCircleDots size={28} weight="regular" />
 
-          </span>
+          </div>
 
           <h2 className="mt-4 text-lg font-semibold text-brand-navy">
 
@@ -270,7 +272,10 @@ export default function NuovoChatSection({
 
         <div className="mt-4 rounded-2xl border border-brand-teal/20 bg-brand-teal/5 p-4">
 
-          <p className="text-sm font-bold text-brand-navy">📋 Riepilogo</p>
+          <p className="inline-flex items-center gap-1.5 text-sm font-bold text-brand-navy">
+            <ClipboardText size={16} weight="bold" />
+            Riepilogo
+          </p>
 
           <p className="mt-2 whitespace-pre-wrap text-sm text-brand-navy/80">
 
@@ -286,7 +291,7 @@ export default function NuovoChatSection({
 
             disabled={loading}
 
-            className="mt-4 rounded-xl bg-brand-teal px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-opacity hover:opacity-95 disabled:opacity-60"
+            className="mt-4 rounded-xl bg-brand-teal px-5 py-2.5 text-sm font-semibold text-white shadow-sm shadow-brand-teal/25 transition hover:bg-brand-teal/90 active:scale-[0.99] disabled:opacity-60"
 
           >
 
@@ -304,11 +309,7 @@ export default function NuovoChatSection({
 
         <div className="chat-error-box mt-4 flex items-start gap-2 rounded-2xl px-4 py-3 text-sm">
 
-          <span className="shrink-0" aria-hidden>
-
-            ⚠️
-
-          </span>
+          <WarningCircle size={18} weight="fill" className="mt-0.5 shrink-0" />
 
           <p>Si è verificato un errore. Riprova tra qualche secondo.</p>
 

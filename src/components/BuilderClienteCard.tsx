@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { User, X, MagnifyingGlass, CaretDown } from "@phosphor-icons/react";
 
 const ANTEPRIMA_SENZA_RICERCA = 5;
 const MAX_RISULTATI_RICERCA = 8;
@@ -17,46 +18,6 @@ type Props = {
   disabled?: boolean;
   compact?: boolean;
 };
-
-function IconUser({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className={className}>
-      <circle cx="12" cy="8" r="3.5" />
-      <path strokeLinecap="round" d="M5 20v-1a7 7 0 0 1 14 0v1" />
-    </svg>
-  );
-}
-
-function IconX({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
-      <path strokeLinecap="round" d="M18 6 6 18M6 6l12 12" />
-    </svg>
-  );
-}
-
-function IconSearch({ className = "h-4 w-4" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className={className}>
-      <circle cx="11" cy="11" r="7" />
-      <path strokeLinecap="round" d="m20 20-3.5-3.5" />
-    </svg>
-  );
-}
-
-function IconChevronDown({ className = "h-4 w-4", open = false }: { className?: string; open?: boolean }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      className={`${className} transition-transform ${open ? "rotate-180" : ""}`}
-    >
-      <path strokeLinecap="round" d="m6 9 6 6 6-6" />
-    </svg>
-  );
-}
 
 export default function BuilderClienteCard({
   clienti,
@@ -123,24 +84,24 @@ export default function BuilderClienteCard({
 
   const wrapperClass = compact
     ? "space-y-3"
-    : "mb-8 rounded-2xl border border-black/10 bg-white p-4 shadow-sm";
+    : "mb-8 rounded-2xl border border-edge-faint bg-surface p-4 shadow-sm shadow-brand-navy/[0.03]";
 
   return (
     <div className={wrapperClass}>
       <div className="flex items-center gap-2">
-        <span className="text-brand-teal">
-          <IconUser />
+        <span className="text-brand-teal-ink">
+          <User size={16} weight="regular" />
         </span>
         <div>
-          <p className="text-base font-bold text-brand-teal">Cliente</p>
+          <p className="text-base font-bold text-brand-teal-ink">Cliente</p>
           {!compact && <p className="text-xs text-brand-navy/50">Opzionale — i dati appariranno nel PDF</p>}
         </div>
       </div>
 
       {clienteSelezionato && !mostraRicerca ? (
         <div className="flex items-center gap-3 rounded-xl border border-brand-teal bg-brand-teal/5 px-3 py-2.5">
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-teal/10 text-brand-teal">
-            <IconUser className="h-4 w-4" />
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-teal/10 text-brand-teal-ink">
+            <User size={16} weight="regular" />
           </span>
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-semibold text-brand-navy">{clienteSelezionato.nome}</p>
@@ -153,17 +114,17 @@ export default function BuilderClienteCard({
                   setMostraRicerca(true);
                   setListaAperta(false);
                 }}
-                className="text-xs font-medium text-brand-teal hover:underline"
+                className="text-xs font-medium text-brand-teal-ink hover:underline"
               >
                 Cambia
               </button>
               <button
                 type="button"
                 onClick={rimuovi}
-                className="rounded-lg p-1 text-brand-navy/40 hover:bg-black/5 hover:text-brand-navy"
+                className="rounded-lg p-1 text-brand-navy/40 transition hover:bg-brand-navy/5 hover:text-brand-navy"
                 aria-label="Rimuovi cliente"
               >
-                <IconX />
+                <X size={16} weight="bold" />
               </button>
             </div>
           )}
@@ -172,7 +133,7 @@ export default function BuilderClienteCard({
         <div className="space-y-2">
           <div ref={rootRef} className="relative">
             <span className="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-brand-navy/40">
-              <IconSearch />
+              <MagnifyingGlass size={16} weight="regular" />
             </span>
             <input
               type="search"
@@ -188,21 +149,21 @@ export default function BuilderClienteCard({
                   ? `Cerca tra ${clienti.length} clienti...`
                   : "Cerca cliente per nome..."
               }
-              className="w-full rounded-xl border border-black/10 bg-brand-bg py-2.5 pl-9 pr-10 text-sm outline-none focus:border-brand-teal disabled:opacity-60"
+              className="w-full rounded-xl border border-edge bg-brand-bg py-2.5 pl-9 pr-10 text-sm outline-none transition focus:border-brand-teal disabled:opacity-60"
             />
             {!disabled && clienti.length > 0 && (
               <button
                 type="button"
                 onClick={() => setListaAperta((v) => !v)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-1.5 text-brand-navy/40 hover:bg-black/5 hover:text-brand-navy"
+                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-1.5 text-brand-navy/40 transition hover:bg-brand-navy/5 hover:text-brand-navy"
                 aria-label={listaAperta ? "Chiudi lista clienti" : "Apri lista clienti"}
               >
-                <IconChevronDown open={listaAperta} />
+                <CaretDown size={14} weight="bold" className={`transition-transform ${listaAperta ? "rotate-180" : ""}`} />
               </button>
             )}
 
             {listaAperta && !disabled && (
-              <div className="absolute left-0 right-0 top-[calc(100%+4px)] z-20 overflow-hidden rounded-xl border border-black/10 bg-white shadow-lg">
+              <div className="absolute left-0 right-0 top-[calc(100%+4px)] z-20 overflow-hidden rounded-xl border border-edge-faint bg-surface shadow-lg shadow-brand-navy/10">
                 <div className="max-h-52 overflow-y-auto p-1">
                   <button
                     type="button"
@@ -232,8 +193,8 @@ export default function BuilderClienteCard({
                             : "text-brand-navy/80 hover:bg-brand-bg"
                         }`}
                       >
-                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-bg text-brand-teal">
-                          <IconUser className="h-3.5 w-3.5" />
+                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-bg text-brand-teal-ink">
+                          <User size={13} weight="regular" />
                         </span>
                         <span className="truncate">{c.nome}</span>
                       </button>
@@ -242,7 +203,7 @@ export default function BuilderClienteCard({
                 </div>
 
                 {clientiNascosti > 0 && (
-                  <p className="border-t border-black/5 px-3 py-2 text-xs text-brand-navy/50">
+                  <p className="border-t border-edge-faint px-3 py-2 text-xs text-brand-navy/50">
                     {haRicerca
                       ? `Altri ${clientiNascosti} risultati — affina la ricerca`
                       : `Altri ${clientiNascosti} clienti — digita per filtrare`}
@@ -250,7 +211,7 @@ export default function BuilderClienteCard({
                 )}
 
                 {!haRicerca && clienti.length > ANTEPRIMA_SENZA_RICERCA && clientiNascosti === 0 && (
-                  <p className="border-t border-black/5 px-3 py-2 text-xs text-brand-navy/50">
+                  <p className="border-t border-edge-faint px-3 py-2 text-xs text-brand-navy/50">
                     Digita per filtrare l&apos;elenco completo
                   </p>
                 )}
@@ -274,7 +235,7 @@ export default function BuilderClienteCard({
                 <button
                   type="button"
                   onClick={() => seleziona("")}
-                  className="rounded-lg border border-black/10 bg-brand-bg px-3 py-1.5 text-xs font-medium text-brand-navy/70 hover:border-brand-teal/30 hover:text-brand-navy"
+                  className="rounded-lg border border-edge bg-brand-bg px-3 py-1.5 text-xs font-medium text-brand-navy/70 transition hover:border-brand-teal/30 hover:text-brand-navy"
                 >
                   Senza cliente
                 </button>
@@ -282,7 +243,7 @@ export default function BuilderClienteCard({
               <button
                 type="button"
                 onClick={onNuovoCliente}
-                className="rounded-lg border border-dashed border-black/15 bg-white px-3 py-1.5 text-xs font-medium text-brand-teal hover:border-brand-teal/40 hover:bg-brand-teal/5"
+                className="rounded-lg border border-dashed border-brand-navy/15 bg-surface px-3 py-1.5 text-xs font-medium text-brand-teal-ink transition hover:border-brand-teal/40 hover:bg-brand-teal/5"
               >
                 + Nuovo cliente
               </button>

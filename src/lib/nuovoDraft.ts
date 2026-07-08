@@ -9,12 +9,12 @@
 import type { TrasfertaBuilder, VoceBuilder } from "./builder";
 import type { MetodoPagamento } from "./pagamenti";
 import type { Messaggio } from "./types";
-import type { RateAccontoTipo } from "preventivoai-shared";
+import type { RateAccontoTipo } from "previcloud-shared";
 
 export type PianoPagamentoTipo = "nessuno" | "acconto" | "rate" | "abbonamento";
 
-const CHAT_KEY = "preventivoai-nuovo-chat";
-const MANUALE_KEY = "preventivoai-nuovo-manuale";
+const CHAT_KEY = "previcloud-nuovo-chat";
+const MANUALE_KEY = "previcloud-nuovo-manuale";
 
 type NuovoChatDraft = {
   messaggi: Messaggio[];

@@ -3,4 +3,4 @@ export {
   collegaVociAlListino,
   trovaMetodoPagamentoDaNome,
   vociParsedConId,
-} from 'preventivoai-shared'
+} from 'previcloud-shared'

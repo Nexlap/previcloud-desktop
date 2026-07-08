@@ -10,7 +10,7 @@ export type RisultatoControlloAggiornamenti = {
   update?: Update;
 };
 
-const SESSION_CHECK_KEY = "preventivoai-update-checked";
+const SESSION_CHECK_KEY = "previcloud-update-checked";
 
 export function aggiornamentoGiaControllatoInSessione(): boolean {
   return sessionStorage.getItem(SESSION_CHECK_KEY) === "1";

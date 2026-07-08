@@ -1,7 +1,7 @@
 import type { TrasfertaBuilder, VoceBuilder } from "./builder";
 import type { MetodoPagamento } from "./pagamenti";
 import type { NuovoManualeDraft, PianoPagamentoTipo } from "./nuovoDraft";
-import type { RateAccontoTipo } from "preventivoai-shared";
+import type { RateAccontoTipo } from "previcloud-shared";
 
 type NuovoManualeDraftInput = {
   voci: VoceBuilder[];

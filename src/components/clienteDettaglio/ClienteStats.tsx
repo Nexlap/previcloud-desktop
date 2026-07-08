@@ -1,4 +1,4 @@
-import { formatImportoEuro } from "preventivoai-shared";
+import { formatImportoEuro } from "previcloud-shared";
 
 type Props = {
   preventiviCount: number;
@@ -43,8 +43,8 @@ export default function ClienteStats({
   return (
     <div className="mt-4 grid grid-cols-3 gap-3">
       {cards.map((card) => (
-        <div key={card.label} className="rounded-2xl bg-white px-3 py-4 text-center shadow-sm">
-          <p className={`text-xl font-semibold ${card.accent ? "text-brand-teal" : "text-brand-navy"}`}>
+        <div key={card.label} className="rounded-2xl border border-edge-faint bg-surface px-3 py-4 text-center shadow-sm shadow-brand-navy/[0.03]">
+          <p className={`text-xl font-semibold ${card.accent ? "text-brand-teal-ink" : "text-brand-navy"}`}>
             {card.value}
           </p>
           <p className="mt-1 text-xs text-brand-navy/50">{card.label}</p>

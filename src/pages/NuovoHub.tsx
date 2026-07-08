@@ -1,57 +1,24 @@
 import { Link, useSearchParams } from "react-router";
+import { PencilSimpleLine, Microphone, ListBullets, CaretRight } from "@phosphor-icons/react";
 import PageContainer from "../components/PageContainer";
 import { queryClienteNuovoPreventivo } from "../lib/nuovoNav";
-
-function IconEdit3() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-6 w-6">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
-    </svg>
-  );
-}
-
-function IconMic() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-6 w-6">
-      <path strokeLinecap="round" d="M12 14a3 3 0 0 0 3-3V5a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Z" />
-      <path strokeLinecap="round" d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v3" />
-    </svg>
-  );
-}
-
-function IconList() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-6 w-6">
-      <path strokeLinecap="round" d="M8 6h13M8 12h13M8 18h13" />
-      <path strokeLinecap="round" d="M3 6h.01M3 12h.01M3 18h.01" />
-    </svg>
-  );
-}
-
-function IconChevronRight() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5">
-      <path strokeLinecap="round" d="m9 18 6-6-6-6" />
-    </svg>
-  );
-}
 
 const opzioni = [
   {
     to: "/nuovo/chat",
-    icon: <IconEdit3 />,
+    icon: <PencilSimpleLine size={24} weight="regular" />,
     titolo: "Scrivi in chat",
     descrizione: "Descrivi il lavoro a testo, l'assistente AI ti farà le domande giuste.",
   },
   {
     to: "/nuovo/registra",
-    icon: <IconMic />,
+    icon: <Microphone size={24} weight="regular" />,
     titolo: "Registra voce",
     descrizione: "Parla del lavoro, trascrivo e genero automaticamente.",
   },
   {
     to: "/nuovo/manuale",
-    icon: <IconList />,
+    icon: <ListBullets size={24} weight="regular" />,
     titolo: "Builder manuale",
     descrizione: "Seleziona i servizi dal listino e assembla il preventivo voce per voce.",
   },
@@ -76,17 +43,17 @@ export default function NuovoHub() {
             <Link
               key={opzione.to}
               to={`${opzione.to}${queryCliente}`}
-              className="flex items-center gap-4 rounded-2xl bg-white p-5 shadow-sm transition-colors hover:bg-brand-bg/60"
+              className="group flex items-center gap-4 rounded-2xl border border-edge-faint bg-surface p-5 shadow-sm shadow-brand-navy/[0.03] transition hover:border-brand-teal/25 hover:shadow-md hover:shadow-brand-teal/5 active:scale-[0.99]"
             >
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-teal/10 text-brand-teal">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-teal/10 text-brand-teal transition group-hover:bg-brand-teal group-hover:text-white">
                 {opzione.icon}
               </span>
               <div className="flex-1 text-left">
                 <p className="font-semibold text-brand-navy">{opzione.titolo}</p>
                 <p className="mt-0.5 text-sm text-brand-navy/60">{opzione.descrizione}</p>
               </div>
-              <span className="text-brand-navy/30">
-                <IconChevronRight />
+              <span className="text-brand-navy/30 transition group-hover:translate-x-0.5 group-hover:text-brand-teal">
+                <CaretRight size={18} weight="bold" />
               </span>
             </Link>
           ))}

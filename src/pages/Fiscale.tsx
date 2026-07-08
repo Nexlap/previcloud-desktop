@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
+import { ArrowLeft } from "@phosphor-icons/react";
 import {
   caricaProfiloFiscale,
   DEFAULT_PROFILO_FISCALE,
@@ -30,7 +31,7 @@ function FiscaleNumericField({
         <input
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-20 rounded-lg border border-black/10 bg-brand-bg px-2 py-1.5 text-center text-sm font-semibold text-brand-navy outline-none focus:border-brand-teal"
+          className="w-20 rounded-lg border border-edge bg-brand-bg px-2 py-1.5 text-center text-sm font-semibold text-brand-navy outline-none focus:border-brand-teal"
         />
         <span className="w-5 text-sm text-brand-navy/40">{unit}</span>
       </div>
@@ -107,15 +108,15 @@ export default function Fiscale() {
               e.preventDefault();
             }
           }}
-          className="text-brand-navy/50 hover:text-brand-navy"
+          className="flex h-8 w-8 items-center justify-center rounded-lg text-brand-navy/50 transition hover:bg-brand-bg hover:text-brand-navy"
         >
-          ←
+          <ArrowLeft size={18} weight="bold" />
         </Link>
         <h1 className="text-2xl font-semibold text-brand-navy">Regime fiscale</h1>
       </div>
 
       <div className="mt-6 space-y-4">
-        <div className="rounded-2xl border border-black/10 bg-white p-5 shadow-sm">
+        <div className="rounded-2xl border border-edge-faint bg-surface p-5 shadow-sm shadow-brand-navy/[0.03]">
           <p className="text-sm font-medium text-brand-navy">Analisi fiscale</p>
           <div className="mt-3 flex items-center justify-between gap-4">
             <div>
@@ -135,7 +136,7 @@ export default function Fiscale() {
 
         {featureAttiva && (
           <>
-            <div className="rounded-2xl border border-black/10 bg-white p-5 shadow-sm">
+            <div className="rounded-2xl border border-edge-faint bg-surface p-5 shadow-sm shadow-brand-navy/[0.03]">
               <p className="text-sm font-medium text-brand-navy">Il tuo regime fiscale</p>
               <p className="mt-1 text-xs text-brand-navy/50">Usato per calcolare il netto nel builder preventivo</p>
               <div className="mt-4 space-y-2">
@@ -153,7 +154,7 @@ export default function Fiscale() {
                     className={`flex w-full items-center justify-between rounded-xl border px-4 py-3 text-left transition ${
                       profilo.regime === r.key
                         ? "border-brand-teal bg-brand-teal/5"
-                        : "border-black/10 bg-brand-bg hover:border-black/20"
+                        : "border-edge bg-brand-bg hover:border-brand-navy/20"
                     }`}
                   >
                     <div>
@@ -164,7 +165,7 @@ export default function Fiscale() {
                       className={`flex h-6 w-6 items-center justify-center rounded-full border text-xs ${
                         profilo.regime === r.key
                           ? "border-brand-teal bg-brand-teal text-white"
-                          : "border-black/10 text-transparent"
+                          : "border-edge text-transparent"
                       }`}
                     >
                       ✓
@@ -175,12 +176,12 @@ export default function Fiscale() {
             </div>
 
             {profilo.regime === "forfettario" && (
-              <div className="space-y-3 rounded-2xl border border-black/10 bg-white p-5 shadow-sm">
+              <div className="space-y-3 rounded-2xl border border-edge-faint bg-surface p-5 shadow-sm shadow-brand-navy/[0.03]">
                 <p className="text-sm font-medium text-brand-navy">Parametri forfettario</p>
                 <FiscaleNumericField label="Coefficiente di redditività" value={profilo.coefficiente_redditivita} unit="%" onChange={(v) => set("coefficiente_redditivita", v)} />
                 <FiscaleNumericField label="Imposta sostitutiva" value={profilo.aliquota_sostitutiva} unit="%" onChange={(v) => set("aliquota_sostitutiva", v)} />
                 <p className="pt-1 text-xs font-semibold tracking-wide text-brand-navy/40">TIPO INPS</p>
-                <div className="flex rounded-lg border border-black/10 bg-brand-bg p-1">
+                <div className="flex rounded-lg border border-edge bg-brand-bg p-1">
                   {[
                     { key: "gestione_separata", label: "Gestione separata" },
                     { key: "artigiani", label: "Artigiani/Comm." },
@@ -229,7 +230,7 @@ export default function Fiscale() {
             )}
 
             {profilo.regime === "ordinario" && (
-              <div className="space-y-3 rounded-2xl border border-black/10 bg-white p-5 shadow-sm">
+              <div className="space-y-3 rounded-2xl border border-edge-faint bg-surface p-5 shadow-sm shadow-brand-navy/[0.03]">
                 <p className="text-sm font-medium text-brand-navy">Parametri ordinario</p>
                 <FiscaleNumericField label="Aliquota IVA" value={profilo.aliquota_iva} unit="%" onChange={(v) => set("aliquota_iva", v)} />
                 <FiscaleNumericField label="Costi deducibili stimati" value={profilo.costi_deducibili_percentuale} unit="%" onChange={(v) => set("costi_deducibili_percentuale", v)} />
@@ -254,7 +255,7 @@ export default function Fiscale() {
             )}
 
             {profilo.regime === "occasionale" && (
-              <div className="space-y-3 rounded-2xl border border-black/10 bg-white p-5 shadow-sm">
+              <div className="space-y-3 rounded-2xl border border-edge-faint bg-surface p-5 shadow-sm shadow-brand-navy/[0.03]">
                 <p className="text-sm font-medium text-brand-navy">Parametri collaborazione occasionale</p>
                 <FiscaleNumericField label="Ritenuta d'acconto" value={profilo.ritenuta_acconto} unit="%" onChange={(v) => set("ritenuta_acconto", v)} />
                 <FiscaleNumericField label="Soglia esenzione contributi" value={profilo.soglia_occasionale} unit="€" onChange={(v) => set("soglia_occasionale", v)} />
@@ -270,7 +271,7 @@ export default function Fiscale() {
         </div>
 
         {messaggio && (
-          <p className={`text-sm ${messaggio === "Profilo fiscale aggiornato." ? "text-brand-teal" : "text-red-500"}`}>
+          <p className={`text-sm ${messaggio === "Profilo fiscale aggiornato." ? "text-brand-teal-ink" : "text-red-500"}`}>
             {messaggio}
           </p>
         )}
@@ -279,7 +280,7 @@ export default function Fiscale() {
           type="button"
           onClick={salva}
           disabled={saving}
-          className="w-full rounded-xl bg-brand-navy px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
+          className="w-full rounded-xl bg-brand-navy px-5 py-3 text-sm font-semibold text-white shadow-sm shadow-brand-navy/20 transition hover:bg-brand-navy/90 active:scale-[0.99] disabled:opacity-60"
         >
           {saving ? "Salvataggio..." : "Salva regime fiscale"}
         </button>

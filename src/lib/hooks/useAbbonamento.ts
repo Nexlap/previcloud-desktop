@@ -4,7 +4,7 @@ import { MESI_BREVI } from "../constants";
 import { supabase } from "../supabase";
 import { eventBus } from "../eventBus";
 import type { Abbonamento, PreventivoMadre, RataAbbonamento } from "../types";
-import { calcolaImportiRate, calcolaScadenzeRate, formatImportoEuro, rateScaduteDaSegnalare } from "preventivoai-shared";
+import { calcolaImportiRate, calcolaScadenzeRate, formatImportoEuro, rateScaduteDaSegnalare } from "previcloud-shared";
 import { inputDateToIso, oggiInputDate } from "../format";
 import { trackEvento } from "../track";
 import {

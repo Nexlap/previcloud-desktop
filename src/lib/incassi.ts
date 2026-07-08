@@ -1,5 +1,5 @@
 import { supabase } from "./supabase";
-import { queryConFiltroCestino, incassoSingoliPreventivi, sommaImportoRate } from "preventivoai-shared";
+import { queryConFiltroCestino, incassoSingoliPreventivi, sommaImportoRate } from "previcloud-shared";
 import type { Tables } from "./database.types";
 
 type PreventivoPagatoRow = Pick<Tables<"preventivi">, "id" | "importo_totale" | "cliente_id">;

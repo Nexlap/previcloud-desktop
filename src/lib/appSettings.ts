@@ -6,9 +6,9 @@ import { disable, enable, isEnabled } from "@tauri-apps/plugin-autostart";
 
 export const CARTELLA_PDF_ROOT_NAME = "PreviCloud - Preventivi PDF";
 
-const PDF_CARTELLE_CLIENTE_KEY = "preventivoai-pdf-cartelle-cliente";
-const PDF_CARTELLA_CUSTOM_KEY = "preventivoai-pdf-cartella-custom";
-const PDF_SALVATAGGIO_MODALITA_KEY = "preventivoai-pdf-salvataggio-modalita";
+const PDF_CARTELLE_CLIENTE_KEY = "previcloud-pdf-cartelle-cliente";
+const PDF_CARTELLA_CUSTOM_KEY = "previcloud-pdf-cartella-custom";
+const PDF_SALVATAGGIO_MODALITA_KEY = "previcloud-pdf-salvataggio-modalita";
 
 export type PdfSalvataggioModalita = "cartella" | "chiedi_ogni_volta";
 

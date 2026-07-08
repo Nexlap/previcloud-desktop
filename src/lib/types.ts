@@ -96,4 +96,4 @@ export interface ProfiloFiscale {
   attivo?: boolean;
 }
 
-export type { RisultatoFiscale } from "preventivoai-shared";
+export type { RisultatoFiscale } from "previcloud-shared";

@@ -1,4 +1,5 @@
 import { useState, type ChangeEvent, type RefObject } from "react";
+import { CaretDown } from "@phosphor-icons/react";
 import { CATEGORIE } from "../../lib/settingsConstants";
 import type { SettingsForm } from "../../lib/settings";
 import { PLACEHOLDER } from "../../lib/placeholders";
@@ -39,27 +40,27 @@ export default function SettingsIdentitaSection({
   const [subTab, setSubTab] = useState<SubTab>("logo");
 
   return (
-    <div className="rounded-2xl border border-black/10 bg-white shadow-sm overflow-hidden">
+    <div className="rounded-2xl border border-edge-faint bg-surface shadow-sm shadow-brand-navy/[0.03] overflow-hidden">
       <button
         type="button"
         onClick={() => setExpanded((v) => !v)}
-        className="flex w-full items-center justify-between px-4 py-3.5 text-left hover:bg-brand-bg/40"
+        className="flex w-full items-center justify-between px-4 py-3.5 text-left transition hover:bg-brand-bg/40"
       >
         <span className="text-sm font-semibold text-brand-navy">Identità azienda</span>
-        <span className="text-brand-navy/40">{expanded ? "▾" : "▸"}</span>
+        <CaretDown size={14} weight="bold" className={`text-brand-navy/40 transition-transform ${expanded ? "rotate-180" : ""}`} />
       </button>
 
       {expanded && (
         <>
-          <div className="flex border-b border-black/5 px-2">
+          <div className="flex border-b border-edge-faint px-2">
             {SUB_TABS.map((tab) => (
               <button
                 key={tab.id}
                 type="button"
                 onClick={() => setSubTab(tab.id)}
-                className={`flex-1 py-2.5 text-xs font-medium capitalize ${
+                className={`flex-1 py-2.5 text-xs font-medium capitalize transition ${
                   subTab === tab.id
-                    ? "border-b-2 border-brand-teal text-brand-teal"
+                    ? "border-b-2 border-brand-teal text-brand-teal-ink"
                     : "text-brand-navy/50 hover:text-brand-navy"
                 }`}
               >
@@ -77,10 +78,10 @@ export default function SettingsIdentitaSection({
                   <img
                     src={`${logoUrl}?v=${logoCacheKey}`}
                     alt="Logo"
-                    className="h-20 w-full rounded-lg border border-black/10 bg-brand-bg object-contain p-2"
+                    className="h-20 w-full rounded-lg border border-edge bg-brand-bg object-contain p-2"
                   />
                 ) : (
-                  <div className="flex h-20 w-full items-center justify-center rounded-lg border border-dashed border-black/10 bg-brand-bg text-sm text-brand-navy/40">
+                  <div className="flex h-20 w-full items-center justify-center rounded-lg border border-dashed border-edge bg-brand-bg text-sm text-brand-navy/40">
                     Nessun logo caricato
                   </div>
                 )}
@@ -89,12 +90,12 @@ export default function SettingsIdentitaSection({
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
                   disabled={uploadingLogo}
-                  className="rounded-lg bg-brand-navy px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
+                  className="rounded-lg bg-brand-navy px-4 py-2 text-sm font-medium text-white transition hover:bg-brand-navy/90 active:scale-[0.98] disabled:opacity-60"
                 >
                   {uploadingLogo ? "Caricamento..." : logoUrl ? "Cambia logo" : "Carica logo"}
                 </button>
                 {errore && <p className="text-sm text-red-600">{errore}</p>}
-                {messaggio && <p className="text-sm text-brand-teal">{messaggio}</p>}
+                {messaggio && <p className="text-sm text-brand-teal-ink">{messaggio}</p>}
               </>
             )}
 
@@ -106,7 +107,7 @@ export default function SettingsIdentitaSection({
                     value={form.nome_azienda}
                     onChange={(e) => onFieldChange("nome_azienda", e.target.value)}
                     placeholder={PLACEHOLDER.nomeAzienda}
-                    className="w-full rounded-lg border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+                    className="w-full rounded-lg border border-edge px-3 py-2 text-sm outline-none transition focus:border-brand-teal"
                   />
                 </div>
                 <div className="space-y-1">
@@ -115,7 +116,7 @@ export default function SettingsIdentitaSection({
                     value={form.citta}
                     onChange={(e) => onFieldChange("citta", e.target.value)}
                     placeholder={PLACEHOLDER.citta}
-                    className="w-full rounded-lg border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+                    className="w-full rounded-lg border border-edge px-3 py-2 text-sm outline-none transition focus:border-brand-teal"
                   />
                 </div>
                 <div className="space-y-1">
@@ -124,7 +125,7 @@ export default function SettingsIdentitaSection({
                     value={form.piva}
                     onChange={(e) => onFieldChange("piva", e.target.value)}
                     placeholder={PLACEHOLDER.piva}
-                    className="w-full rounded-lg border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+                    className="w-full rounded-lg border border-edge px-3 py-2 text-sm outline-none transition focus:border-brand-teal"
                   />
                 </div>
                 <div className="space-y-1 sm:col-span-2">
@@ -133,7 +134,7 @@ export default function SettingsIdentitaSection({
                     value={form.telefono}
                     onChange={(e) => onFieldChange("telefono", e.target.value)}
                     placeholder={PLACEHOLDER.telefono}
-                    className="w-full rounded-lg border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+                    className="w-full rounded-lg border border-edge px-3 py-2 text-sm outline-none transition focus:border-brand-teal"
                   />
                 </div>
               </div>
@@ -146,7 +147,7 @@ export default function SettingsIdentitaSection({
                   value={form.firma_nome}
                   onChange={(e) => onFieldChange("firma_nome", e.target.value)}
                   placeholder={PLACEHOLDER.firma}
-                  className="w-full rounded-lg border border-black/10 px-3 py-2 text-sm outline-none focus:border-brand-teal"
+                  className="w-full rounded-lg border border-edge px-3 py-2 text-sm outline-none transition focus:border-brand-teal"
                 />
               </div>
             )}
@@ -157,7 +158,7 @@ export default function SettingsIdentitaSection({
                 <select
                   value={form.categoria}
                   onChange={(e) => onFieldChange("categoria", e.target.value)}
-                  className="w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm capitalize outline-none focus:border-brand-teal"
+                  className="w-full rounded-lg border border-edge bg-surface px-3 py-2 text-sm capitalize outline-none transition focus:border-brand-teal"
                 >
                   {CATEGORIE.map((c) => (
                     <option key={c} value={c} className="capitalize">

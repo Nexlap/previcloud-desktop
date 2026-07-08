@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 import { MESI_FULL } from "../../lib/constants";
-import { clampGiornoAlMese, giorniInMese } from "preventivoai-shared";
+import { clampGiornoAlMese, giorniInMese } from "previcloud-shared";
 
 const SELECT_CLS =
-  "w-full rounded-xl border border-black/10 bg-brand-bg px-3 py-2.5 text-sm text-brand-navy outline-none focus:border-brand-teal disabled:opacity-50";
+  "w-full rounded-xl border border-edge bg-brand-bg px-3 py-2.5 text-sm text-brand-navy outline-none transition focus:border-brand-teal disabled:opacity-50";
 
 type GiornoProps = {
   value: string;

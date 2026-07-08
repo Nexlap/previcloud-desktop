@@ -1,6 +1,6 @@
-import type { RateAccontoTipo, RateModalitaPiano } from "preventivoai-shared";
+import type { RateAccontoTipo, RateModalitaPiano } from "previcloud-shared";
 import { supabase } from "./supabase";
-import { erroreColonnaDeletedAt } from "preventivoai-shared";
+import { erroreColonnaDeletedAt } from "previcloud-shared";
 import { creaLinkPagamento } from "./pdf";
 import type { MetodoPagamento } from "./pagamenti";
 import {
@@ -9,7 +9,7 @@ import {
   agganciaPianoAPreventivo as agganciaPianoCore,
   testoConPagamento as testoConPagamentoShared,
   type PreventivoPianiDb,
-} from "preventivoai-shared";
+} from "previcloud-shared";
 
 async function esistePianoAttivo(preventivoId: string): Promise<boolean> {
   const { data, error } = await supabase

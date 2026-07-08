@@ -1,4 +1,4 @@
-import { queryConFiltroCestino } from "preventivoai-shared";
+import { queryConFiltroCestino } from "previcloud-shared";
 import { supabase } from "./supabase";
 
 type CollegamentoPiano = {

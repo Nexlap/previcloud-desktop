@@ -14,7 +14,18 @@ import NotificaToastStack from "./NotificaToastStack";
 
 export default function NotificheBell() {
   const navigate = useNavigate();
-  const { notifiche, count, erroreCaricamento, segnaTutteLette, rimanda, archivia, clearToasts } = useNotifiche();
+  const {
+    notifiche,
+    count,
+    erroreCaricamento,
+    segnaTutteLette,
+    rimanda,
+    archivia,
+    clearToasts,
+    hasMore,
+    caricandoAltre,
+    caricaAltre,
+  } = useNotifiche();
   const [open, setOpen] = useState(false);
   const [erroreSegnaLette, setErroreSegnaLette] = useState<string | null>(null);
   const [notificaDialog, setNotificaDialog] = useState<Notifica | null>(null);
@@ -219,7 +230,7 @@ export default function NotificheBell() {
                         <button
                           type="button"
                           onClick={(e) => void handleRimanda(e, n.id)}
-                          className="text-xs font-medium text-ink/45 hover:text-brand-teal"
+                          className="text-xs font-medium text-ink/45 transition hover:text-brand-teal-ink"
                         >
                           Rimanda
                         </button>
@@ -228,6 +239,18 @@ export default function NotificheBell() {
                   </li>
                 );
               })}
+              {hasMore ? (
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => void caricaAltre()}
+                    disabled={caricandoAltre}
+                    className="w-full px-4 py-3 text-center text-xs font-medium text-brand-teal-ink transition hover:underline disabled:opacity-60"
+                  >
+                    {caricandoAltre ? "Caricamento..." : "Mostra di più..."}
+                  </button>
+                </li>
+              ) : null}
             </ul>
           )}
         </div>

@@ -10,4 +10,4 @@ if ($LASTEXITCODE -ne 0) {
   exit 1
 }
 
-gh repo create danielegalmax/preventivoai-desktop --private --source=. --remote=origin --push
+gh repo create danielegalmax/previcloud-desktop --private --source=. --remote=origin --push

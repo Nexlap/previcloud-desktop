@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { formatImportoEuro } from "preventivoai-shared";
+import { formatImportoEuro } from "previcloud-shared";
 import type { Notifica } from "../../lib/notifiche";
 import { formatDataBreve } from "../../lib/format";
 import { creaLinkPagamentoRata } from "../../lib/pdf";
@@ -126,8 +126,8 @@ export default function NotificaFirmaDialog({
   if (notifica.tipo === "firma_ricevuta") {
     const mostraPdfFirmato = Boolean(preventivoId);
     return (
-      <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/40 p-4" onClick={onClose}>
-        <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl" onClick={(e) => e.stopPropagation()}>
+      <div className="fixed inset-0 z-[80] flex items-center justify-center bg-brand-navy/40 p-4 backdrop-blur-[2px]" onClick={onClose}>
+        <div className="w-full max-w-md rounded-2xl border border-edge-faint bg-surface p-6 shadow-xl shadow-brand-navy/10" onClick={(e) => e.stopPropagation()}>
           <h2 className="text-lg font-semibold text-brand-navy">{notifica.titolo}</h2>
           <p className="mt-2 text-sm text-brand-navy/70">{notifica.messaggio}</p>
           <div className="mt-5 grid gap-2">
@@ -135,7 +135,7 @@ export default function NotificaFirmaDialog({
               <button
                 type="button"
                 onClick={() => void apriPdfFirmato()}
-                className="w-full rounded-xl border border-brand-teal py-3 text-sm font-semibold text-brand-teal"
+                className="w-full rounded-xl border border-brand-teal py-3 text-sm font-semibold text-brand-teal-ink transition hover:bg-brand-teal/5 active:scale-[0.98]"
               >
                 Apri PDF firmato
               </button>
@@ -144,7 +144,7 @@ export default function NotificaFirmaDialog({
               <button
                 type="button"
                 onClick={() => { onSegnaPagato(preventivoId); onClose(); }}
-                className="w-full rounded-xl bg-brand-teal py-3 text-sm font-semibold text-white"
+                className="w-full rounded-xl bg-brand-teal py-3 text-sm font-semibold text-white shadow-sm shadow-brand-teal/25 transition hover:bg-brand-teal/90 active:scale-[0.98]"
               >
                 Segna come pagato
               </button>
@@ -153,7 +153,7 @@ export default function NotificaFirmaDialog({
               <button
                 type="button"
                 onClick={() => { onCompletata(); onClose(); }}
-                className="w-full rounded-xl bg-brand-teal py-3 text-sm font-semibold text-white"
+                className="w-full rounded-xl bg-brand-teal py-3 text-sm font-semibold text-white shadow-sm shadow-brand-teal/25 transition hover:bg-brand-teal/90 active:scale-[0.98]"
               >
                 Visto
               </button>
@@ -169,15 +169,15 @@ export default function NotificaFirmaDialog({
 
   if (notifica.tipo === "pagamento_ricevuto") {
     return (
-      <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/40 p-4" onClick={onClose}>
-        <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl" onClick={(e) => e.stopPropagation()}>
+      <div className="fixed inset-0 z-[80] flex items-center justify-center bg-brand-navy/40 p-4 backdrop-blur-[2px]" onClick={onClose}>
+        <div className="w-full max-w-md rounded-2xl border border-edge-faint bg-surface p-6 shadow-xl shadow-brand-navy/10" onClick={(e) => e.stopPropagation()}>
           <h2 className="text-lg font-semibold text-brand-navy">{notifica.titolo}</h2>
           <p className="mt-2 text-sm text-brand-navy/70">{notifica.messaggio}</p>
           <div className="mt-5 grid gap-2">
             <button
               type="button"
               onClick={() => { onCompletata(); onClose(); }}
-              className="w-full rounded-xl bg-brand-teal py-3 text-sm font-semibold text-white"
+              className="w-full rounded-xl bg-brand-teal py-3 text-sm font-semibold text-white shadow-sm shadow-brand-teal/25 transition hover:bg-brand-teal/90 active:scale-[0.98]"
             >
               Visto
             </button>
@@ -194,8 +194,8 @@ export default function NotificaFirmaDialog({
     const clienteId = payload.cliente_id;
 
     return (
-      <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/40 p-4" onClick={onClose}>
-        <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl" onClick={(e) => e.stopPropagation()}>
+      <div className="fixed inset-0 z-[80] flex items-center justify-center bg-brand-navy/40 p-4 backdrop-blur-[2px]" onClick={onClose}>
+        <div className="w-full max-w-md rounded-2xl border border-edge-faint bg-surface p-6 shadow-xl shadow-brand-navy/10" onClick={(e) => e.stopPropagation()}>
           <h2 className="text-lg font-semibold text-brand-navy">{notifica.titolo}</h2>
           <p className="mt-2 text-sm text-brand-navy/70">{notifica.messaggio}</p>
           <dl className="mt-4 space-y-2 rounded-xl bg-brand-bg/60 px-4 py-3 text-sm text-brand-navy">
@@ -221,7 +221,7 @@ export default function NotificaFirmaDialog({
               type="button"
               disabled={!payload.rata_id || waLoading}
               onClick={() => void inviaReminderRataWhatsApp()}
-              className="w-full rounded-xl bg-brand-teal py-3 text-sm font-semibold text-white disabled:opacity-50"
+              className="w-full rounded-xl bg-brand-teal py-3 text-sm font-semibold text-white shadow-sm shadow-brand-teal/25 transition hover:bg-brand-teal/90 active:scale-[0.98] disabled:opacity-50"
             >
               {waLoading ? "Invio in corso…" : "Invia reminder WA"}
             </button>
@@ -232,7 +232,7 @@ export default function NotificaFirmaDialog({
                   onClose();
                   navigate(`/clienti/${clienteId}`);
                 }}
-                className="w-full rounded-xl border border-black/10 py-3 text-sm font-semibold text-brand-navy"
+                className="w-full rounded-xl border border-edge py-3 text-sm font-semibold text-brand-navy transition hover:bg-brand-bg active:scale-[0.98]"
               >
                 Vai al cliente
               </button>
@@ -248,22 +248,22 @@ export default function NotificaFirmaDialog({
 
   if (notifica.tipo === "reminder_firma") {
     return (
-      <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/40 p-4" onClick={onClose}>
-        <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl" onClick={(e) => e.stopPropagation()}>
+      <div className="fixed inset-0 z-[80] flex items-center justify-center bg-brand-navy/40 p-4 backdrop-blur-[2px]" onClick={onClose}>
+        <div className="w-full max-w-md rounded-2xl border border-edge-faint bg-surface p-6 shadow-xl shadow-brand-navy/10" onClick={(e) => e.stopPropagation()}>
           <h2 className="text-lg font-semibold text-brand-navy">{notifica.titolo}</h2>
           <p className="mt-2 text-sm text-brand-navy/70">{notifica.messaggio}</p>
           <div className="mt-5 grid gap-2">
             <button
               type="button"
               onClick={() => void inviaReminderFirmaWhatsApp().catch(() => onRimanda())}
-              className="w-full rounded-xl bg-brand-teal py-3 text-sm font-semibold text-white"
+              className="w-full rounded-xl bg-brand-teal py-3 text-sm font-semibold text-white shadow-sm shadow-brand-teal/25 transition hover:bg-brand-teal/90 active:scale-[0.98]"
             >
               Sì — WhatsApp
             </button>
             <button
               type="button"
               onClick={() => void inviaReminderFirmaEmail().catch(() => onRimanda())}
-              className="w-full rounded-xl border border-black/10 py-3 text-sm font-semibold text-brand-navy"
+              className="w-full rounded-xl border border-edge py-3 text-sm font-semibold text-brand-navy transition hover:bg-brand-bg active:scale-[0.98]"
             >
               Sì — Email
             </button>

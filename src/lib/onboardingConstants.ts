@@ -1,1 +1,1 @@
-export { ESEMPI_LISTINO, UNITA_SERVIZIO } from "preventivoai-shared";
+export { ESEMPI_LISTINO, UNITA_SERVIZIO } from "previcloud-shared";

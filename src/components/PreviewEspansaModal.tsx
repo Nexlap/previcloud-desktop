@@ -31,7 +31,7 @@ export default function PreviewEspansaModal({ html, open, onClose }: Props) {
         className="mx-auto flex h-full w-full max-w-5xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex shrink-0 items-center justify-between border-b border-black/5 px-4 py-3">
+        <div className="flex shrink-0 items-center justify-between border-b border-edge-faint px-4 py-3">
           <div>
             <p className="text-sm font-semibold text-brand-navy">Anteprima PDF</p>
             <p className="text-xs text-brand-navy/50">Frecce ← → per cambiare pagina · Esc per chiudere</p>
@@ -39,7 +39,7 @@ export default function PreviewEspansaModal({ html, open, onClose }: Props) {
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg border border-black/10 px-3 py-1.5 text-sm text-brand-navy/70 hover:bg-brand-bg"
+            className="rounded-lg border border-edge px-3 py-1.5 text-sm text-brand-navy/70 transition hover:bg-brand-bg"
             aria-label="Chiudi anteprima"
           >
             Chiudi

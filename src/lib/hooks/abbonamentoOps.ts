@@ -1,6 +1,6 @@
 import { supabase } from "../supabase";
 import type { RataAbbonamento } from "../types";
-import { calcolaImportiRate, formatImportoEuro } from "preventivoai-shared";
+import { calcolaImportiRate, formatImportoEuro } from "previcloud-shared";
 import { inputDateToIso, oggiInputDate } from "../format";
 import { trackEvento } from "../track";
 

@@ -84,7 +84,9 @@ export function notificaContaBadge(n: Notifica, now = Date.now()) {
   return !n.letta && !notificaInRimando(n, now);
 }
 
-export async function caricaNotificheCampanella(): Promise<
+export const PAGE_SIZE = 20;
+
+export async function caricaNotificheCampanella(offset = 0): Promise<
   { ok: true; notifiche: Notifica[] } | { ok: false; error: string }
 > {
   const { data: { user } } = await supabase.auth.getUser();
@@ -96,7 +98,7 @@ export async function caricaNotificheCampanella(): Promise<
     .eq("archiviata", false)
     .order("letta", { ascending: true })
     .order("created_at", { ascending: false })
-    .limit(50);
+    .range(offset, offset + PAGE_SIZE - 1);
   if (error) {
     console.error("caricaNotificheCampanella", error.message);
     return { ok: false, error: error.message };

@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "preventivoai-desktop",
+  "productName": "previcloud-desktop",
   "version": "1.0.0",
-  "identifier": "com.preventivoai.desktop",
+  "identifier": "it.previcloud.desktop",
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:1420",
@@ -41,9 +41,9 @@
   },
   "plugins": {
     "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDU4MkJCRjMzQjYwMDBDNkYKUldSdkRBQzJNNzhyV091Y3RqamhhczNJK1g4cU4yNWdCQ25pUjhzVDBEWGt6L3VZaVpqTHc3NW4K",
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDQ5QUVCMTlDMEU3NjA3RjMKUldUekIzWU9uTEd1U1V3R1UxMHNBVDRISENsVWxSZWNpaU5XQ25rSEsvY3VaVUN5d2J0SkpycEEK",
       "endpoints": [
-        "https://github.com/danielegalmax/preventivoai-desktop/releases/latest/download/latest.json"
+        "https://github.com/danielegalmax/previcloud-desktop/releases/latest/download/latest.json"
       ],
       "windows": {
         "installMode": "passive"

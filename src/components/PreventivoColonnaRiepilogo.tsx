@@ -69,7 +69,7 @@ export default function PreventivoColonnaRiepilogo({
             onClick={onPdf}
             title={pdfLabel}
             aria-label={pdfLabel}
-            className="flex h-5 w-5 items-center justify-center text-brand-teal transition-opacity hover:opacity-70"
+            className="flex h-5 w-5 items-center justify-center text-brand-teal-ink transition-opacity hover:opacity-70"
           >
             <IconDownload />
           </button>

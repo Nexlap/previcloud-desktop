@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router";
+import { Trash } from "@phosphor-icons/react";
 import { caricaStorico, caricaCollegamentiPianoPreventivi } from "../lib/storico";
 import { conteggioCestino } from "../lib/cestino";
 import type { CollegamentiPianoMap } from "../lib/collegamentiPiano";
@@ -94,19 +95,38 @@ export default function Storico() {
         </div>
         <Link
           to="/cestino"
-          className="inline-flex items-center gap-2 rounded-xl border border-black/10 bg-white px-4 py-2 text-sm font-medium text-brand-navy/70 shadow-sm hover:bg-brand-bg"
+          className="inline-flex items-center gap-2 rounded-xl border border-edge bg-surface px-4 py-2 text-sm font-medium text-brand-navy/70 shadow-sm transition hover:border-brand-teal/25 hover:bg-brand-bg"
         >
+          <Trash size={16} weight="regular" />
           Elementi eliminati
           {vociCestino > 0 && (
-            <span className="rounded-full bg-brand-teal/15 px-2 py-0.5 text-xs font-semibold text-brand-teal">
+            <span className="rounded-full bg-brand-teal/15 px-2 py-0.5 text-xs font-semibold text-brand-teal-ink">
               {vociCestino}
             </span>
           )}
         </Link>
       </div>
 
-      {loading && <p className="mt-4 text-brand-navy/60">Caricamento...</p>}
-      {!loading && preventivi.length === 0 && <p className="mt-4 text-brand-navy/60">Nessun preventivo ancora.</p>}
+      {loading && (
+        <div className="mt-4 divide-y divide-edge-faint overflow-hidden rounded-2xl border border-edge-faint bg-surface">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div key={i} className="flex animate-pulse items-center gap-4 px-5 py-3.5">
+              <div className="h-9 w-9 rounded-full bg-brand-navy/10" />
+              <div className="h-3 flex-1 rounded bg-brand-navy/10" />
+              <div className="hidden h-3 w-24 rounded bg-brand-navy/10 sm:block" />
+              <div className="h-3 w-20 rounded bg-brand-navy/10" />
+            </div>
+          ))}
+        </div>
+      )}
+      {!loading && preventivi.length === 0 && (
+        <div className="mt-4 flex flex-col items-center justify-center rounded-2xl border border-dashed border-edge px-6 py-16 text-center">
+          <p className="text-sm font-medium text-brand-navy">Nessun preventivo ancora</p>
+          <p className="mt-1 max-w-sm text-xs text-brand-navy/45">
+            I preventivi che crei compariranno qui.
+          </p>
+        </div>
+      )}
 
       {!loading && preventivi.length > 0 && (
         <div className="mt-4">

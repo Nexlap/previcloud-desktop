@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import type { PianoPagamentoTipo } from "../../lib/nuovoDraft";
-import type { RateAccontoTipo } from "preventivoai-shared";
+import type { RateAccontoTipo } from "previcloud-shared";
 import BuilderClienteCard from "../BuilderClienteCard";
 import BuilderPianoPagamentoCard from "../builder/BuilderPianoPagamentoCard";
 import PreventivoPdfTemplatePicker from "../PreventivoPdfTemplatePicker";
@@ -108,11 +108,11 @@ export default function NuovoAnteprimaView({
 }: Props) {
   return (
     <div className="mt-4 flex min-h-0 flex-1 flex-col gap-4 overflow-hidden lg:flex-row lg:items-stretch">
-      <div className="flex min-h-0 w-full shrink-0 flex-col overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm lg:w-[400px]">
+      <div className="flex min-h-0 w-full shrink-0 flex-col overflow-hidden rounded-2xl border border-edge-faint bg-surface shadow-sm shadow-brand-navy/[0.03] lg:w-[400px]">
         <div className="min-h-0 flex-1 overflow-y-auto p-5">
           <PreventivoPdfTemplatePicker embedded template={template} onSelectTemplate={onSelectTemplate} />
 
-          <div className="mt-5 border-t border-black/5 pt-5">
+          <div className="mt-5 border-t border-edge-faint pt-5">
             <BuilderClienteCard
               compact
               clienti={clienti}
@@ -123,7 +123,7 @@ export default function NuovoAnteprimaView({
             />
           </div>
 
-          <div className="mt-5 border-t border-black/5 pt-5">
+          <div className="mt-5 border-t border-edge-faint pt-5">
             <BuilderPianoPagamentoCard
               tipo={pianoPagamentoTipo}
               onChangeTipo={onChangePianoPagamentoTipo}
@@ -154,7 +154,7 @@ export default function NuovoAnteprimaView({
           </div>
 
           {mode === "manuale" && (
-            <div className="mt-5 rounded-2xl border border-black/10 bg-white p-4">
+            <div className="mt-5 rounded-2xl border border-edge-faint bg-surface p-4">
               <div className="flex items-center justify-between gap-3">
                 <div className="min-w-0 flex-1">
                   <h3 className="text-sm font-semibold text-brand-navy">Tariffa a corpo</h3>
@@ -168,12 +168,12 @@ export default function NuovoAnteprimaView({
           )}
         </div>
 
-        <div className="shrink-0 border-t border-black/5 p-5">
+        <div className="shrink-0 border-t border-edge-faint p-5">
           <div className="flex flex-col gap-3">
             <button
               onClick={onGeneraPdf}
               disabled={generandoPdf || !preventivo}
-              className="w-full rounded-lg bg-brand-navy px-5 py-2.5 text-sm font-medium text-white disabled:opacity-60"
+              className="w-full rounded-lg bg-brand-navy px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-brand-navy/90 active:scale-[0.99] disabled:opacity-60"
             >
               {generandoPdf ? "Generazione PDF..." : "Genera PDF"}
             </button>
@@ -182,12 +182,12 @@ export default function NuovoAnteprimaView({
               <button
                 onClick={onSalva}
                 disabled={salvataggioInCorso || salvato}
-                className="rounded-lg border border-brand-teal px-5 py-2.5 text-sm font-medium text-brand-teal disabled:opacity-60"
+                className="rounded-lg border border-brand-teal px-5 py-2.5 text-sm font-medium text-brand-teal-ink transition hover:bg-brand-teal/5 active:scale-[0.99] disabled:opacity-60"
               >
                 {salvato ? "Salvato" : salvataggioInCorso ? "Salvataggio..." : "Salva nello storico"}
               </button>
               {salvato && (
-                <Link to="/storico" className="text-sm text-brand-teal hover:underline">
+                <Link to="/storico" className="text-sm text-brand-teal-ink hover:underline">
                   Vai allo storico →
                 </Link>
               )}
@@ -195,14 +195,14 @@ export default function NuovoAnteprimaView({
                 <button
                   type="button"
                   onClick={onApriPdf}
-                  className="text-sm text-brand-teal hover:underline"
+                  className="text-sm text-brand-teal-ink hover:underline"
                 >
                   Apri PDF
                 </button>
               )}
             </div>
 
-            {messaggioSuccesso && <p className="text-sm text-brand-teal">{messaggioSuccesso}</p>}
+            {messaggioSuccesso && <p className="text-sm text-brand-teal-ink">{messaggioSuccesso}</p>}
             {errore && <p className="text-sm text-red-600">{errore}</p>}
           </div>
         </div>

@@ -193,11 +193,11 @@ export default function FirmaDettaglioModal({
 
   return (
     <div
-      className="fixed inset-0 z-[70] flex items-center justify-center bg-black/40 p-4"
+      className="fixed inset-0 z-[70] flex items-center justify-center bg-brand-navy/40 p-4 backdrop-blur-[2px]"
       onClick={onClose}
     >
       <div
-        className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl"
+        className="w-full max-w-md rounded-2xl border border-edge-faint bg-surface p-6 shadow-xl shadow-brand-navy/10"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
@@ -223,7 +223,7 @@ export default function FirmaDettaglioModal({
                 href={urlDocumentiFirma.pdf}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block font-medium text-brand-teal underline"
+                className="inline-block font-medium text-brand-teal-ink underline"
               >
                 Apri PDF firmato
               </a>
@@ -257,7 +257,7 @@ export default function FirmaDettaglioModal({
                   type="button"
                   disabled={!!loading}
                   onClick={() => setConfermaAnnulla(true)}
-                  className="w-full rounded-xl border border-red-200 bg-white py-2.5 text-sm font-semibold text-red-700 hover:bg-red-50 disabled:opacity-60"
+                  className="w-full rounded-xl border border-red-200 bg-surface py-2.5 text-sm font-semibold text-red-700 transition hover:bg-red-50 disabled:opacity-60"
                 >
                   Firma non valida — richiedi nuova firma
                 </button>
@@ -276,7 +276,7 @@ export default function FirmaDettaglioModal({
                 type="button"
                 disabled={!!loading}
                 onClick={() => void condividi("whatsapp")}
-                className="w-full rounded-xl border border-black/10 py-3 text-sm font-semibold text-brand-navy hover:bg-brand-bg disabled:opacity-60"
+                className="w-full rounded-xl border border-edge py-3 text-sm font-semibold text-brand-navy transition hover:bg-brand-bg disabled:opacity-60"
               >
                 {loading === "whatsapp" ? "…" : "WhatsApp"}
               </button>
@@ -284,7 +284,7 @@ export default function FirmaDettaglioModal({
                 type="button"
                 disabled={!!loading}
                 onClick={() => void condividi("email")}
-                className="w-full rounded-xl border border-black/10 py-3 text-sm font-semibold text-brand-navy hover:bg-brand-bg disabled:opacity-60"
+                className="w-full rounded-xl border border-edge py-3 text-sm font-semibold text-brand-navy transition hover:bg-brand-bg disabled:opacity-60"
               >
                 {loading === "email" ? "…" : "Email"}
               </button>
@@ -292,7 +292,7 @@ export default function FirmaDettaglioModal({
                 type="button"
                 disabled={!!loading}
                 onClick={() => void condividi("link")}
-                className="w-full rounded-xl border border-black/10 py-3 text-sm font-semibold text-brand-navy hover:bg-brand-bg disabled:opacity-60"
+                className="w-full rounded-xl border border-edge py-3 text-sm font-semibold text-brand-navy transition hover:bg-brand-bg disabled:opacity-60"
               >
                 {loading === "link" ? "…" : "Copia link"}
               </button>
@@ -309,7 +309,7 @@ export default function FirmaDettaglioModal({
               <button
                 type="button"
                 onClick={() => { onClose(); onInviaNuovo(); }}
-                className="w-full rounded-xl bg-brand-teal py-3 text-sm font-semibold text-white"
+                className="w-full rounded-xl bg-brand-teal py-3 text-sm font-semibold text-white shadow-sm shadow-brand-teal/25 transition hover:bg-brand-teal/90 active:scale-[0.98]"
               >
                 Invia nuovo link
               </button>
@@ -318,7 +318,7 @@ export default function FirmaDettaglioModal({
         ) : null}
 
         {sf !== "firmato" ? (
-          <div className="mt-5 space-y-2 border-t border-black/10 pt-4">
+          <div className="mt-5 space-y-2 border-t border-edge pt-4">
             <p className="text-sm font-semibold text-brand-navy">Firma su carta</p>
             <p className="text-xs text-brand-navy/60">
               Se il cliente ha firmato a mano, segnalo qui o carica una foto o un PDF del documento firmato.
@@ -327,7 +327,7 @@ export default function FirmaDettaglioModal({
               type="button"
               disabled={!!loading}
               onClick={() => void segnaFirmatoManuale()}
-              className="w-full rounded-xl border border-brand-teal/30 bg-brand-teal/5 py-3 text-sm font-semibold text-brand-teal hover:bg-brand-teal/10 disabled:opacity-60"
+              className="w-full rounded-xl border border-brand-teal/30 bg-brand-teal/5 py-3 text-sm font-semibold text-brand-teal-ink transition hover:bg-brand-teal/10 disabled:opacity-60"
             >
               {loading === "manuale" ? "…" : "Segna firmato a mano"}
             </button>
@@ -335,7 +335,7 @@ export default function FirmaDettaglioModal({
               type="button"
               disabled={!!loading}
               onClick={() => fileRef.current?.click()}
-              className="w-full rounded-xl border border-black/10 py-3 text-sm font-semibold text-brand-navy hover:bg-brand-bg disabled:opacity-60"
+              className="w-full rounded-xl border border-edge py-3 text-sm font-semibold text-brand-navy transition hover:bg-brand-bg disabled:opacity-60"
             >
               {loading === "upload" ? "Caricamento…" : "Carica foto/pdf firmato a mano"}
             </button>
@@ -349,12 +349,12 @@ export default function FirmaDettaglioModal({
           </div>
         ) : null}
 
-        {feedback ? <p className="mt-3 text-sm font-medium text-brand-teal">{feedback}</p> : null}
+        {feedback ? <p className="mt-3 text-sm font-medium text-brand-teal-ink">{feedback}</p> : null}
 
         <button
           type="button"
           onClick={onClose}
-          className="mt-4 w-full rounded-xl py-2.5 text-sm text-brand-navy/60 hover:text-brand-navy"
+          className="mt-4 w-full rounded-xl py-2.5 text-sm text-brand-navy/60 transition hover:text-brand-navy"
         >
           Chiudi
         </button>

@@ -1,4 +1,4 @@
-const KEY = "preventivoai-nuovo-ripresa-path";
+const KEY = "previcloud-nuovo-ripresa-path";
 
 export function salvaPercorsoRipresaNuovo(pathname: string) {
   if (!pathname.startsWith("/nuovo/")) return;

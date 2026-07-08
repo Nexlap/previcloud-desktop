@@ -141,7 +141,7 @@ export default function ModalShell({
   onBackdropClick,
   children,
   zClass = "z-50",
-  panelClassName = "max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl bg-white p-6 shadow-lg",
+  panelClassName = "max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl border border-edge-faint bg-surface p-6 shadow-xl shadow-brand-navy/10",
   contentClassName = "mt-4 space-y-4",
 }: Props) {
   const generatedTitleId = useId();
@@ -153,7 +153,7 @@ export default function ModalShell({
 
   return (
     <div
-      className={`fixed inset-0 ${zClass} flex items-center justify-center bg-black/40 p-4`}
+      className={`fixed inset-0 ${zClass} flex items-center justify-center bg-brand-navy/40 p-4 backdrop-blur-[2px]`}
       data-app-modal
       onMouseDown={handleBackdropMouseDown}
       onMouseUp={handleBackdropMouseUp}

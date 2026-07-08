@@ -8,7 +8,7 @@ import {
   giornoScadenzaValido,
   meseInizioValido,
   type RateAccontoTipo,
-} from "preventivoai-shared";
+} from "previcloud-shared";
 import { GiornoScadenzaSelect, MeseInizioSelect } from "../pickers/DatePartPickers";
 import ToggleSwitch from "../ToggleSwitch";
 
@@ -37,10 +37,10 @@ function OptionToggle<T extends string>({
           key={opt.key}
           type="button"
           onClick={() => onChange(opt.key)}
-          className={`rounded-full px-3 py-1.5 text-sm ${
+          className={`rounded-full px-3 py-1.5 text-sm transition ${
             value === opt.key
               ? "bg-brand-navy text-white"
-              : "border border-black/10 bg-brand-bg text-brand-navy"
+              : "border border-edge bg-brand-bg text-brand-navy hover:border-brand-navy/30"
           }`}
         >
           {opt.label}
@@ -130,7 +130,7 @@ export default function BuilderPianoPagamentoCard({
       : null;
 
   return (
-    <div className="rounded-2xl border border-black/10 bg-white p-4">
+    <div className="rounded-2xl border border-edge-faint bg-surface p-4">
       <div>
         <h3 className="text-sm font-semibold text-brand-navy">Piano di pagamento</h3>
         <p className="mt-0.5 text-xs text-brand-navy/50">Configura rate, acconto o canone per questo cliente</p>
@@ -145,7 +145,7 @@ export default function BuilderPianoPagamentoCard({
         <div className="mt-4 space-y-3">
           <div>
             <p className="text-xs font-semibold tracking-wide text-brand-navy/50">IMPORTO TOTALE PREVENTIVO</p>
-            <div className="mt-1 rounded-xl border border-black/10 bg-brand-bg px-3 py-2.5 text-sm font-semibold text-brand-navy">
+            <div className="mt-1 rounded-xl border border-edge bg-brand-bg px-3 py-2.5 text-sm font-semibold text-brand-navy">
               {importoTotale > 0 ? `€${formatImportoEuro(importoTotale, 2)}` : "—"}
             </div>
           </div>
@@ -171,7 +171,7 @@ export default function BuilderPianoPagamentoCard({
               onChange={(e) => onChangeRateAccontoValore(e.target.value)}
               placeholder={rateAccontoTipo === "fisso" ? "es. 500" : "es. 30"}
               inputMode={rateAccontoTipo === "fisso" ? "decimal" : "numeric"}
-              className="mt-1 w-full rounded-xl border border-black/10 bg-brand-bg px-3 py-2.5 text-sm outline-none focus:border-brand-teal"
+              className="mt-1 w-full rounded-xl border border-edge bg-brand-bg px-3 py-2.5 text-sm outline-none transition focus:border-brand-teal"
             />
           </div>
 
@@ -204,7 +204,7 @@ export default function BuilderPianoPagamentoCard({
                 value={rateGiornoScadenza}
                 onChange={onChangeRateGiornoScadenza}
                 mese={rateMeseInizio}
-                className="mt-1 w-full rounded-xl border border-black/10 bg-brand-bg px-3 py-2.5 text-sm outline-none focus:border-brand-teal"
+                className="mt-1 w-full rounded-xl border border-edge bg-brand-bg px-3 py-2.5 text-sm outline-none transition focus:border-brand-teal"
               />
             </div>
             <div>
@@ -214,12 +214,12 @@ export default function BuilderPianoPagamentoCard({
                 onChange={onChangeRateMeseInizio}
                 giornoCollegato={rateGiornoScadenza}
                 onGiornoCollegatoChange={onChangeRateGiornoScadenza}
-                className="mt-1 w-full rounded-xl border border-black/10 bg-brand-bg px-3 py-2.5 text-sm outline-none focus:border-brand-teal"
+                className="mt-1 w-full rounded-xl border border-edge bg-brand-bg px-3 py-2.5 text-sm outline-none transition focus:border-brand-teal"
               />
             </div>
           </div>
 
-          <div className="flex items-center justify-between gap-3 border-t border-black/5 pt-3">
+          <div className="flex items-center justify-between gap-3 border-t border-edge-faint pt-3">
             <div>
               <p className="text-sm font-medium text-brand-navy">Mostra nel PDF</p>
               <p className="text-xs text-brand-navy/50">Aggiunge il piano rate al documento</p>
@@ -233,7 +233,7 @@ export default function BuilderPianoPagamentoCard({
         <div className="mt-4 space-y-3">
           <div>
             <p className="text-xs font-semibold tracking-wide text-brand-navy/50">IMPORTO TOTALE PREVENTIVO</p>
-            <div className="mt-1 rounded-xl border border-black/10 bg-brand-bg px-3 py-2.5 text-sm font-semibold text-brand-navy">
+            <div className="mt-1 rounded-xl border border-edge bg-brand-bg px-3 py-2.5 text-sm font-semibold text-brand-navy">
               {importoTotale > 0 ? `€${formatImportoEuro(importoTotale, 2)}` : "—"}
             </div>
           </div>
@@ -244,7 +244,7 @@ export default function BuilderPianoPagamentoCard({
               value={rateNumero}
               onChange={(e) => onChangeRateNumero(e.target.value)}
               placeholder="es. 3"
-              className="mt-1 w-full rounded-xl border border-black/10 bg-brand-bg px-3 py-2.5 text-sm outline-none focus:border-brand-teal"
+              className="mt-1 w-full rounded-xl border border-edge bg-brand-bg px-3 py-2.5 text-sm outline-none transition focus:border-brand-teal"
             />
           </div>
 
@@ -255,7 +255,7 @@ export default function BuilderPianoPagamentoCard({
                 value={rateGiornoScadenza}
                 onChange={onChangeRateGiornoScadenza}
                 mese={rateMeseInizio}
-                className="mt-1 w-full rounded-xl border border-black/10 bg-brand-bg px-3 py-2.5 text-sm outline-none focus:border-brand-teal"
+                className="mt-1 w-full rounded-xl border border-edge bg-brand-bg px-3 py-2.5 text-sm outline-none transition focus:border-brand-teal"
               />
             </div>
             <div>
@@ -265,7 +265,7 @@ export default function BuilderPianoPagamentoCard({
                 onChange={onChangeRateMeseInizio}
                 giornoCollegato={rateGiornoScadenza}
                 onGiornoCollegatoChange={onChangeRateGiornoScadenza}
-                className="mt-1 w-full rounded-xl border border-black/10 bg-brand-bg px-3 py-2.5 text-sm outline-none focus:border-brand-teal"
+                className="mt-1 w-full rounded-xl border border-edge bg-brand-bg px-3 py-2.5 text-sm outline-none transition focus:border-brand-teal"
               />
             </div>
           </div>
@@ -287,7 +287,7 @@ export default function BuilderPianoPagamentoCard({
             </div>
           ) : null}
 
-          <div className="flex items-center justify-between gap-3 border-t border-black/5 pt-3">
+          <div className="flex items-center justify-between gap-3 border-t border-edge-faint pt-3">
             <div>
               <p className="text-sm font-medium text-brand-navy">Mostra nel PDF</p>
               <p className="text-xs text-brand-navy/50">Aggiunge il piano rate al documento</p>
@@ -306,7 +306,7 @@ export default function BuilderPianoPagamentoCard({
                 value={abImporto}
                 onChange={(e) => onChangeAbImporto(e.target.value)}
                 placeholder="es. 400"
-                className="w-full rounded-xl border border-black/10 bg-brand-bg px-3 py-2.5 text-sm outline-none focus:border-brand-teal"
+                className="w-full rounded-xl border border-edge bg-brand-bg px-3 py-2.5 text-sm outline-none transition focus:border-brand-teal"
               />
             </div>
             <div>
@@ -315,7 +315,7 @@ export default function BuilderPianoPagamentoCard({
                 value={abGiorno}
                 onChange={onChangeAbGiorno}
                 mese={abMeseInizio}
-                className="w-full rounded-xl border border-black/10 bg-brand-bg px-3 py-2.5 text-sm outline-none focus:border-brand-teal"
+                className="w-full rounded-xl border border-edge bg-brand-bg px-3 py-2.5 text-sm outline-none transition focus:border-brand-teal"
               />
             </div>
           </div>
@@ -327,7 +327,7 @@ export default function BuilderPianoPagamentoCard({
               onChange={onChangeAbMeseInizio}
               giornoCollegato={abGiorno}
               onGiornoCollegatoChange={onChangeAbGiorno}
-              className="mt-1 w-full rounded-xl border border-black/10 bg-brand-bg px-3 py-2.5 text-sm outline-none focus:border-brand-teal"
+              className="mt-1 w-full rounded-xl border border-edge bg-brand-bg px-3 py-2.5 text-sm outline-none transition focus:border-brand-teal"
             />
           </div>
 
@@ -343,11 +343,11 @@ export default function BuilderPianoPagamentoCard({
               value={abMensilita}
               onChange={(e) => onChangeAbMensilita(e.target.value)}
               placeholder="es. 12 - lascia vuoto per canone aperto"
-              className="mt-1 w-full rounded-xl border border-black/10 bg-brand-bg px-3 py-2.5 text-sm outline-none focus:border-brand-teal"
+              className="mt-1 w-full rounded-xl border border-edge bg-brand-bg px-3 py-2.5 text-sm outline-none transition focus:border-brand-teal"
             />
           </div>
 
-          <div className="flex items-center justify-between gap-3 border-t border-black/5 pt-3">
+          <div className="flex items-center justify-between gap-3 border-t border-edge-faint pt-3">
             <div>
               <p className="text-sm font-medium text-brand-navy">Mostra nel PDF</p>
               <p className="text-xs text-brand-navy/50">Aggiunge il canone mensile al documento</p>

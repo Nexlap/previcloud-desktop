@@ -2,4 +2,4 @@ export {
   MESI_BREVI,
   MESI_FULL,
   TEMPLATES,
-} from "preventivoai-shared";
+} from "previcloud-shared";

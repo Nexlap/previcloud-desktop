@@ -113,7 +113,7 @@ export default function NotificaToastStack({ anchorRef }: Props) {
               >
                 <p className="text-sm font-semibold text-ink">{t.titolo}</p>
                 {t.nomeCliente ? (
-                  <p className="mt-0.5 text-xs font-medium text-brand-teal">{t.nomeCliente}</p>
+                  <p className="mt-0.5 text-xs font-medium text-brand-teal-ink">{t.nomeCliente}</p>
                 ) : null}
                 {t.messaggio ? (
                   <p className="mt-1 line-clamp-2 text-xs text-ink/55">{t.messaggio}</p>

@@ -1,4 +1,4 @@
-import { formatImportoEuro, labelScadenzaRataDaPiano } from "preventivoai-shared";
+import { formatImportoEuro, labelScadenzaRataDaPiano } from "previcloud-shared";
 import type { RataAbbonamento } from "../../lib/types";
 import { formatData } from "../../lib/format";
 
@@ -114,10 +114,10 @@ function DettaglioPiano({
   const confermaAzzera = messaggioConfermaAzzera ?? messaggioAzzeraDefault(variante);
 
   return (
-    <div className="space-y-2 border-t border-black/5 pt-3">
+    <div className="space-y-2 border-t border-edge-faint pt-3">
       {rata.stato === "parziale" ? (
         <div className="space-y-1">
-          <div className="h-1.5 overflow-hidden rounded-full bg-black/5">
+          <div className="h-1.5 overflow-hidden rounded-full bg-edge-faint">
             <div
               className="h-full rounded-full bg-amber-500"
               style={{ width: `${((rata.acconto || 0) / rata.importo) * 100}%` }}
@@ -137,7 +137,7 @@ function DettaglioPiano({
             <button
               type="button"
               onClick={() => onOpenPagamento(rata)}
-              className="flex-1 rounded-xl border border-brand-teal py-2 text-sm font-semibold text-brand-teal"
+              className="flex-1 rounded-xl border border-brand-teal py-2 text-sm font-semibold text-brand-teal-ink transition hover:bg-brand-teal/5 active:scale-[0.99]"
             >
               + Registra pagamento
             </button>
@@ -158,7 +158,7 @@ function DettaglioPiano({
             onClick={() => {
               if (window.confirm(confermaAzzera)) onAzzeraPagamento(rata.id);
             }}
-            className="flex-1 rounded-xl border border-black/10 py-2 text-sm text-brand-navy/40"
+            className="flex-1 rounded-xl border border-edge py-2 text-sm text-brand-navy/40 transition hover:bg-brand-bg"
           >
             ↩ Azzera
           </button>
@@ -167,7 +167,7 @@ function DettaglioPiano({
       <button
         type="button"
         onClick={onElimina}
-        className="w-full rounded-xl border border-red-200 py-2 text-sm font-medium text-red-600"
+        className="w-full rounded-xl border border-red-200 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50"
       >
         Elimina
       </button>
@@ -220,13 +220,13 @@ export default function RigaPiano({
 
   if (layout === "hero") {
     return (
-      <div className={`rounded-xl border-2 border-brand-teal bg-white p-4 ${className}`.trim()}>
+      <div className={`rounded-xl border-2 border-brand-teal bg-surface p-4 shadow-sm shadow-brand-navy/[0.03] ${className}`.trim()}>
         <div className="flex items-start justify-between gap-3">
           <div>
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-sm font-semibold text-brand-navy">{titolo}</span>
               {evidenziaCorrente ? (
-                <span className="rounded-md bg-emerald-50 px-1.5 py-0.5 text-[10px] font-semibold text-brand-teal">
+                <span className="rounded-md bg-emerald-50 px-1.5 py-0.5 text-[10px] font-semibold text-brand-teal-ink">
                   corrente
                 </span>
               ) : null}
@@ -249,7 +249,7 @@ export default function RigaPiano({
   }
 
   return (
-    <div className={`border-t border-black/5 px-3 py-3 ${className}`.trim()}>
+    <div className={`border-t border-edge-faint px-3 py-3 ${className}`.trim()}>
       <button type="button" onClick={onToggle} className={btnReset("flex w-full items-center gap-2 text-left text-brand-navy")}>
         <span className="min-w-0 flex-1 text-sm font-medium text-brand-navy">{titolo}</span>
         <span className="text-sm font-semibold text-brand-navy">€{formatImportoEuro(rata.importo, 2)}</span>

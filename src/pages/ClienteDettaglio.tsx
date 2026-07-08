@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router";
+import { ArrowLeft, Plus } from "@phosphor-icons/react";
 import {
   caricaClienteDettaglio,
   caricaCollegamentiPianoCliente,
@@ -14,7 +15,7 @@ import { messaggioEliminaPiano } from "../lib/confermeElimina";
 import { useConfirmDialog } from "../lib/hooks/useConfirmDialog";
 import { useAnnullaSelezioneOnEscape } from "../lib/hooks/useAnnullaSelezioneOnEscape";
 import { useAbbonamento } from "../lib/hooks/useAbbonamento";
-import { parseImportoEuro, calcolaAccontoSaldoPiano, type RateAccontoTipo, type RateModalitaPiano } from "preventivoai-shared";
+import { parseImportoEuro, calcolaAccontoSaldoPiano, type RateAccontoTipo, type RateModalitaPiano } from "previcloud-shared";
 import { caricaMetodiPagamento, type MetodoPagamento } from "../lib/pagamenti";
 import { supabase } from "../lib/supabase";
 import type { Cliente, Preventivo, RataAbbonamento } from "../lib/types";
@@ -458,11 +459,12 @@ export default function ClienteDettaglio() {
   return (
     <PageContainer className={paddingBarraFissa ? "!pb-28 lg:!pb-28" : ""}>
       <div className="sticky top-0 z-20 -mx-4 bg-brand-bg px-4 pb-3 sm:-mx-6 sm:px-6 lg:pb-4">
-        <Link to="/clienti" className="text-sm text-brand-navy/60 hover:text-brand-navy">
-          ← Torna ai clienti
+        <Link to="/clienti" className="inline-flex items-center gap-1.5 text-sm text-brand-navy/60 transition hover:text-brand-navy">
+          <ArrowLeft size={14} weight="bold" />
+          Torna ai clienti
         </Link>
 
-        <div className="mt-4 rounded-2xl bg-white p-6 shadow-sm">
+        <div className="mt-4 rounded-2xl border border-edge-faint bg-surface p-6 shadow-sm shadow-brand-navy/[0.03]">
           <div className="flex items-start justify-between gap-4">
             <h1 className="text-2xl font-semibold text-brand-navy">{cliente.nome}</h1>
             <div className="flex shrink-0 gap-2">
@@ -477,7 +479,7 @@ export default function ClienteDettaglio() {
                       setPianoSelezioneAttiva(true);
                     }
                   }}
-                  className="rounded-xl border border-brand-navy/20 px-4 py-2 text-sm font-medium text-brand-navy hover:bg-brand-bg"
+                  className="rounded-xl border border-brand-navy/20 px-4 py-2 text-sm font-medium text-brand-navy transition hover:bg-brand-bg active:scale-[0.98]"
                 >
                   {pianoSelezioneAttiva ? "Annulla selezione" : "Seleziona"}
                 </button>
@@ -485,7 +487,7 @@ export default function ClienteDettaglio() {
               <button
                 type="button"
                 onClick={() => setMostraModifica(true)}
-                className="rounded-xl border border-brand-navy/20 px-4 py-2 text-sm font-medium text-brand-navy hover:bg-brand-bg"
+                className="rounded-xl border border-brand-navy/20 px-4 py-2 text-sm font-medium text-brand-navy transition hover:bg-brand-bg active:scale-[0.98]"
               >
                 Modifica
               </button>
@@ -611,31 +613,34 @@ export default function ClienteDettaglio() {
       </div>
 
       {mostraBarraNuovo ? (
-        <div className="fixed bottom-0 left-56 right-0 z-30 border-t border-black/10 bg-white px-6 py-3 shadow-[0_-4px_12px_rgba(0,0,0,0.06)]">
+        <div className="fixed bottom-0 left-56 right-0 z-30 border-t border-edge bg-surface px-6 py-3 shadow-[0_-4px_12px_rgba(13,27,42,0.06)]">
           <div className="mx-auto flex w-full max-w-5xl justify-center">
             {tab === "abbonamento" ? (
               <button
                 type="button"
                 onClick={apriModaleAbbonamento}
-                className="rounded-xl bg-brand-teal px-6 py-3 text-sm font-semibold text-white hover:opacity-90"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-brand-teal px-6 py-3 text-sm font-semibold text-white shadow-sm shadow-brand-teal/25 transition hover:bg-brand-teal/90 active:scale-[0.98]"
               >
-                + Nuovo abbonamento
+                <Plus size={16} weight="bold" />
+                Nuovo abbonamento
               </button>
             ) : tab === "pagamento_rate" ? (
               <button
                 type="button"
                 onClick={apriModaleRate}
-                className="rounded-xl bg-brand-teal px-6 py-3 text-sm font-semibold text-white hover:opacity-90"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-brand-teal px-6 py-3 text-sm font-semibold text-white shadow-sm shadow-brand-teal/25 transition hover:bg-brand-teal/90 active:scale-[0.98]"
               >
-                + Nuovo piano a rate
+                <Plus size={16} weight="bold" />
+                Nuovo piano a rate
               </button>
             ) : (
               <button
                 type="button"
                 onClick={() => navigaNuovoPreventivo({ clienteId: id, clienteNome: cliente?.nome })}
-                className="rounded-xl bg-brand-teal px-6 py-3 text-sm font-semibold text-white hover:opacity-90"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-brand-teal px-6 py-3 text-sm font-semibold text-white shadow-sm shadow-brand-teal/25 transition hover:bg-brand-teal/90 active:scale-[0.98]"
               >
-                + Nuovo preventivo
+                <Plus size={16} weight="bold" />
+                Nuovo preventivo
               </button>
             )}
           </div>

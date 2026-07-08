@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { ArrowsOut, CaretLeft, CaretRight } from "@phosphor-icons/react";
 import {
   dimensioniPaginaPreview,
   htmlPerPaginaPreview,
@@ -21,14 +22,6 @@ type FrameSize = {
 
 const FRAME_VUOTO: FrameSize = { larghezza: 0, altezza: 0, scale: 1 };
 
-function IconEspandi() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-6 w-6" aria-hidden>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" />
-    </svg>
-  );
-}
-
 function BarraPaginazione({
   paginaAttiva,
   totalPages,
@@ -41,15 +34,15 @@ function BarraPaginazione({
   const pagine = Array.from({ length: Math.max(totalPages, 1) }, (_, i) => i);
 
   return (
-    <div className="flex shrink-0 items-center justify-center gap-4 border-t border-black/5 px-4 py-3">
+    <div className="flex shrink-0 items-center justify-center gap-4 border-t border-edge-faint px-4 py-3">
       <button
         type="button"
         disabled={paginaAttiva === 0}
         onClick={() => onVai(paginaAttiva - 1)}
-        className="rounded-lg border border-black/10 px-3 py-1.5 text-sm text-brand-navy/70 hover:bg-brand-bg disabled:cursor-not-allowed disabled:opacity-40"
+        className="rounded-lg border border-edge px-3 py-1.5 text-sm text-brand-navy/70 transition hover:bg-brand-bg disabled:cursor-not-allowed disabled:opacity-40"
         aria-label="Pagina precedente"
       >
-        ←
+        <CaretLeft size={14} weight="bold" />
       </button>
 
       <div className="flex items-center gap-2">
@@ -61,7 +54,7 @@ function BarraPaginazione({
             aria-label={`Pagina ${pageIndex + 1}`}
             aria-current={pageIndex === paginaAttiva ? "true" : undefined}
             className={`h-2 rounded-full transition-all ${
-              pageIndex === paginaAttiva ? "w-5 bg-brand-teal" : "w-2 bg-black/15 hover:bg-black/25"
+              pageIndex === paginaAttiva ? "w-5 bg-brand-teal" : "w-2 bg-brand-navy/15 hover:bg-brand-navy/25"
             }`}
           />
         ))}
@@ -75,10 +68,10 @@ function BarraPaginazione({
         type="button"
         disabled={paginaAttiva >= totalPages - 1}
         onClick={() => onVai(paginaAttiva + 1)}
-        className="rounded-lg border border-black/10 px-3 py-1.5 text-sm text-brand-navy/70 hover:bg-brand-bg disabled:cursor-not-allowed disabled:opacity-40"
+        className="rounded-lg border border-edge px-3 py-1.5 text-sm text-brand-navy/70 transition hover:bg-brand-bg disabled:cursor-not-allowed disabled:opacity-40"
         aria-label="Pagina successiva"
       >
-        →
+        <CaretRight size={14} weight="bold" />
       </button>
     </div>
   );
@@ -193,7 +186,7 @@ export default function PreviewPaginata({
                 aria-label="Espandi anteprima PDF"
               >
                 <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white/95 text-brand-navy shadow-lg">
-                  <IconEspandi />
+                  <ArrowsOut size={22} weight="bold" />
                 </span>
               </button>
             )}
