@@ -291,7 +291,7 @@ export default function AppSettings() {
       <div className="mt-3 rounded-2xl border border-edge-faint bg-surface p-6 shadow-sm shadow-brand-navy/[0.03]">
         <div className="flex items-center justify-between gap-4">
           <div>
-            <p className="text-sm font-semibold text-brand-navy">Avvio con Windows</p>
+            <p className="text-sm font-semibold text-brand-navy">Avvio automatico all'accensione</p>
             <p className="mt-1 text-sm text-brand-navy/60">Avvia PreviCloud all'accensione del PC.</p>
           </div>
           <ToggleSwitch

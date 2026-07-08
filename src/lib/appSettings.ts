@@ -45,7 +45,7 @@ export function setPdfSalvataggioModalita(modalita: PdfSalvataggioModalita) {
   localStorage.setItem(PDF_SALVATAGGIO_MODALITA_KEY, modalita);
 }
 
-export function sanitizzaNomeCartellaWindows(nome: string): string {
+export function sanitizzaNomeCartella(nome: string): string {
   return (
     nome
       .trim()
@@ -74,7 +74,7 @@ export async function risolviCartellaPdfSalvataggio(nomeCliente?: string): Promi
   const base = await cartellaPdfBase();
   if (!getPdfCartelleCliente()) return base;
 
-  const nome = sanitizzaNomeCartellaWindows(nomeCliente || "");
+  const nome = sanitizzaNomeCartella(nomeCliente || "");
   if (!nome) return base;
   return join(base, nome);
 }

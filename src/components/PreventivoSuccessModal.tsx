@@ -304,7 +304,7 @@ export default function PreventivoSuccessModal({ open, dettaglio, azioni, invio,
                 onClick={() =>
                   void conFeedback(
                     () => mostraPdfInCartella(azioni!.percorsoLocale!),
-                    "Cartella aperta in Esplora file.",
+                    "Cartella aperta.",
                   )
                 }
                 className="w-full rounded-xl border border-edge py-2.5 text-sm font-semibold text-brand-navy transition hover:bg-brand-bg"

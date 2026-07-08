@@ -3,7 +3,7 @@ import {
   isDesktopApp,
   salvaPdfConPreferenze,
   salvaPdfInCartella,
-  sanitizzaNomeCartellaWindows,
+  sanitizzaNomeCartella,
 } from "./appSettings";
 import { sessionToken } from "./settings";
 import { trackEvento } from "./track";
@@ -191,7 +191,7 @@ export async function ottieniUrlPdfPreventivo(preventivoId: string, token?: stri
 
 export function formatNomeFilePdf(nomeCliente: string | undefined, numeroPreventivo: string): string {
   const numero = numeroPreventivo?.trim() || `PRV-${Date.now()}`;
-  const nome = sanitizzaNomeCartellaWindows(nomeCliente || "");
+  const nome = sanitizzaNomeCartella(nomeCliente || "");
   if (nome) return `${nome}_${numero}.pdf`;
   return `${numero}.pdf`;
 }
