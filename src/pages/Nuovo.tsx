@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router";
+import { ArrowLeft } from "@phosphor-icons/react";
 import { supabase } from "../lib/supabase";
 import { caricaClientiPerSelezione, clienteIdUtilizzabile, salvaPreventivoGenerato } from "../lib/nuovo";
 import {
@@ -20,7 +21,7 @@ import type { TrasfertaBuilder, VoceBuilder } from "../lib/builder";
 import { caricaMetodiPagamentoBuilder } from "../lib/pagamenti";
 import type { MetodoPagamento } from "../lib/pagamenti";
 import { generaPDF, generaPDFFile, creaPreventivoBozza, risolviUploadPdfGenerato, aggiornaLogoCacheInHtml, formatNomeFilePdf, scaricaPdfLocale, creaLinkPagamento, creaLinkPagamentoRata } from "../lib/pdf";
-import { calcolaAccontoSaldoPiano, generaLinkPaypalMe, importoDaTesto, meseCorrenteString, validaPianiPagamento, type RateAccontoTipo, type RateModalitaPiano } from "preventivoai-shared";
+import { calcolaAccontoSaldoPiano, generaLinkPaypalMe, importoDaTesto, meseCorrenteString, parseImportoEuro, validaPianiPagamento, type RateAccontoTipo, type RateModalitaPiano } from "previcloud-shared";
 import {
   creaPianoRateDaPreventivo,
   agganciaPianoAPreventivo,
@@ -440,7 +441,7 @@ export default function Nuovo({ mode }: Props) {
   const totaleConIva = includiIva ? totaleBase * 1.22 : totaleBase;
   const importoSconto = (() => {
     if (!scontoAttivo || !scontoValore) return 0;
-    const val = parseFloat(scontoValore.replace(",", "."));
+    const val = parseImportoEuro(scontoValore) ?? NaN;
     if (isNaN(val) || val <= 0) return 0;
     return scontoTipo === "percentuale"
       ? totaleConIva * (val / 100)
@@ -1051,23 +1052,26 @@ export default function Nuovo({ mode }: Props) {
             <button
               type="button"
               onClick={tornaAllAssemblaggio}
-              className="text-sm text-brand-navy/60 hover:text-brand-navy"
+              className="inline-flex items-center gap-1.5 text-sm text-brand-navy/60 transition hover:text-brand-navy"
             >
-              ← Modifica preventivo
+              <ArrowLeft size={14} weight="bold" />
+              Modifica preventivo
             </button>
           ) : inModifica ? (
-            <Link to="/storico" className="text-sm text-brand-navy/60 hover:text-brand-navy">
-              ← Torna allo storico
+            <Link to="/storico" className="inline-flex items-center gap-1.5 text-sm text-brand-navy/60 transition hover:text-brand-navy">
+              <ArrowLeft size={14} weight="bold" />
+              Torna allo storico
             </Link>
           ) : (
-            <Link to={percorsoNuovoPreventivoHub(clienteIdDaUrl, clienteNomeDaUrl)} className="text-sm text-brand-navy/60 hover:text-brand-navy">
-              ← Cambia metodo
+            <Link to={percorsoNuovoPreventivoHub(clienteIdDaUrl, clienteNomeDaUrl)} className="inline-flex items-center gap-1.5 text-sm text-brand-navy/60 transition hover:text-brand-navy">
+              <ArrowLeft size={14} weight="bold" />
+              Cambia metodo
             </Link>
           )}
           <h1 className="mt-1 text-2xl font-semibold text-brand-navy">{titoloModalita}</h1>
         </div>
         {(messaggi.length > 0 || recap || preventivo || voci.some((v) => v.nome.trim())) && (
-          <button onClick={ricomincia} className="text-sm text-brand-navy/60 hover:text-brand-navy">
+          <button onClick={ricomincia} className="text-sm text-brand-navy/60 transition hover:text-brand-navy">
             Ricomincia
           </button>
         )}

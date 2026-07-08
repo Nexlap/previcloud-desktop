@@ -17,7 +17,7 @@ import {
   ONBOARDING_CATEGORIE,
   completaOnboarding,
   generaPreviewOnboarding,
-  hasCompletedProfile,
+  hasCompletedProfileSicuro,
 } from "../lib/onboarding";
 
 const STEP_LABELS = ["Benvenuto", "Azienda", "Servizi", "Template", "Pagamento"];
@@ -25,7 +25,7 @@ const STEP_LABELS = ["Benvenuto", "Azienda", "Servizi", "Template", "Pagamento"]
 const CHIP_BASE =
   "rounded-xl border px-4 py-2.5 text-sm font-medium transition-colors";
 const CHIP_ACTIVE = "border-brand-teal bg-brand-teal/10 text-brand-teal";
-const CHIP_IDLE = "border-black/10 text-brand-navy/70 hover:border-brand-teal/40 hover:bg-brand-bg";
+const CHIP_IDLE = "border-edge text-brand-navy/70 hover:border-brand-teal/40 hover:bg-brand-bg";
 
 export default function Onboarding() {
   const navigate = useNavigate();
@@ -53,7 +53,7 @@ export default function Onboarding() {
   const previewTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    void hasCompletedProfile().then((ok) => {
+    void hasCompletedProfileSicuro().then((ok) => {
       if (ok) navigate("/", { replace: true });
     });
   }, [navigate]);
@@ -159,7 +159,7 @@ export default function Onboarding() {
           <button
             type="button"
             onClick={() => vaiAlloStep(1)}
-            className="mt-10 w-full rounded-xl bg-brand-teal py-3.5 text-sm font-semibold text-white hover:bg-brand-teal/90"
+            className="mt-10 w-full rounded-xl bg-brand-teal py-3.5 text-sm font-semibold text-white shadow-sm shadow-brand-teal/25 transition hover:bg-brand-teal/90 active:scale-[0.99]"
           >
             Inizia la configurazione →
           </button>
@@ -202,7 +202,7 @@ export default function Onboarding() {
 
   return (
     <div className="theme-surface flex h-screen flex-col bg-brand-bg">
-      <header className="shrink-0 border-b border-black/5 bg-brand-navy px-6 py-5">
+      <header className="shrink-0 border-b border-white/10 bg-brand-navy px-6 py-5">
         <div className="mx-auto max-w-6xl">
           <p className="mb-4 text-sm font-semibold text-white">Configurazione iniziale</p>
           <OnboardingStepper
@@ -224,7 +224,7 @@ export default function Onboarding() {
           }`}
         >
           {step === 1 && (
-            <div className="rounded-2xl bg-white p-6 shadow-sm">
+            <div className="rounded-2xl border border-edge-faint bg-surface p-6 shadow-sm shadow-brand-navy/[0.03]">
               <h2 className="text-xl font-semibold text-brand-navy">Chi sei?</h2>
               <p className="mt-1 text-sm text-brand-navy/60">
                 Questi dati appariranno nei tuoi preventivi PDF.
@@ -239,7 +239,7 @@ export default function Onboarding() {
                     value={nomeAzienda}
                     onChange={(e) => setNomeAzienda(e.target.value)}
                     placeholder="es. Mario Rossi, Studio Rossi"
-                    className="w-full rounded-xl border border-black/10 px-3 py-2.5 text-sm outline-none focus:border-brand-teal"
+                    className="w-full rounded-xl border border-edge px-3 py-2.5 text-sm outline-none focus:border-brand-teal"
                     autoFocus
                   />
                 </div>
@@ -249,7 +249,7 @@ export default function Onboarding() {
                     value={citta}
                     onChange={(e) => setCitta(e.target.value)}
                     placeholder="es. Roma"
-                    className="w-full rounded-xl border border-black/10 px-3 py-2.5 text-sm outline-none focus:border-brand-teal"
+                    className="w-full rounded-xl border border-edge px-3 py-2.5 text-sm outline-none focus:border-brand-teal"
                   />
                 </div>
                 <div className="space-y-2">
@@ -276,7 +276,7 @@ export default function Onboarding() {
                     value={firmaNome}
                     onChange={(e) => setFirmaNome(e.target.value)}
                     placeholder="es. Mario Rossi"
-                    className="w-full rounded-xl border border-black/10 px-3 py-2.5 text-sm outline-none focus:border-brand-teal"
+                    className="w-full rounded-xl border border-edge px-3 py-2.5 text-sm outline-none focus:border-brand-teal"
                   />
                   {firmaNome && (
                     <p className="pt-1 text-center text-lg italic text-brand-navy/80">{firmaNome}</p>
@@ -287,7 +287,7 @@ export default function Onboarding() {
           )}
 
           {step === 2 && (
-            <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl bg-white p-6 shadow-sm">
+            <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-edge-faint bg-surface p-6 shadow-sm shadow-brand-navy/[0.03]">
               <div className="shrink-0">
                 <h2 className="text-xl font-semibold text-brand-navy">I tuoi servizi</h2>
                 <p className="mt-1 text-sm text-brand-navy/60">
@@ -314,7 +314,7 @@ export default function Onboarding() {
 
           {step === 3 && (
             <div className="grid min-h-0 flex-1 grid-cols-2 gap-4">
-              <div className="flex min-h-0 flex-col overflow-hidden rounded-2xl bg-white p-6 shadow-sm">
+              <div className="flex min-h-0 flex-col overflow-hidden rounded-2xl border border-edge-faint bg-surface p-6 shadow-sm shadow-brand-navy/[0.03]">
                 <div className="shrink-0">
                   <h2 className="text-xl font-semibold text-brand-navy">Scegli il tuo stile</h2>
                   <p className="mt-1 text-sm text-brand-navy/60">Il template preferito per i PDF.</p>

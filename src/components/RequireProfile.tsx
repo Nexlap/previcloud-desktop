@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router";
-import { hasCompletedProfile } from "../lib/onboarding";
+import { hasCompletedProfileSicuro } from "../lib/onboarding";
 
 export default function RequireProfile() {
   const [loading, setLoading] = useState(true);
   const [complete, setComplete] = useState(false);
 
   useEffect(() => {
-    void hasCompletedProfile().then((ok) => {
+    void hasCompletedProfileSicuro().then((ok) => {
       setComplete(ok);
       setLoading(false);
     });

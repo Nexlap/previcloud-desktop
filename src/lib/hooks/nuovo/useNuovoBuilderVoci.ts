@@ -14,9 +14,10 @@ import {
   validaPianiPagamento,
   calcolaTotaleVoci,
   calcolaTotaleTrasferte,
+  parseImportoEuro,
   type RateAccontoTipo,
   type RateModalitaPiano,
-} from "preventivoai-shared";
+} from "previcloud-shared";
 
 type Params = {
   voci: VoceBuilder[];
@@ -243,7 +244,7 @@ export function useNuovoBuilderVoci({
     }
     setErrore("");
     const nomeCliente = clienti.find((c) => c.id === clienteSelezionatoId)?.nome || "";
-    const valoreSconto = parseFloat(scontoValore.replace(",", "."));
+    const valoreSconto = parseImportoEuro(scontoValore) ?? NaN;
     const testo = generaTestoPreventivoBuilder({
       nomeCliente,
       voci: vociValide,

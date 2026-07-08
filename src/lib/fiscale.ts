@@ -1,3 +1,4 @@
+import { parseImportoEuro } from "previcloud-shared";
 import { supabase } from "./supabase";
 import type { Tables } from "./database.types";
 import type { ProfiloFiscale } from "./types";export type ProfiloFiscaleForm = Omit<ProfiloFiscale, "attivo"> & { id?: string };
@@ -82,11 +83,11 @@ export async function salvaProfiloFiscale(profilo: ProfiloFiscaleForm, featureAt
     riduzione_percentuale: parseFloat(profilo.riduzione_percentuale) || 35,
     rivalsa_inps: profilo.rivalsa_inps,
     rivalsa_percentuale: parseFloat(profilo.rivalsa_percentuale) || 4,
-    soglia_fatturato: parseFloat(profilo.soglia_fatturato) || 85000,
+    soglia_fatturato: parseImportoEuro(profilo.soglia_fatturato) ?? 85000,
     aliquota_iva: parseFloat(profilo.aliquota_iva) || 22,
     costi_deducibili_percentuale: parseFloat(profilo.costi_deducibili_percentuale) || 20,
     ritenuta_acconto: parseFloat(profilo.ritenuta_acconto) || 20,
-    soglia_occasionale: parseFloat(profilo.soglia_occasionale) || 5000,
+    soglia_occasionale: parseImportoEuro(profilo.soglia_occasionale) ?? 5000,
   };
 
   if (profilo.id) {

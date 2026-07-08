@@ -1,4 +1,4 @@
-import { parseImportoEuro } from "preventivoai-shared";
+import { parseImportoEuro } from "previcloud-shared";
 import { supabase } from "./supabase";
 import { oggiItItLabel } from "./format";
 import { sessionToken } from "./settings";
@@ -65,13 +65,40 @@ export async function hasCompletedProfile(): Promise<boolean> {
   } = await supabase.auth.getUser();
   if (!user) return false;
 
-  const { data: profile } = await supabase
+  const { data: profile, error } = await supabase
     .from("profiles")
     .select("nome_azienda")
     .eq("id", user.id)
     .single();
 
+  // PGRST116 (nessuna riga trovata) è legittimo per un utente nuovo; qualsiasi altro
+  // errore (rete/RLS/timeout) va propagato invece di restituire false in silenzio,
+  // altrimenti un utente esistente rischia di essere rimandato a /onboarding.
+  if (error && error.code !== "PGRST116") {
+    throw new Error(error.message);
+  }
+
   return Boolean(profile?.nome_azienda?.trim());
+}
+
+/**
+ * Come hasCompletedProfile(), ma con un retry singolo e fallback sicuro: se la fetch
+ * fallisce anche al secondo tentativo, non forza mai /onboarding per un errore di rete
+ * (un utente esistente perderebbe il profilo di vista) — assume profilo completo e
+ * logga l'errore per essere investigato.
+ */
+export async function hasCompletedProfileSicuro(): Promise<boolean> {
+  try {
+    return await hasCompletedProfile();
+  } catch (err: unknown) {
+    console.error("[onboarding] hasCompletedProfile: primo tentativo fallito, riprovo", err);
+    try {
+      return await hasCompletedProfile();
+    } catch (err2: unknown) {
+      console.error("[onboarding] hasCompletedProfile: fallito anche il retry", err2);
+      return true;
+    }
+  }
 }
 
 export async function generaPreviewOnboarding(template: string, categoria: string, firmaNome: string) {
