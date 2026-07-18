@@ -55,7 +55,7 @@ export default function Layout() {
         <div className="flex h-screen bg-brand-bg">
           <NuovoRipresaPathTracker />
           <Sidebar />
-          <div className="theme-surface flex flex-1 flex-col overflow-hidden">
+          <div className="theme-surface flex min-w-0 flex-1 flex-col overflow-hidden">
             <Header />
             <main className={`flex min-h-0 flex-1 flex-col ${isHome ? "overflow-hidden" : "overflow-y-auto"}`}>
               <Outlet />

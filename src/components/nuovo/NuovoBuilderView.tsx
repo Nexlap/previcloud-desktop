@@ -1,11 +1,9 @@
 import type { Dispatch, SetStateAction } from "react";
 import type { TrasfertaBuilder, VoceBuilder } from "../../lib/builder";
-import type { MetodoPagamento } from "../../lib/pagamenti";
 import type { ProfiloFiscale, RisultatoFiscale, Servizio } from "../../lib/types";
 import { PLACEHOLDER } from "../../lib/placeholders";
 import AnalisiFiscaleCard from "../AnalisiFiscaleCard";
 import BuilderClienteCard from "../BuilderClienteCard";
-import PagamentoCard from "../PagamentoCard";
 import IvaCard from "../IvaCard";
 import ServiziListinoCard from "../ServiziListinoCard";
 import TrasferteCard from "../TrasferteCard";
@@ -27,11 +25,6 @@ type Props = {
   onAggiungiVoceCustom: () => void;
   onSalvaNelListinoChange: (voceId: string, salva: boolean) => void;
   onRiordinaVoci: (fromIndex: number, toIndex: number) => void;
-  metodiPagamento: MetodoPagamento[];
-  metodoPagamentoSelezionato: MetodoPagamento | null;
-  metodoPagamentoNessuno: boolean;
-  erroreMetodiPagamento: string | null;
-  onOpenPagamento: () => void;
   includiIva: boolean;
   onIncludiIvaChange: (value: boolean) => void;
   trasferte: TrasfertaBuilder[];
@@ -77,11 +70,6 @@ export default function NuovoBuilderView({
   onAggiungiVoceCustom,
   onSalvaNelListinoChange,
   onRiordinaVoci,
-  metodiPagamento,
-  metodoPagamentoSelezionato,
-  metodoPagamentoNessuno,
-  erroreMetodiPagamento,
-  onOpenPagamento,
   includiIva,
   onIncludiIvaChange,
   trasferte,
@@ -136,14 +124,6 @@ export default function NuovoBuilderView({
         onAggiungiVoceCustom={onAggiungiVoceCustom}
         onSalvaNelListinoChange={onSalvaNelListinoChange}
         onRiordinaVoci={onRiordinaVoci}
-      />
-
-      <PagamentoCard
-        metodiPagamento={metodiPagamento}
-        metodoPagamentoSelezionato={metodoPagamentoSelezionato}
-        metodoPagamentoNessuno={metodoPagamentoNessuno}
-        erroreCaricamento={erroreMetodiPagamento}
-        onOpen={onOpenPagamento}
       />
 
       <IvaCard attivo={includiIva} onChange={onIncludiIvaChange} />

@@ -1,8 +1,10 @@
 import { Link } from "react-router";
 import type { PianoPagamentoTipo } from "../../lib/nuovoDraft";
+import type { MetodoPagamento } from "../../lib/pagamenti";
 import type { RateAccontoTipo } from "previcloud-shared";
 import BuilderClienteCard from "../BuilderClienteCard";
 import BuilderPianoPagamentoCard from "../builder/BuilderPianoPagamentoCard";
+import PagamentoCard from "../PagamentoCard";
 import PreventivoPdfTemplatePicker from "../PreventivoPdfTemplatePicker";
 import PreventivoPdfPreview from "../PreventivoPdfPreview";
 import ToggleSwitch from "../ToggleSwitch";
@@ -15,6 +17,11 @@ type Props = {
   onNuovoCliente: () => void;
   template: string;
   onSelectTemplate: (template: string) => void;
+  metodiPagamento: MetodoPagamento[];
+  metodoPagamentoSelezionato: MetodoPagamento | null;
+  metodoPagamentoNessuno: boolean;
+  erroreMetodiPagamento: string | null;
+  onOpenPagamento: () => void;
   pianoPagamentoTipo: PianoPagamentoTipo;
   onChangePianoPagamentoTipo: (tipo: PianoPagamentoTipo) => void;
   importoAnteprima: number;
@@ -65,6 +72,11 @@ export default function NuovoAnteprimaView({
   onNuovoCliente,
   template,
   onSelectTemplate,
+  metodiPagamento,
+  metodoPagamentoSelezionato,
+  metodoPagamentoNessuno,
+  erroreMetodiPagamento,
+  onOpenPagamento,
   pianoPagamentoTipo,
   onChangePianoPagamentoTipo,
   importoAnteprima,
@@ -150,6 +162,16 @@ export default function NuovoAnteprimaView({
               onChangeAbMeseInizio={onChangeAbMeseInizio}
               onChangeAbMensilita={onChangeAbMensilita}
               onChangeAbVisibileNelPDF={onChangeAbVisibileNelPDF}
+            />
+          </div>
+
+          <div className="mt-5 border-t border-edge-faint pt-5 [&_.mt-8]:mt-0">
+            <PagamentoCard
+              metodiPagamento={metodiPagamento}
+              metodoPagamentoSelezionato={metodoPagamentoSelezionato}
+              metodoPagamentoNessuno={metodoPagamentoNessuno}
+              erroreCaricamento={erroreMetodiPagamento}
+              onOpen={onOpenPagamento}
             />
           </div>
 

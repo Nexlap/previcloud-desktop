@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router";
-import { ArrowLeft, Plus } from "@phosphor-icons/react";
+import { ArrowLeft, CaretDown, Plus } from "@phosphor-icons/react";
 import {
   caricaClienteDettaglio,
   caricaCollegamentiPianoCliente,
@@ -41,6 +41,7 @@ export default function ClienteDettaglio() {
   const [collegamentiPiano, setCollegamentiPiano] = useState<CollegamentiPianoMap>({});
   const [loading, setLoading] = useState(true);
   const [mostraModifica, setMostraModifica] = useState(false);
+  const [cardEspansa, setCardEspansa] = useState(false);
   const [tab, setTab] = useState<ClienteDettaglioTab>("preventivi");
 
   const ora = new Date();
@@ -465,9 +466,9 @@ export default function ClienteDettaglio() {
         </Link>
 
         <div className="mt-4 rounded-2xl border border-edge-faint bg-surface p-6 shadow-sm shadow-brand-navy/[0.03]">
-          <div className="flex items-start justify-between gap-4">
+          <div className={`flex justify-between gap-4 ${cardEspansa ? "items-start" : "items-center"}`}>
             <h1 className="text-2xl font-semibold text-brand-navy">{cliente.nome}</h1>
-            <div className="flex shrink-0 gap-2">
+            <div className="flex shrink-0 items-center gap-2">
               {(tab === "abbonamento" || tab === "pagamento_rate") && (
                 <button
                   type="button"
@@ -491,16 +492,43 @@ export default function ClienteDettaglio() {
               >
                 Modifica
               </button>
+              <button
+                type="button"
+                onClick={() => setCardEspansa((v) => !v)}
+                aria-expanded={cardEspansa}
+                aria-label={cardEspansa ? "Comprimi dettagli cliente" : "Espandi dettagli cliente"}
+                className="rounded-xl border border-brand-navy/20 p-2 text-brand-navy/50 transition hover:bg-brand-bg hover:text-brand-navy active:scale-[0.98]"
+              >
+                <CaretDown
+                  size={16}
+                  weight="bold"
+                  className={`transition-transform duration-200 ${cardEspansa ? "rotate-180" : ""}`}
+                />
+              </button>
             </div>
           </div>
-          <div className="mt-3 grid grid-cols-1 gap-2 text-sm text-brand-navy/70 sm:grid-cols-3">
-            <div>Telefono: {cliente.telefono || "-"}</div>
-            <div>Email: {cliente.email || "-"}</div>
-            <div>Indirizzo: {cliente.indirizzo || "-"}</div>
+          <div
+            className={`grid transition-[grid-template-rows] duration-200 ease-out ${
+              cardEspansa ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+            }`}
+          >
+            <div className="overflow-hidden">
+              <div
+                className={`transition-opacity duration-200 ${
+                  cardEspansa ? "opacity-100" : "opacity-0"
+                }`}
+              >
+                <div className="mt-3 grid grid-cols-1 gap-2 text-sm text-brand-navy/70 sm:grid-cols-3">
+                  <div>Telefono: {cliente.telefono || "-"}</div>
+                  <div>Email: {cliente.email || "-"}</div>
+                  <div>Indirizzo: {cliente.indirizzo || "-"}</div>
+                </div>
+                {cliente.note ? (
+                  <p className="mt-3 text-sm text-brand-navy/60">Note: {cliente.note}</p>
+                ) : null}
+              </div>
+            </div>
           </div>
-          {cliente.note ? (
-            <p className="mt-3 text-sm text-brand-navy/60">Note: {cliente.note}</p>
-          ) : null}
         </div>
 
         <ClienteStats

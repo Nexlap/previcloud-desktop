@@ -327,25 +327,17 @@ export default function Nuovo({ mode }: Props) {
       setErroreServizi(error);
     });
     caricaProfiloFiscaleAttivo().then(setProfiloFiscale);
-    if (mode === "manuale") {
-      caricaMetodiPagamentoBuilder().then(({ metodiPagamento: metodi, predefinito, error }) => {
-        setMetodiPagamento(metodi);
-        setErroreMetodiPagamento(error);
-        if (!predefinito) return;
-        if (
-          !caricaBozzaManuale()?.metodoPagamentoSelezionato &&
-          !caricaBozzaManuale()?.metodoPagamentoNessuno
-        ) {
-          setMetodoPagamentoSelezionato(predefinito);
-        }
-      });
-    }
-    if (mode === "chat" && inModifica) {
-      caricaMetodiPagamentoBuilder().then(({ metodiPagamento: metodi, error }) => {
-        setMetodiPagamento(metodi);
-        setErroreMetodiPagamento(error);
-      });
-    }
+    caricaMetodiPagamentoBuilder().then(({ metodiPagamento: metodi, predefinito, error }) => {
+      setMetodiPagamento(metodi);
+      setErroreMetodiPagamento(error);
+      if (!predefinito || mode !== "manuale") return;
+      if (
+        !caricaBozzaManuale()?.metodoPagamentoSelezionato &&
+        !caricaBozzaManuale()?.metodoPagamentoNessuno
+      ) {
+        setMetodoPagamentoSelezionato(predefinito);
+      }
+    });
   }, [mode, inModifica]);
 
   useEffect(() => {
@@ -1113,11 +1105,6 @@ export default function Nuovo({ mode }: Props) {
           onAggiungiVoceCustom={aggiungiVoceCustom}
           onSalvaNelListinoChange={handleSalvaNelListinoChange}
           onRiordinaVoci={riordinaVoci}
-          metodiPagamento={metodiPagamento}
-          metodoPagamentoSelezionato={metodoPagamentoSelezionato}
-          metodoPagamentoNessuno={metodoPagamentoNessuno}
-          erroreMetodiPagamento={erroreMetodiPagamento}
-          onOpenPagamento={() => setMostraModalPagamento(true)}
           includiIva={includiIva}
           onIncludiIvaChange={setIncludiIva}
           trasferte={trasferte}
@@ -1158,6 +1145,11 @@ export default function Nuovo({ mode }: Props) {
           onNuovoCliente={() => setMostraModalCliente(true)}
           template={template}
           onSelectTemplate={setTemplate}
+          metodiPagamento={metodiPagamento}
+          metodoPagamentoSelezionato={metodoPagamentoSelezionato}
+          metodoPagamentoNessuno={metodoPagamentoNessuno}
+          erroreMetodiPagamento={erroreMetodiPagamento}
+          onOpenPagamento={() => setMostraModalPagamento(true)}
           pianoPagamentoTipo={pianoPagamentoTipo}
           onChangePianoPagamentoTipo={onChangePianoPagamentoTipo}
           importoAnteprima={importoAnteprima}
