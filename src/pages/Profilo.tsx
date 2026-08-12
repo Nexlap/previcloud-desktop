@@ -20,6 +20,8 @@ export default function Profilo() {
   const [loading, setLoading] = useState(true);
   const [email, setEmail] = useState("");
   const [nomeAzienda, setNomeAzienda] = useState("");
+  const [plan, setPlan] = useState<string | null>(null);
+  const [trialEndsAt, setTrialEndsAt] = useState<string | null>(null);
 
   const [passwordAttuale, setPasswordAttuale] = useState("");
   const [passwordNuova, setPasswordNuova] = useState("");
@@ -51,6 +53,8 @@ export default function Profilo() {
       if (p) {
         setEmail(p.email);
         setNomeAzienda(p.nomeAzienda);
+        setPlan(p.plan);
+        setTrialEndsAt(p.trialEndsAt);
       }
       setLoading(false);
     });
@@ -235,6 +239,19 @@ export default function Profilo() {
           </Link>
         </div>
       </div>
+
+      {plan === 'beta' && trialEndsAt && (
+        <div className="mt-3 rounded-2xl border border-edge-faint bg-surface p-5 shadow-sm shadow-brand-navy/[0.03]">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="text-sm font-semibold text-brand-navy">Abbonamento</p>
+              <p className="mt-1 text-sm text-brand-navy/60">
+                Piano BETA — scadenza {new Date(trialEndsAt).toLocaleDateString('it-IT')}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="mt-3 rounded-2xl border border-edge-faint bg-surface p-5 shadow-sm shadow-brand-navy/[0.03]">
         <p className="text-sm font-semibold text-brand-navy">Sicurezza</p>
