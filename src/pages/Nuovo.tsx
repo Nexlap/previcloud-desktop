@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router";
 import { ArrowLeft } from "@phosphor-icons/react";
+import { getCachedUserId } from "../lib/auth";
 import { supabase } from "../lib/supabase";
 import { caricaClientiPerSelezione, clienteIdUtilizzabile, salvaPreventivoGenerato } from "../lib/nuovo";
 import {
@@ -59,6 +60,7 @@ type Props = {
 };
 
 export default function Nuovo({ mode }: Props) {
+  const userId = getCachedUserId() ?? "";
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
@@ -82,102 +84,102 @@ export default function Nuovo({ mode }: Props) {
 
   const [token, setToken] = useState("");
   const [messaggi, setMessaggi] = useState<Messaggio[]>(
-    () => (mode === "chat" ? caricaBozzaChat()?.messaggi : undefined) ?? [],
+    () => (mode === "chat" ? caricaBozzaChat(userId)?.messaggi : undefined) ?? [],
   );
-  const [input, setInput] = useState(() => (mode === "chat" ? caricaBozzaChat()?.input : undefined) ?? "");
+  const [input, setInput] = useState(() => (mode === "chat" ? caricaBozzaChat(userId)?.input : undefined) ?? "");
   const [loading, setLoading] = useState(false);
-  const [recap, setRecap] = useState(() => (mode === "chat" ? caricaBozzaChat()?.recap : undefined) ?? "");
+  const [recap, setRecap] = useState(() => (mode === "chat" ? caricaBozzaChat(userId)?.recap : undefined) ?? "");
   const [preventivo, setPreventivo] = useState(() => {
-    if (mode === "chat") return caricaBozzaChat()?.preventivo ?? "";
-    return caricaBozzaManuale()?.preventivo ?? "";
+    if (mode === "chat") return caricaBozzaChat(userId)?.preventivo ?? "";
+    return caricaBozzaManuale(userId)?.preventivo ?? "";
   });
   const [errore, setErrore] = useState("");
   const fineListaRef = useRef<HTMLDivElement>(null);
 
   const [voci, setVoci] = useState<VoceBuilder[]>(
-    () => (mode === "manuale" ? caricaBozzaManuale()?.voci : undefined) ?? [],
+    () => (mode === "manuale" ? caricaBozzaManuale(userId)?.voci : undefined) ?? [],
   );
   const [servizi, setServizi] = useState<Servizio[]>([]);
   const [includiIva, setIncludiIva] = useState(
-    () => (mode === "manuale" ? caricaBozzaManuale()?.includiIva : undefined) ?? false,
+    () => (mode === "manuale" ? caricaBozzaManuale(userId)?.includiIva : undefined) ?? false,
   );
   const [noteExtra, setNoteExtra] = useState(
-    () => (mode === "manuale" ? caricaBozzaManuale()?.noteExtra : undefined) ?? "",
+    () => (mode === "manuale" ? caricaBozzaManuale(userId)?.noteExtra : undefined) ?? "",
   );
   const [profiloFiscale, setProfiloFiscale] = useState<ProfiloFiscale | null>(null);
   const [mostraFiscale, setMostraFiscale] = useState(
-    () => (mode === "manuale" ? caricaBozzaManuale()?.mostraFiscale : undefined) ?? true,
+    () => (mode === "manuale" ? caricaBozzaManuale(userId)?.mostraFiscale : undefined) ?? true,
   );
   const [nettoDesiderato, setNettoDesiderato] = useState(
-    () => (mode === "manuale" ? caricaBozzaManuale()?.nettoDesiderato : undefined) ?? "",
+    () => (mode === "manuale" ? caricaBozzaManuale(userId)?.nettoDesiderato : undefined) ?? "",
   );
   const [lordoCalcolato, setLordoCalcolato] = useState<number | null>(
-    () => (mode === "manuale" ? caricaBozzaManuale()?.lordoCalcolato : undefined) ?? null,
+    () => (mode === "manuale" ? caricaBozzaManuale(userId)?.lordoCalcolato : undefined) ?? null,
   );
   const [storicoVoci, setStoricoVoci] = useState<VoceBuilder[][]>(
-    () => (mode === "manuale" ? caricaBozzaManuale()?.storicoVoci : undefined) ?? [],
+    () => (mode === "manuale" ? caricaBozzaManuale(userId)?.storicoVoci : undefined) ?? [],
   );
   const [trasferte, setTrasferte] = useState<TrasfertaBuilder[]>(
-    () => (mode === "manuale" ? caricaBozzaManuale()?.trasferte : undefined) ?? [],
+    () => (mode === "manuale" ? caricaBozzaManuale(userId)?.trasferte : undefined) ?? [],
   );
   const [mostraTrasferte, setMostraTrasferte] = useState(
-    () => (mode === "manuale" ? caricaBozzaManuale()?.mostraTrasferte : undefined) ?? false,
+    () => (mode === "manuale" ? caricaBozzaManuale(userId)?.mostraTrasferte : undefined) ?? false,
   );
   const [scontoAttivo, setScontoAttivo] = useState(
-    () => (mode === "manuale" ? caricaBozzaManuale()?.scontoAttivo : undefined) ?? false,
+    () => (mode === "manuale" ? caricaBozzaManuale(userId)?.scontoAttivo : undefined) ?? false,
   );
   const [scontoTipo, setScontoTipo] = useState<"percentuale" | "fisso">(
-    () => (mode === "manuale" ? caricaBozzaManuale()?.scontoTipo : undefined) ?? "percentuale",
+    () => (mode === "manuale" ? caricaBozzaManuale(userId)?.scontoTipo : undefined) ?? "percentuale",
   );
   const [scontoValore, setScontoValore] = useState(
-    () => (mode === "manuale" ? caricaBozzaManuale()?.scontoValore : undefined) ?? "",
+    () => (mode === "manuale" ? caricaBozzaManuale(userId)?.scontoValore : undefined) ?? "",
   );
   const [metodiPagamento, setMetodiPagamento] = useState<MetodoPagamento[]>([]);
   const [metodoPagamentoSelezionato, setMetodoPagamentoSelezionato] = useState<MetodoPagamento | null>(
-    () => (mode === "manuale" ? caricaBozzaManuale()?.metodoPagamentoSelezionato : undefined) ?? null,
+    () => (mode === "manuale" ? caricaBozzaManuale(userId)?.metodoPagamentoSelezionato : undefined) ?? null,
   );
   const [metodoPagamentoNessuno, setMetodoPagamentoNessuno] = useState(
-    () => (mode === "manuale" ? caricaBozzaManuale()?.metodoPagamentoNessuno : undefined) ?? false,
+    () => (mode === "manuale" ? caricaBozzaManuale(userId)?.metodoPagamentoNessuno : undefined) ?? false,
   );
   const [mostraModalPagamento, setMostraModalPagamento] = useState(false);
 
   const [pianoPagamentoTipo, setPianoPagamentoTipo] = useState<PianoPagamentoTipo>(() => {
     if (mode !== "manuale") return "nessuno";
-    const bozza = caricaBozzaManuale();
+    const bozza = caricaBozzaManuale(userId);
     return bozza ? pianoPagamentoTipoDaBozza(bozza) : "nessuno";
   });
   const [abImporto, setAbImporto] = useState(
-    () => (mode === "manuale" ? caricaBozzaManuale()?.abImporto : undefined) ?? "",
+    () => (mode === "manuale" ? caricaBozzaManuale(userId)?.abImporto : undefined) ?? "",
   );
   const [abGiorno, setAbGiorno] = useState(
-    () => (mode === "manuale" ? caricaBozzaManuale()?.abGiorno : undefined) ?? "1",
+    () => (mode === "manuale" ? caricaBozzaManuale(userId)?.abGiorno : undefined) ?? "1",
   );
   const [abMeseInizio, setAbMeseInizio] = useState(
-    () => (mode === "manuale" ? caricaBozzaManuale()?.abMeseInizio : undefined) ?? meseCorrenteString(),
+    () => (mode === "manuale" ? caricaBozzaManuale(userId)?.abMeseInizio : undefined) ?? meseCorrenteString(),
   );
   const [abMensilita, setAbMensilita] = useState(
-    () => (mode === "manuale" ? caricaBozzaManuale()?.abMensilita : undefined) ?? "",
+    () => (mode === "manuale" ? caricaBozzaManuale(userId)?.abMensilita : undefined) ?? "",
   );
   const [abVisibileNelPDF, setAbVisibileNelPDF] = useState(
-    () => (mode === "manuale" ? caricaBozzaManuale()?.abVisibileNelPDF : undefined) ?? true,
+    () => (mode === "manuale" ? caricaBozzaManuale(userId)?.abVisibileNelPDF : undefined) ?? true,
   );
   const [rateNumero, setRateNumero] = useState(
-    () => (mode === "manuale" ? caricaBozzaManuale()?.rateNumero : undefined) ?? "",
+    () => (mode === "manuale" ? caricaBozzaManuale(userId)?.rateNumero : undefined) ?? "",
   );
   const [rateGiornoScadenza, setRateGiornoScadenza] = useState(
-    () => (mode === "manuale" ? caricaBozzaManuale()?.rateGiornoScadenza : undefined) ?? "1",
+    () => (mode === "manuale" ? caricaBozzaManuale(userId)?.rateGiornoScadenza : undefined) ?? "1",
   );
   const [rateMeseInizio, setRateMeseInizio] = useState(
-    () => (mode === "manuale" ? caricaBozzaManuale()?.rateMeseInizio : undefined) ?? meseCorrenteString(),
+    () => (mode === "manuale" ? caricaBozzaManuale(userId)?.rateMeseInizio : undefined) ?? meseCorrenteString(),
   );
   const [rateVisibileNelPDF, setRateVisibileNelPDF] = useState(
-    () => (mode === "manuale" ? caricaBozzaManuale()?.rateVisibileNelPDF : undefined) ?? true,
+    () => (mode === "manuale" ? caricaBozzaManuale(userId)?.rateVisibileNelPDF : undefined) ?? true,
   );
   const [rateAccontoTipo, setRateAccontoTipo] = useState<RateAccontoTipo>(
-    () => (mode === "manuale" ? caricaBozzaManuale()?.rateAccontoTipo : undefined) ?? "fisso",
+    () => (mode === "manuale" ? caricaBozzaManuale(userId)?.rateAccontoTipo : undefined) ?? "fisso",
   );
   const [rateAccontoValore, setRateAccontoValore] = useState(
-    () => (mode === "manuale" ? caricaBozzaManuale()?.rateAccontoValore : undefined) ?? "",
+    () => (mode === "manuale" ? caricaBozzaManuale(userId)?.rateAccontoValore : undefined) ?? "",
   );
 
   const pagamentoRateAttivo = pianoPagamentoTipo === "rate" || pianoPagamentoTipo === "acconto";
@@ -188,8 +190,8 @@ export default function Nuovo({ mode }: Props) {
   const [clienteSelezionatoId, setClienteSelezionatoId] = useState(() => {
     const daUrl = new URLSearchParams(window.location.search).get("cliente_id");
     if (daUrl) return daUrl;
-    if (mode === "chat") return caricaBozzaChat()?.clienteSelezionatoId ?? "";
-    return caricaBozzaManuale()?.clienteSelezionatoId ?? "";
+    if (mode === "chat") return caricaBozzaChat(userId)?.clienteSelezionatoId ?? "";
+    return caricaBozzaManuale(userId)?.clienteSelezionatoId ?? "";
   });
   const [mostraModalCliente, setMostraModalCliente] = useState(false);
   const [mostraModalOmografi, setMostraModalOmografi] = useState(false);
@@ -199,8 +201,8 @@ export default function Nuovo({ mode }: Props) {
   const [salvato, setSalvato] = useState(false);
   const [generandoPdf, setGenerandoPdf] = useState(false);
   const [pdfUrl, setPdfUrl] = useState(() => {
-    if (mode === "chat") return caricaBozzaChat()?.pdfUrl ?? "";
-    return caricaBozzaManuale()?.pdfUrl ?? "";
+    if (mode === "chat") return caricaBozzaChat(userId)?.pdfUrl ?? "";
+    return caricaBozzaManuale(userId)?.pdfUrl ?? "";
   });
   const [messaggioSuccesso, setMessaggioSuccesso] = useState("");
   const [modalPdfSuccesso, setModalPdfSuccesso] = useState<{
@@ -210,11 +212,11 @@ export default function Nuovo({ mode }: Props) {
   } | null>(null);
 
   const [template, setTemplate] = useState(() => {
-    if (mode === "chat") return caricaBozzaChat()?.template ?? "pulito";
-    return caricaBozzaManuale()?.template ?? "pulito";
+    if (mode === "chat") return caricaBozzaChat(userId)?.template ?? "pulito";
+    return caricaBozzaManuale(userId)?.template ?? "pulito";
   });
   const [nascondiPrezzi, setNascondiPrezzi] = useState(
-    () => (mode === "manuale" ? caricaBozzaManuale()?.nascondiPrezzi : undefined) ?? false,
+    () => (mode === "manuale" ? caricaBozzaManuale(userId)?.nascondiPrezzi : undefined) ?? false,
   );
   const [htmlPreview, setHtmlPreview] = useState("");
   const [caricandoPreview, setCaricandoPreview] = useState(false);
@@ -275,13 +277,13 @@ export default function Nuovo({ mode }: Props) {
   }
 
   function persistiBozzaManuale(override: Partial<NuovoManualeDraft> = {}) {
-    salvaBozzaManuale(snapshotBozzaManuale(override));
+    salvaBozzaManuale(userId, snapshotBozzaManuale(override));
   }
 
   function finalizzaBozzaWorkflow() {
     if (inModifica) return;
     bloccoSalvataggioBozzaRef.current = true;
-    finalizzaBozzaNuovo(mode);
+    finalizzaBozzaNuovo(userId, mode);
     resetPercorsoRipresaNuovo();
     window.setTimeout(() => {
       bloccoSalvataggioBozzaRef.current = false;
@@ -332,8 +334,8 @@ export default function Nuovo({ mode }: Props) {
       setErroreMetodiPagamento(error);
       if (!predefinito || mode !== "manuale") return;
       if (
-        !caricaBozzaManuale()?.metodoPagamentoSelezionato &&
-        !caricaBozzaManuale()?.metodoPagamentoNessuno
+        !caricaBozzaManuale(userId)?.metodoPagamentoSelezionato &&
+        !caricaBozzaManuale(userId)?.metodoPagamentoNessuno
       ) {
         setMetodoPagamentoSelezionato(predefinito);
       }
@@ -354,12 +356,12 @@ export default function Nuovo({ mode }: Props) {
       setAvvisoBozza("Il cliente precedentemente selezionato non è più disponibile");
 
       if (mode === "chat") {
-        const draft = caricaBozzaChat();
+        const draft = caricaBozzaChat(userId);
         if (draft) {
-          salvaBozzaChat({ ...draft, clienteSelezionatoId: "", clienteNome: "" });
+          salvaBozzaChat(userId, { ...draft, clienteSelezionatoId: "", clienteNome: "" });
         }
       } else {
-        salvaBozzaManuale(snapshotBozzaManuale({ clienteSelezionatoId: "", clienteNome: "" }));
+        salvaBozzaManuale(userId, snapshotBozzaManuale({ clienteSelezionatoId: "", clienteNome: "" }));
       }
     });
   }, [clientiCaricati, inModifica, mode]);
@@ -368,7 +370,7 @@ export default function Nuovo({ mode }: Props) {
     if (!clientiCaricati || bloccoSalvataggioBozzaRef.current || inModifica) return;
     const timeout = setTimeout(() => {
       if (mode === "chat") {
-        salvaBozzaChat({
+        salvaBozzaChat(userId, {
           messaggi,
           input,
           recap,
@@ -379,7 +381,7 @@ export default function Nuovo({ mode }: Props) {
           pdfUrl,
         });
       } else {
-        salvaBozzaManuale(snapshotBozzaManuale());
+        salvaBozzaManuale(userId, snapshotBozzaManuale());
       }
     }, 300);
     return () => clearTimeout(timeout);
@@ -475,6 +477,7 @@ export default function Nuovo({ mode }: Props) {
     testoModifica,
     versionePrecedente,
     mode,
+    userId,
     servizi,
     metodiPagamento,
     token,
@@ -929,8 +932,8 @@ export default function Nuovo({ mode }: Props) {
   function resetNuovoWorkflow(opzioni?: { navigare?: boolean }) {
     bloccoSalvataggioBozzaRef.current = true;
     clearModificaSession();
-    if (mode === "chat") cancellaBozzaChat();
-    else cancellaBozzaManuale();
+    if (mode === "chat") cancellaBozzaChat(userId);
+    else cancellaBozzaManuale(userId);
 
     setMessaggi([]);
     setInput("");

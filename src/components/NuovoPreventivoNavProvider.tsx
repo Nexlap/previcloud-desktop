@@ -9,6 +9,7 @@ import {
 import { useLocation, useNavigate } from "react-router";
 import BozzaInSospesoDialog from "./BozzaInSospesoDialog";
 import type { BozzaNuovoInfo } from "../lib/nuovoDraft";
+import { getCachedUserId } from "../lib/auth";
 import {
   bozzaNuovoDaIntercettare,
   messaggioBozzaInSospeso,
@@ -39,7 +40,8 @@ export function NuovoPreventivoNavProvider({ children }: { children: ReactNode }
 
   const navigaNuovoPreventivo = useCallback(
     (opts?: NavigaNuovoOpts) => {
-      const bozza = bozzaNuovoDaIntercettare(location.pathname);
+      const userId = getCachedUserId();
+      const bozza = userId ? bozzaNuovoDaIntercettare(userId, location.pathname) : null;
       if (bozza) {
         setPending({ bozza, clienteId: opts?.clienteId, clienteNome: opts?.clienteNome });
         return;
@@ -51,14 +53,20 @@ export function NuovoPreventivoNavProvider({ children }: { children: ReactNode }
 
   const handleRiprendi = useCallback(() => {
     if (!pending) return;
-    const target = percorsoRipresaBozza(pending.bozza);
+    const userId = getCachedUserId();
+    const target = userId
+      ? percorsoRipresaBozza(userId, pending.bozza)
+      : percorsoNuovoPreventivoHub();
     setPending(null);
     navigate(target);
   }, [navigate, pending]);
 
   const handleIniziaNuovo = useCallback(() => {
     if (!pending) return;
-    const target = percorsoNuovoPreventivoVuoto(pending.clienteId, pending.clienteNome);
+    const userId = getCachedUserId();
+    const target = userId
+      ? percorsoNuovoPreventivoVuoto(userId, pending.clienteId, pending.clienteNome)
+      : percorsoNuovoPreventivoHub(pending.clienteId, pending.clienteNome);
     setPending(null);
     navigate(target);
   }, [navigate, pending]);

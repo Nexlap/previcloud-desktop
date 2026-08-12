@@ -21,6 +21,7 @@ type Params = {
   testoModifica: string;
   versionePrecedente: number;
   mode: "chat" | "manuale";
+  userId: string;
   servizi: Servizio[];
   metodiPagamento: MetodoPagamento[];
   token: string;
@@ -46,6 +47,7 @@ export function useNuovoModifica({
   testoModifica,
   versionePrecedente,
   mode,
+  userId,
   servizi,
   metodiPagamento,
   token,
@@ -97,14 +99,14 @@ export function useNuovoModifica({
   useEffect(() => {
     if (mode !== "chat" || !testoModifica || modificaInizializzata.current) return;
     modificaInizializzata.current = true;
-    cancellaBozzaChat();
+    if (userId) cancellaBozzaChat(userId);
     setMessaggi([
       {
         role: "assistant",
         content: `Ho caricato il tuo preventivo v${versionePrecedente}. Cosa vuoi modificare?\n\n${testoModifica}`,
       },
     ]);
-  }, [mode, testoModifica, versionePrecedente, setMessaggi]);
+  }, [mode, userId, testoModifica, versionePrecedente, setMessaggi]);
 
   useEffect(() => {
     if (!testoModifica || metodiPagamento.length === 0) return;
@@ -137,7 +139,7 @@ export function useNuovoModifica({
 
     if (modificaManualeCaricata.current) return;
     modificaManualeCaricata.current = true;
-    cancellaBozzaManuale();
+    if (userId) cancellaBozzaManuale(userId);
 
     const clienteId = modifica?.clienteId || searchParams.get("cliente_id");
     const clienteNome = modifica?.clienteNome || searchParams.get("cliente_nome");
@@ -149,6 +151,7 @@ export function useNuovoModifica({
     }
   }, [
     mode,
+    userId,
     testoModifica,
     servizi,
     modifica?.clienteId,

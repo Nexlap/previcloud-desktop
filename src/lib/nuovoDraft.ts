@@ -13,8 +13,26 @@ import type { RateAccontoTipo } from "previcloud-shared";
 
 export type PianoPagamentoTipo = "nessuno" | "acconto" | "rate" | "abbonamento";
 
-const CHAT_KEY = "previcloud-nuovo-chat";
-const MANUALE_KEY = "previcloud-nuovo-manuale";
+const CHAT_KEY_LEGACY = "previcloud-nuovo-chat";
+const MANUALE_KEY_LEGACY = "previcloud-nuovo-manuale";
+
+function chatKey(userId: string): string {
+  return `previcloud-nuovo-chat:${userId}`;
+}
+
+function manualeKey(userId: string): string {
+  return `previcloud-nuovo-manuale:${userId}`;
+}
+
+/** Rimuove chiavi bozza pre-userId (una tantum; safe se assenti). */
+export function pulisciBozzeNuovoLegacy() {
+  try {
+    localStorage.removeItem(CHAT_KEY_LEGACY);
+    localStorage.removeItem(MANUALE_KEY_LEGACY);
+  } catch {
+    // private mode / storage non disponibile
+  }
+}
 
 type NuovoChatDraft = {
   messaggi: Messaggio[];
@@ -181,8 +199,9 @@ function bozzaManualeVuota(d: NuovoManualeDraft): boolean {
   );
 }
 
-export function caricaBozzaChat(): NuovoChatDraft | null {
-  return load<NuovoChatDraft>(CHAT_KEY);
+export function caricaBozzaChat(userId: string): NuovoChatDraft | null {
+  if (!userId) return null;
+  return load<NuovoChatDraft>(chatKey(userId));
 }
 
 function timestampBozza(draft: { aggiornatoAt?: string }): number {
@@ -195,34 +214,39 @@ function withTimestamp<T extends { aggiornatoAt?: string }>(draft: T): T {
   return { ...draft, aggiornatoAt: new Date().toISOString() };
 }
 
-export function salvaBozzaChat(draft: NuovoChatDraft) {
+export function salvaBozzaChat(userId: string, draft: NuovoChatDraft) {
+  if (!userId) return;
   if (bozzaChatVuota(draft)) {
-    remove(CHAT_KEY);
+    remove(chatKey(userId));
     return;
   }
-  save(CHAT_KEY, withTimestamp(draft));
+  save(chatKey(userId), withTimestamp(draft));
 }
 
-export function cancellaBozzaChat() {
-  remove(CHAT_KEY);
+export function cancellaBozzaChat(userId: string) {
+  if (!userId) return;
+  remove(chatKey(userId));
 }
 
-export function caricaBozzaManuale(): NuovoManualeDraft | null {
-  const draft = load<NuovoManualeDraft>(MANUALE_KEY);
+export function caricaBozzaManuale(userId: string): NuovoManualeDraft | null {
+  if (!userId) return null;
+  const draft = load<NuovoManualeDraft>(manualeKey(userId));
   if (!draft) return null;
   return normalizzaBozzaManuale(draft);
 }
 
-export function salvaBozzaManuale(draft: NuovoManualeDraft) {
+export function salvaBozzaManuale(userId: string, draft: NuovoManualeDraft) {
+  if (!userId) return;
   if (bozzaManualeVuota(draft)) {
-    remove(MANUALE_KEY);
+    remove(manualeKey(userId));
     return;
   }
-  save(MANUALE_KEY, withTimestamp(draft));
+  save(manualeKey(userId), withTimestamp(draft));
 }
 
-export function cancellaBozzaManuale() {
-  remove(MANUALE_KEY);
+export function cancellaBozzaManuale(userId: string) {
+  if (!userId) return;
+  remove(manualeKey(userId));
 }
 
 export type BozzaNuovoInfo = {
@@ -247,9 +271,9 @@ function infoDaBozzaManuale(draft: NuovoManualeDraft): BozzaNuovoInfo {
   };
 }
 
-export function infoBozzaNuovoInSospeso(): BozzaNuovoInfo | null {
-  const chat = caricaBozzaChat();
-  const manuale = caricaBozzaManuale();
+export function infoBozzaNuovoInSospeso(userId: string): BozzaNuovoInfo | null {
+  const chat = caricaBozzaChat(userId);
+  const manuale = caricaBozzaManuale(userId);
   const chatAttiva = chat != null && !bozzaChatVuota(chat);
   const manualeAttiva = manuale != null && !bozzaManualeVuota(manuale);
 
@@ -266,23 +290,23 @@ export function infoBozzaNuovoInSospeso(): BozzaNuovoInfo | null {
   return infoDaBozzaManuale(manuale!);
 }
 
-export function percorsoRipresaBozzaNuovo(mode: BozzaNuovoInfo["mode"]): string {
+export function percorsoRipresaBozzaNuovo(userId: string, mode: BozzaNuovoInfo["mode"]): string {
   if (mode === "chat") {
-    const chat = caricaBozzaChat();
+    const chat = caricaBozzaChat(userId);
     if (chat?.preventivo) return "/nuovo/chat/anteprima";
     return "/nuovo/chat";
   }
-  const manuale = caricaBozzaManuale();
+  const manuale = caricaBozzaManuale(userId);
   if (manuale?.preventivo) return "/nuovo/manuale/anteprima";
   return "/nuovo/manuale";
 }
 
-export function cancellaTutteLeBozzeNuovo() {
-  cancellaBozzaChat();
-  cancellaBozzaManuale();
+export function cancellaTutteLeBozzeNuovo(userId: string) {
+  cancellaBozzaChat(userId);
+  cancellaBozzaManuale(userId);
 }
 
-export function finalizzaBozzaNuovo(mode: "chat" | "manuale") {
-  if (mode === "chat") cancellaBozzaChat();
-  else cancellaBozzaManuale();
+export function finalizzaBozzaNuovo(userId: string, mode: "chat" | "manuale") {
+  if (mode === "chat") cancellaBozzaChat(userId);
+  else cancellaBozzaManuale(userId);
 }

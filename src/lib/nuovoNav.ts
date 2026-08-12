@@ -31,9 +31,9 @@ export function messaggioBozzaInSospeso(info: BozzaNuovoInfo): string {
   return "Hai un preventivo in corso non ancora generato.\n\nVuoi riprenderlo o iniziare da zero?";
 }
 
-export function bozzaNuovoDaIntercettare(currentPathname: string): BozzaNuovoInfo | null {
+export function bozzaNuovoDaIntercettare(userId: string, currentPathname: string): BozzaNuovoInfo | null {
   if (pathToSection(currentPathname) === "nuovo") return null;
-  return infoBozzaNuovoInSospeso();
+  return infoBozzaNuovoInSospeso(userId);
 }
 
 export function percorsoNuovoPreventivo(): string {
@@ -52,7 +52,7 @@ export function percorsoNuovoPreventivoHub(clienteId?: string, clienteNome?: str
   return `/nuovo${queryClienteNuovoPreventivo(clienteId, clienteNome)}`;
 }
 
-export function percorsoRipresaBozza(info: BozzaNuovoInfo): string {
+export function percorsoRipresaBozza(userId: string, info: BozzaNuovoInfo): string {
   const ripresa = getPercorsoRipresaNuovo();
   if (
     ripresa &&
@@ -61,11 +61,15 @@ export function percorsoRipresaBozza(info: BozzaNuovoInfo): string {
   ) {
     return ripresa;
   }
-  return percorsoRipresaBozzaNuovo(info.mode);
+  return percorsoRipresaBozzaNuovo(userId, info.mode);
 }
 
-export function percorsoNuovoPreventivoVuoto(clienteId?: string, clienteNome?: string): string {
-  cancellaTutteLeBozzeNuovo();
+export function percorsoNuovoPreventivoVuoto(
+  userId: string,
+  clienteId?: string,
+  clienteNome?: string,
+): string {
+  cancellaTutteLeBozzeNuovo(userId);
   resetPercorsoRipresaNuovo();
   return percorsoNuovoPreventivoHub(clienteId, clienteNome);
 }

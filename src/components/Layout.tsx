@@ -11,6 +11,7 @@ import { purgeCestinoScaduto } from "../lib/cestino";
 import { isDesktopApp } from "../lib/appSettings";
 import { controllaEProponeAggiornamentoAvvio } from "../lib/appUpdater";
 import { controllaVersioneMinima } from "../lib/versione";
+import { pulisciBozzeNuovoLegacy } from "../lib/nuovoDraft";
 import { supabase } from "../lib/supabase";
 import { isTrialScaduto } from "previcloud-shared";
 import { AggiornamentoObbligatorioModal } from "./AggiornamentoObbligatorioModal";
@@ -26,6 +27,7 @@ export default function Layout() {
 
   useEffect(() => {
     applyThemeMode(getThemeMode());
+    pulisciBozzeNuovoLegacy();
     void purgeCestinoScaduto();
     void controllaEProponeAggiornamentoAvvio();
   }, []);

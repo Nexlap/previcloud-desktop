@@ -1,5 +1,7 @@
 import { supabase } from "./supabase";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 export type SegnalazioneForm = {
   tipo: string;
   titolo: string;
@@ -80,6 +82,23 @@ export async function inviaSegnalazione(form: SegnalazioneForm) {
   };
 
   const { error } = await supabase.from("segnalazioni").insert(insertRow as never);
+
+  if (!error) {
+    fetch(`${BACKEND_URL}/api/segnalazione-notifica`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
+      },
+      body: JSON.stringify({
+        titolo: form.titolo.trim(),
+        descrizione: form.descrizione.trim(),
+        tipo: form.tipo,
+        schermata: form.schermata.trim() || null,
+        piattaforma: "desktop",
+      }),
+    }).catch((e) => console.error("Notifica email segnalazione fallita:", e));
+  }
 
   return { error, user };
 }

@@ -22,7 +22,8 @@ import {
   type RisultatoControlloAggiornamenti,
 } from "../lib/appSettings";
 
-import { cancellaTutteLeBozzeNuovo } from "../lib/nuovoDraft";
+import { getCachedUserId } from "../lib/auth";
+import { cancellaTutteLeBozzeNuovo, pulisciBozzeNuovoLegacy } from "../lib/nuovoDraft";
 import { resetPercorsoRipresaNuovo } from "../lib/nuovoRipresaPath";
 
 const WEB_BASE_URL = "https://previcloud.it";
@@ -31,7 +32,9 @@ const WEB_PRIVACY_URL = `${WEB_BASE_URL}/privacy`;
 
 function clearLocalData() {
   localStorage.removeItem("previcloud-nav-memory");
-  cancellaTutteLeBozzeNuovo();
+  const userId = getCachedUserId();
+  if (userId) cancellaTutteLeBozzeNuovo(userId);
+  pulisciBozzeNuovoLegacy();
   resetPercorsoRipresaNuovo();
   localStorage.removeItem("previcloud-pdf-folder");
   localStorage.removeItem("previcloud-pdf-cartelle-cliente");
