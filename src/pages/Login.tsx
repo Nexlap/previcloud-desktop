@@ -6,6 +6,7 @@ import { useAuth } from "../app/useAuth";
 import { resetPassword, signInWithEmail, signUpWithEmail } from "../lib/auth";
 import { PLACEHOLDER } from "../lib/placeholders";
 import logo from "../assets/logo.png";
+import { openUrl } from "@tauri-apps/plugin-opener";
 
 const WEB_BASE_URL = "https://previcloud.it";
 const WEB_TERMINI_URL = `${WEB_BASE_URL}/termini`;
@@ -83,12 +84,20 @@ export default function Login() {
     setInfo("Email inviata. Segui il link per reimpostare la password.");
   }
 
-  function apriTerminiWeb() {
-    window.open(WEB_TERMINI_URL, "_blank", "noopener,noreferrer");
+  async function apriTerminiWeb() {
+    try {
+      await openUrl(WEB_TERMINI_URL);
+    } catch {
+      window.open(WEB_TERMINI_URL, "_blank", "noopener,noreferrer");
+    }
   }
 
-  function apriHomepageWeb() {
-    window.open(WEB_BASE_URL, "_blank", "noopener,noreferrer");
+  async function apriHomepageWeb() {
+    try {
+      await openUrl(WEB_BASE_URL);
+    } catch {
+      window.open(WEB_BASE_URL, "_blank", "noopener,noreferrer");
+    }
   }
 
   return (
