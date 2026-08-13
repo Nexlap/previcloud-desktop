@@ -432,16 +432,18 @@ export default function Nuovo({ mode }: Props) {
   );
 
   const totaleBase = calcolaTotaleVoci(voci) + calcolaTotaleTrasferte(trasferte);
-  const totaleConIva = includiIva ? totaleBase * 1.22 : totaleBase;
+  // Ordine allineato a shared generaTestoPreventivoBuilder: sconto sull'imponibile, poi IVA
   const importoSconto = (() => {
     if (!scontoAttivo || !scontoValore) return 0;
     const val = parseImportoEuro(scontoValore) ?? NaN;
     if (isNaN(val) || val <= 0) return 0;
     return scontoTipo === "percentuale"
-      ? totaleConIva * (val / 100)
-      : Math.min(val, totaleConIva);
+      ? totaleBase * (val / 100)
+      : Math.min(val, totaleBase);
   })();
-  const totaleConSconto = Math.max(0, totaleConIva - importoSconto);
+  const totaleNetto = Math.max(0, totaleBase - importoSconto);
+  const totaleConSconto = includiIva ? totaleNetto * 1.22 : totaleNetto;
+  const totaleConIva = includiIva ? totaleBase * 1.22 : totaleBase;
   const importoAnteprima = mode === "manuale" ? totaleConIva : (importoDaTesto(preventivo) || 0);
 
   function clienteCollegato() {

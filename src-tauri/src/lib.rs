@@ -2,7 +2,7 @@ use chrono::Utc;
 use serde::Deserialize;
 use std::{
     collections::HashSet,
-    path::PathBuf,
+    path::{Component, Path, PathBuf},
     sync::{Arc, Mutex},
     time::Duration,
 };
@@ -17,6 +17,15 @@ use tauri_plugin_opener::OpenerExt;
 const MENU_OPEN: &str = "tray-open";
 const MENU_QUIT: &str = "tray-quit";
 const NOTIFICATION_POLL_INTERVAL_SECS: u64 = 35;
+const CARTELLA_PDF_ROOT_NAME: &str = "PreviCloud - Preventivi PDF";
+
+#[derive(Default)]
+struct PdfFsState {
+    /// Root aggiuntive (cartella custom da dialog / appSettings).
+    allowed_extra_roots: Mutex<HashSet<PathBuf>>,
+    /// Path restituiti da `write_pdf_file` in questa sessione.
+    written_paths: Mutex<HashSet<PathBuf>>,
+}
 
 #[derive(Clone)]
 struct SessionInfo {
@@ -259,17 +268,216 @@ fn mark_notification_delivered(
     Ok(())
 }
 
+/// Caratteri ammessi nello stem del nome file PDF (Unicode letters/digits + sicuri).
+fn char_consentito_nome_pdf(c: char) -> bool {
+    if c.is_control() || c == '/' || c == '\\' {
+        return false;
+    }
+    // Lettere/numeri Unicode; apostrofo per cognomi (es. D'Angelo).
+    c.is_alphanumeric() || matches!(c, '.' | '_' | '-' | ' ' | '\'')
+}
+
+/// Basename PDF: lettere/numeri Unicode, niente traversal/separatori/control chars.
+fn valida_nome_file_pdf(nome_file: &str) -> Result<String, String> {
+    let nome = nome_file.trim();
+    if nome.is_empty() {
+        return Err("Nome file PDF non valido.".to_string());
+    }
+    if nome.contains("..") {
+        return Err("Nome file PDF non valido: path traversal non consentito.".to_string());
+    }
+    if nome.contains('/') || nome.contains('\\') {
+        return Err("Nome file PDF non valido: separatori non consentiti.".to_string());
+    }
+    if nome.chars().any(|c| c.is_control()) {
+        return Err("Nome file PDF non valido: caratteri di controllo non consentiti.".to_string());
+    }
+
+    let as_path = Path::new(nome);
+    let mut components = as_path.components();
+    let only = components.next();
+    if components.next().is_some() {
+        return Err("Nome file PDF non valido: deve essere un basename.".to_string());
+    }
+    match only {
+        Some(Component::Normal(os)) => {
+            let s = os.to_string_lossy();
+            if s != nome {
+                return Err("Nome file PDF non valido.".to_string());
+            }
+        }
+        _ => {
+            return Err("Nome file PDF non valido: path non consentito.".to_string());
+        }
+    }
+
+    let (stem, ext) = nome
+        .rsplit_once('.')
+        .ok_or_else(|| "Nome file PDF non valido: estensione .pdf richiesta.".to_string())?;
+    if stem.is_empty() || !ext.eq_ignore_ascii_case("pdf") {
+        return Err("Nome file PDF non valido: estensione .pdf richiesta.".to_string());
+    }
+    if !stem.chars().all(char_consentito_nome_pdf) {
+        return Err("Nome file PDF non valido: caratteri non consentiti.".to_string());
+    }
+
+    Ok(nome.to_string())
+}
+
+/// Risolve un path anche se non esiste ancora, rifiutando `..` nei segmenti mancanti.
+fn strict_canonicalize(path: &Path) -> Result<PathBuf, String> {
+    if path.as_os_str().is_empty() {
+        return Err("Percorso vuoto non valido.".to_string());
+    }
+    if path.exists() {
+        return path
+            .canonicalize()
+            .map_err(|e| format!("Impossibile risolvere il percorso: {e}"));
+    }
+
+    let mut rest = Vec::new();
+    let mut cur = path.to_path_buf();
+    while !cur.exists() {
+        let name = cur
+            .file_name()
+            .ok_or_else(|| "Percorso non valido.".to_string())?
+            .to_os_string();
+        if name == "." || name == ".." {
+            return Err("Percorso non consentito.".to_string());
+        }
+        rest.push(name);
+        if !cur.pop() {
+            return Err("Percorso non valido.".to_string());
+        }
+    }
+
+    let mut resolved = cur
+        .canonicalize()
+        .map_err(|e| format!("Impossibile risolvere il percorso: {e}"))?;
+    for component in rest.into_iter().rev() {
+        resolved.push(component);
+    }
+    Ok(resolved)
+}
+
+fn is_path_under_root(path: &Path, root: &Path) -> bool {
+    path.starts_with(root)
+}
+
+fn path_under_any_root(path: &Path, roots: &[PathBuf]) -> Result<bool, String> {
+    let resolved = strict_canonicalize(path)?;
+    for root in roots {
+        let root_resolved = strict_canonicalize(root)?;
+        if is_path_under_root(&resolved, &root_resolved) {
+            return Ok(true);
+        }
+    }
+    Ok(false)
+}
+
+fn radici_pdf_consentite(
+    app: &tauri::AppHandle,
+    state: &PdfFsState,
+) -> Result<Vec<PathBuf>, String> {
+    let desktop = app
+        .path()
+        .desktop_dir()
+        .map_err(|e| format!("Impossibile risolvere Desktop: {e}"))?;
+    let default_root = desktop.join(CARTELLA_PDF_ROOT_NAME);
+    let cache = app
+        .path()
+        .app_cache_dir()
+        .map_err(|e| format!("Impossibile risolvere cache app: {e}"))?;
+
+    let mut roots = vec![default_root, cache];
+    let extra = state
+        .allowed_extra_roots
+        .lock()
+        .map_err(|e| e.to_string())?;
+    roots.extend(extra.iter().cloned());
+    Ok(roots)
+}
+
+/// Registra una root PDF aggiuntiva (cartella custom da dialog / appSettings).
 #[tauri::command]
-fn read_file_bytes(path: String) -> Result<Vec<u8>, String> {
-    std::fs::read(&path).map_err(|e| e.to_string())
+fn register_pdf_allowed_root(
+    state: tauri::State<'_, PdfFsState>,
+    path: String,
+) -> Result<(), String> {
+    let resolved = strict_canonicalize(Path::new(&path))?;
+    if resolved.exists() && !resolved.is_dir() {
+        return Err("La root PDF deve essere una cartella.".to_string());
+    }
+    state
+        .allowed_extra_roots
+        .lock()
+        .map_err(|e| e.to_string())?
+        .insert(resolved);
+    Ok(())
 }
 
 #[tauri::command]
-fn write_pdf_file(cartella: String, nome_file: String, bytes: Vec<u8>) -> Result<String, String> {
+fn read_file_bytes(
+    app: tauri::AppHandle,
+    state: tauri::State<'_, PdfFsState>,
+    path: String,
+) -> Result<Vec<u8>, String> {
+    let p = PathBuf::from(&path);
+    if !p.is_file() {
+        return Err(format!("File non trovato: {path}"));
+    }
+    let canon = p
+        .canonicalize()
+        .map_err(|e| format!("Impossibile risolvere il percorso: {e}"))?;
+
+    let in_session = state
+        .written_paths
+        .lock()
+        .map_err(|e| e.to_string())?
+        .contains(&canon);
+    if in_session {
+        return std::fs::read(&canon).map_err(|e| e.to_string());
+    }
+
+    let roots = radici_pdf_consentite(&app, &state)?;
+    if !path_under_any_root(&canon, &roots)? {
+        return Err("Lettura file non consentita: percorso fuori dalle cartelle PDF ammesse.".to_string());
+    }
+
+    std::fs::read(&canon).map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+fn write_pdf_file(
+    app: tauri::AppHandle,
+    state: tauri::State<'_, PdfFsState>,
+    cartella: String,
+    nome_file: String,
+    bytes: Vec<u8>,
+) -> Result<String, String> {
+    let nome = valida_nome_file_pdf(&nome_file)?;
+    let roots = radici_pdf_consentite(&app, &state)?;
+
+    if !path_under_any_root(Path::new(&cartella), &roots)? {
+        return Err("Scrittura PDF non consentita: cartella fuori dalle root ammesse.".to_string());
+    }
+
     std::fs::create_dir_all(&cartella).map_err(|e| e.to_string())?;
-    let mut path = PathBuf::from(cartella);
-    path.push(nome_file);
+    let mut path = PathBuf::from(&cartella);
+    path.push(&nome);
+
+    if !path_under_any_root(&path, &roots)? {
+        return Err("Scrittura PDF non consentita: percorso file fuori dalle root ammesse.".to_string());
+    }
+
     std::fs::write(&path, bytes).map_err(|e| e.to_string())?;
+
+    if let Ok(canon) = path.canonicalize() {
+        if let Ok(mut written) = state.written_paths.lock() {
+            written.insert(canon);
+        }
+    }
+
     path.to_str()
         .map(|s| s.to_string())
         .ok_or_else(|| "Percorso non valido.".to_string())
@@ -319,6 +527,7 @@ pub fn run() {
 
     tauri::Builder::default()
         .manage(notification_state)
+        .manage(PdfFsState::default())
         .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
             show_main_window(app);
         }))
@@ -379,6 +588,7 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             read_file_bytes,
             write_pdf_file,
+            register_pdf_allowed_root,
             open_pdf_path,
             reveal_pdf_in_folder,
             set_notification_session,
@@ -395,4 +605,95 @@ pub fn run() {
                 }
             }
         });
+}
+
+#[cfg(test)]
+mod pdf_path_tests {
+    use super::{
+        is_path_under_root, path_under_any_root, strict_canonicalize, valida_nome_file_pdf,
+    };
+    use std::fs;
+    use std::path::PathBuf;
+
+    fn temp_dir(label: &str) -> PathBuf {
+        let dir = std::env::temp_dir().join(format!(
+            "previcloud-pdf-test-{}-{}",
+            label,
+            std::process::id()
+        ));
+        let _ = fs::remove_dir_all(&dir);
+        fs::create_dir_all(&dir).expect("temp dir");
+        dir
+    }
+
+    #[test]
+    fn rifiuta_nome_con_traversal() {
+        assert!(valida_nome_file_pdf("../escape.pdf").is_err());
+        assert!(valida_nome_file_pdf("..\\escape.pdf").is_err());
+        assert!(valida_nome_file_pdf("foo/../bar.pdf").is_err());
+    }
+
+    #[test]
+    fn rifiuta_nome_con_separatori() {
+        assert!(valida_nome_file_pdf("subdir/file.pdf").is_err());
+        assert!(valida_nome_file_pdf("subdir\\file.pdf").is_err());
+        assert!(valida_nome_file_pdf("C:\\Users\\file.pdf").is_err());
+    }
+
+    #[test]
+    fn rifiuta_cartella_fuori_dalle_root() {
+        let root = temp_dir("root-ok");
+        let outside = temp_dir("root-evil");
+        let roots = vec![root.clone()];
+
+        assert_eq!(
+            path_under_any_root(&outside, &roots).expect("resolve"),
+            false
+        );
+        assert_eq!(
+            path_under_any_root(&root.join("cliente"), &roots).expect("resolve"),
+            true
+        );
+
+        let _ = fs::remove_dir_all(&root);
+        let _ = fs::remove_dir_all(&outside);
+    }
+
+    #[test]
+    fn accetta_caso_valido() {
+        let nome = valida_nome_file_pdf("Mario Rossi_PRV-123.pdf").expect("nome ok");
+        assert_eq!(nome, "Mario Rossi_PRV-123.pdf");
+        assert!(valida_nome_file_pdf("preventivo.PDF").is_ok());
+
+        let root = temp_dir("root-valid");
+        let cartella = root.join("Cliente");
+        let roots = vec![root.clone()];
+        assert!(path_under_any_root(&cartella, &roots).expect("resolve"));
+
+        let resolved_root = strict_canonicalize(&root).expect("canon root");
+        let resolved_child = strict_canonicalize(&cartella).expect("canon child");
+        assert!(is_path_under_root(&resolved_child, &resolved_root));
+
+        let mut file_path = resolved_child;
+        file_path.push("doc.pdf");
+        assert!(is_path_under_root(&file_path, &resolved_root));
+
+        let _ = fs::remove_dir_all(&root);
+    }
+
+    #[test]
+    fn accetta_nomi_unicode_e_apostrofo() {
+        assert_eq!(
+            valida_nome_file_pdf("José_PRV-1.pdf").expect("José"),
+            "José_PRV-1.pdf"
+        );
+        assert_eq!(
+            valida_nome_file_pdf("Città_PRV-2.pdf").expect("Città"),
+            "Città_PRV-2.pdf"
+        );
+        assert_eq!(
+            valida_nome_file_pdf("D'Angelo_PRV-3.pdf").expect("D'Angelo"),
+            "D'Angelo_PRV-3.pdf"
+        );
+    }
 }

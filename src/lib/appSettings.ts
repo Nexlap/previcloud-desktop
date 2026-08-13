@@ -90,6 +90,7 @@ export async function scegliCartellaPdfCustom(): Promise<string | null> {
   });
   if (typeof selected === "string" && selected) {
     setPdfCartellaCustom(selected);
+    await invoke("register_pdf_allowed_root", { path: selected }).catch(() => undefined);
     return selected;
   }
   return null;
@@ -124,19 +125,49 @@ export async function salvaPdfConPreferenze(
     if (!percorso) return undefined;
     const dir = await dirname(percorso);
     const file = await basename(percorso);
+    await invoke("register_pdf_allowed_root", { path: dir }).catch(() => undefined);
     return salvaPdfInCartella(dir, file, pdfBase64);
   }
 
   return salvaPdfInCartella(cartellaSuggerita, nomeFile, pdfBase64);
 }
 
+const MSG_SALVATAGGIO_PDF_PATH =
+  "Non è stato possibile salvare il PDF in questa posizione. Riprova o scegli un'altra cartella nelle Impostazioni.";
+
+function messaggioErroreSalvataggioPdf(err: unknown): string {
+  const raw =
+    err instanceof Error
+      ? err.message
+      : typeof err === "string"
+        ? err
+        : err && typeof err === "object" && "message" in err
+          ? String((err as { message: unknown }).message)
+          : String(err ?? "");
+  if (
+    raw.includes("Scrittura PDF non consentita") ||
+    raw.includes("Nome file PDF non valido")
+  ) {
+    return MSG_SALVATAGGIO_PDF_PATH;
+  }
+  return raw || MSG_SALVATAGGIO_PDF_PATH;
+}
+
 export async function salvaPdfInCartella(cartella: string, nomeFile: string, pdfBase64: string): Promise<string> {
+  const custom = getPdfCartellaCustom();
+  if (custom) {
+    await invoke("register_pdf_allowed_root", { path: custom }).catch(() => undefined);
+  }
   const bytes = Uint8Array.from(atob(pdfBase64), (c) => c.charCodeAt(0));
-  return invoke<string>("write_pdf_file", {
-    cartella,
-    nomeFile,
-    bytes: Array.from(bytes),
-  });
+  try {
+    return await invoke<string>("write_pdf_file", {
+      cartella,
+      nomeFile,
+      bytes: Array.from(bytes),
+    });
+  } catch (err) {
+    throw new Error(messaggioErroreSalvataggioPdf(err));
+  }
 }
 
 export async function leggiAutostartAbilitato(): Promise<boolean> {

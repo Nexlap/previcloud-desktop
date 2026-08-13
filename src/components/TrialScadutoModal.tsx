@@ -13,7 +13,7 @@ export function TrialScadutoModal({ visibile }: Props) {
         Contattaci per continuare a usare PreviCloud.
       </p>
       <a
-        href="mailto:previ_cloud@proton.me"
+        href="mailto:info@previcloud.it"
         style={{ marginTop: 16, color: '#0E9F8E', textDecoration: 'underline', fontSize: '15px' }}
       >
         Contatta il supporto
