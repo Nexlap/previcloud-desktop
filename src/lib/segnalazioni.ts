@@ -55,8 +55,7 @@ async function caricaScreenshot(userId: string, file: File): Promise<string | nu
       .from("segnalazioni")
       .upload(path, arrayBuffer, { contentType: file.type, upsert: false });
     if (error) return null;
-    const { data } = supabase.storage.from("segnalazioni").getPublicUrl(path);
-    return data.publicUrl;
+    return path;
   } catch {
     return null;
   }
