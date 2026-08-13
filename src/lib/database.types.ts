@@ -474,6 +474,7 @@ export type Database = {
           messaggi_cliente: Json
           nome_azienda: string | null
           note_pagamento: string | null
+          onboarding_completato: boolean
           piva: string | null
           plan: string | null
           reminder_firma_giorni: number
@@ -484,6 +485,8 @@ export type Database = {
           stripe_onboarding_status: string | null
           telefono: string | null
           template_preferito: string | null
+          termini_accettati: boolean
+          termini_accettati_at: string | null
           tono: string | null
           trial_ends_at: string | null
         }
@@ -501,6 +504,7 @@ export type Database = {
           messaggi_cliente?: Json
           nome_azienda?: string | null
           note_pagamento?: string | null
+          onboarding_completato?: boolean
           piva?: string | null
           plan?: string | null
           reminder_firma_giorni?: number
@@ -511,6 +515,8 @@ export type Database = {
           stripe_onboarding_status?: string | null
           telefono?: string | null
           template_preferito?: string | null
+          termini_accettati?: boolean
+          termini_accettati_at?: string | null
           tono?: string | null
           trial_ends_at?: string | null
         }
@@ -528,6 +534,7 @@ export type Database = {
           messaggi_cliente?: Json
           nome_azienda?: string | null
           note_pagamento?: string | null
+          onboarding_completato?: boolean
           piva?: string | null
           plan?: string | null
           reminder_firma_giorni?: number
@@ -538,6 +545,8 @@ export type Database = {
           stripe_onboarding_status?: string | null
           telefono?: string | null
           template_preferito?: string | null
+          termini_accettati?: boolean
+          termini_accettati_at?: string | null
           tono?: string | null
           trial_ends_at?: string | null
         }

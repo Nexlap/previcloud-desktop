@@ -15,6 +15,7 @@ import { pulisciBozzeNuovoLegacy } from "../lib/nuovoDraft";
 import { supabase } from "../lib/supabase";
 import { isTrialScaduto } from "previcloud-shared";
 import { AggiornamentoObbligatorioModal } from "./AggiornamentoObbligatorioModal";
+import { TerminiNonAccettatiModal } from "./TerminiNonAccettatiModal";
 import { TrialScadutoModal } from "./TrialScadutoModal";
 
 export default function Layout() {
@@ -22,6 +23,8 @@ export default function Layout() {
   const [versioneInstallata, setVersioneInstallata] = useState<string>();
   const [versioneMinima, setVersioneMinima] = useState<string>();
   const [trialScaduto, setTrialScaduto] = useState(false);
+  const [terminiNonAccettati, setTerminiNonAccettati] = useState(false);
+  const [gatePronto, setGatePronto] = useState(false);
   const location = useLocation();
   const isHome = location.pathname === "/";
 
@@ -33,30 +36,76 @@ export default function Layout() {
   }, []);
 
   useEffect(() => {
-    controllaVersioneMinima().then((risultato) => {
+    let cancelled = false;
+
+    async function verificaGate() {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) {
+        if (!cancelled) setGatePronto(true);
+        return;
+      }
+
+      // Gate termini: prima di trial / update e prima che l'utente usi la shell.
+      const { data: profilo } = await supabase
+        .from("profiles")
+        .select("termini_accettati, plan, trial_ends_at")
+        .eq("id", user.id)
+        .single();
+
+      if (cancelled) return;
+
+      if (profilo && !profilo.termini_accettati) {
+        setTerminiNonAccettati(true);
+        setGatePronto(true);
+        return;
+      }
+
+      if (isTrialScaduto(profilo?.plan, profilo?.trial_ends_at)) {
+        setTrialScaduto(true);
+      }
+
+      const risultato = await controllaVersioneMinima();
+      if (cancelled) return;
       if (!risultato.ok) {
         setVersioneInstallata(risultato.installata);
         setVersioneMinima(risultato.minima);
         setAggiornaObbligatorio(true);
       }
-    });
+
+      setGatePronto(true);
+    }
+
+    void verificaGate();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (!user) return
-      supabase
-        .from('profiles')
-        .select('plan, trial_ends_at')
-        .eq('id', user.id)
-        .single()
-        .then(({ data }) => {
-          if (isTrialScaduto(data?.plan, data?.trial_ends_at)) {
-            setTrialScaduto(true)
-          }
-        })
-    })
-  }, []);
+  function handleTerminiAccettati() {
+    setTerminiNonAccettati(false);
+    void (async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) return;
+      const { data: profilo } = await supabase
+        .from("profiles")
+        .select("plan, trial_ends_at")
+        .eq("id", user.id)
+        .single();
+      if (isTrialScaduto(profilo?.plan, profilo?.trial_ends_at)) {
+        setTrialScaduto(true);
+      }
+      const risultato = await controllaVersioneMinima();
+      if (!risultato.ok) {
+        setVersioneInstallata(risultato.installata);
+        setVersioneMinima(risultato.minima);
+        setAggiornaObbligatorio(true);
+      }
+    })();
+  }
 
   useEffect(() => {
     if (!isDesktopApp()) return;
@@ -66,12 +115,19 @@ export default function Layout() {
   }, []);
   return (
     <>
+    <TerminiNonAccettatiModal
+      visibile={terminiNonAccettati}
+      onAccettati={handleTerminiAccettati}
+    />
     <AggiornamentoObbligatorioModal
-      visibile={aggiornaObbligatorio}
+      visibile={aggiornaObbligatorio && !terminiNonAccettati}
       versioneInstallata={versioneInstallata}
       versioneMinima={versioneMinima}
     />
-    <TrialScadutoModal visibile={trialScaduto} />
+    <TrialScadutoModal visibile={trialScaduto && !terminiNonAccettati} />
+    {!gatePronto ? (
+      <div className="fixed inset-0 z-[9998] bg-brand-navy" />
+    ) : terminiNonAccettati ? null : (
     <NotificheProvider>
       <SegnalazioneProvider>
         <NuovoPreventivoNavProvider>
@@ -88,6 +144,7 @@ export default function Layout() {
         </NuovoPreventivoNavProvider>
       </SegnalazioneProvider>
     </NotificheProvider>
+    )}
     </>
   );
 }

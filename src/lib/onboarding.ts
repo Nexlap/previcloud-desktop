@@ -67,7 +67,7 @@ export async function hasCompletedProfile(): Promise<boolean> {
 
   const { data: profile, error } = await supabase
     .from("profiles")
-    .select("nome_azienda")
+    .select("onboarding_completato")
     .eq("id", user.id)
     .single();
 
@@ -78,7 +78,7 @@ export async function hasCompletedProfile(): Promise<boolean> {
     throw new Error(error.message);
   }
 
-  return Boolean(profile?.nome_azienda?.trim());
+  return Boolean(profile?.onboarding_completato);
 }
 
 /**
@@ -164,6 +164,7 @@ export async function completaOnboarding({
     categoria,
     template_preferito: templateScelto,
     firma_nome: firmaNome.trim(),
+    onboarding_completato: true,
   });
 
   if (error) return { error };
