@@ -15,7 +15,6 @@ import { pulisciBozzeNuovoLegacy } from "../lib/nuovoDraft";
 import { supabase } from "../lib/supabase";
 import { isTrialScaduto } from "previcloud-shared";
 import { AggiornamentoObbligatorioModal } from "./AggiornamentoObbligatorioModal";
-import { TerminiNonAccettatiModal } from "./TerminiNonAccettatiModal";
 import { TrialScadutoModal } from "./TrialScadutoModal";
 
 export default function Layout() {
@@ -23,7 +22,6 @@ export default function Layout() {
   const [versioneInstallata, setVersioneInstallata] = useState<string>();
   const [versioneMinima, setVersioneMinima] = useState<string>();
   const [trialScaduto, setTrialScaduto] = useState(false);
-  const [terminiNonAccettati, setTerminiNonAccettati] = useState(false);
   const [gatePronto, setGatePronto] = useState(false);
   const location = useLocation();
   const isHome = location.pathname === "/";
@@ -47,20 +45,13 @@ export default function Layout() {
         return;
       }
 
-      // Gate termini: prima di trial / update e prima che l'utente usi la shell.
       const { data: profilo } = await supabase
         .from("profiles")
-        .select("termini_accettati, plan, trial_ends_at")
+        .select("plan, trial_ends_at")
         .eq("id", user.id)
         .single();
 
       if (cancelled) return;
-
-      if (profilo && !profilo.termini_accettati) {
-        setTerminiNonAccettati(true);
-        setGatePronto(true);
-        return;
-      }
 
       if (isTrialScaduto(profilo?.plan, profilo?.trial_ends_at)) {
         setTrialScaduto(true);
@@ -83,30 +74,6 @@ export default function Layout() {
     };
   }, []);
 
-  function handleTerminiAccettati() {
-    setTerminiNonAccettati(false);
-    void (async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (!user) return;
-      const { data: profilo } = await supabase
-        .from("profiles")
-        .select("plan, trial_ends_at")
-        .eq("id", user.id)
-        .single();
-      if (isTrialScaduto(profilo?.plan, profilo?.trial_ends_at)) {
-        setTrialScaduto(true);
-      }
-      const risultato = await controllaVersioneMinima();
-      if (!risultato.ok) {
-        setVersioneInstallata(risultato.installata);
-        setVersioneMinima(risultato.minima);
-        setAggiornaObbligatorio(true);
-      }
-    })();
-  }
-
   useEffect(() => {
     if (!isDesktopApp()) return;
     const bloccaMenuBrowser = (e: MouseEvent) => e.preventDefault();
@@ -115,19 +82,15 @@ export default function Layout() {
   }, []);
   return (
     <>
-    <TerminiNonAccettatiModal
-      visibile={terminiNonAccettati}
-      onAccettati={handleTerminiAccettati}
-    />
     <AggiornamentoObbligatorioModal
-      visibile={aggiornaObbligatorio && !terminiNonAccettati}
+      visibile={aggiornaObbligatorio}
       versioneInstallata={versioneInstallata}
       versioneMinima={versioneMinima}
     />
-    <TrialScadutoModal visibile={trialScaduto && !terminiNonAccettati} />
+    <TrialScadutoModal visibile={trialScaduto} />
     {!gatePronto ? (
       <div className="fixed inset-0 z-[9998] bg-brand-navy" />
-    ) : terminiNonAccettati ? null : (
+    ) : (
     <NotificheProvider>
       <SegnalazioneProvider>
         <NuovoPreventivoNavProvider>
