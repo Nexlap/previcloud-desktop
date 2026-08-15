@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "previcloud-desktop",
+  "productName": "PreviCloud",
   "version": "1.0.0",
   "identifier": "it.previcloud.desktop",
   "build": {
